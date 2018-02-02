@@ -1,32 +1,21 @@
 package com.zcorp.opensportmanagement.screens.login
 
-class LoginPresenterImpl(view: LoginView?,
-                         loginModel: LoginModelImpl) : LoginPresenter {
-
-    private val loginModel: LoginModel = loginModel
-    private var loginView: LoginView?
-
-    init {
-        loginView = view
-    }
+class LoginPresenterImpl(private val loginView: LoginView,
+                         private val loginModel: LoginModel) : LoginPresenter {
 
     override fun validateCredentials(username: String, password: String) {
-        if (loginView != null) {
-            loginView!!.showProgress()
-        }
+        loginView.showProgress()
         var observable = loginModel.login(username, password)
         observable.subscribe{ aBoolean ->
             run {
                 if (aBoolean) {
-                    loginView!!.navigateToHome()
+                    loginView.navigateToHome()
                 } else {
-                    loginView!!.setPasswordError()
+                    loginView.setPasswordError()
                 }
             }
         }
     }
 
-    override fun finish() {
-        loginView = null
-    }
+    override fun finish() { }
 }

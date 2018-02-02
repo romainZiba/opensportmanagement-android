@@ -4,19 +4,30 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.zcorp.opensportmanagement.screens.teams.TeamsActivity
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.api.UserApiImpl
+import com.zcorp.opensportmanagement.application.MyApplication
+import com.zcorp.opensportmanagement.screens.login.dagger.DaggerLoginComponent
+import com.zcorp.opensportmanagement.screens.login.dagger.LoginContextModule
+import com.zcorp.opensportmanagement.screens.teams.TeamsActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import javax.inject.Inject
 
 class LoginActivity : Activity(), LoginView, View.OnClickListener {
 
     val TAG = LoginActivity::class.java.name
 
-    private val presenter: LoginPresenterImpl = LoginPresenterImpl(this, LoginModelImpl(UserApiImpl()))
+    @Inject
+    lateinit var presenter: LoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        DaggerLoginComponent.builder()
+                .appComponent(MyApplication.appComponent)
+                .loginContextModule(LoginContextModule(this))
+                .build()
+                .inject(this)
+
         setContentView(R.layout.activity_login)
         sign_in_button.setOnClickListener(this)
     }

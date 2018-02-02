@@ -15,5 +15,6 @@ class LoginModelImpl(private val userApi: UserApi) : LoginModel {
             return Observable.just(false)
         }
         return userApi.login(username, password)
+
     }
 }
