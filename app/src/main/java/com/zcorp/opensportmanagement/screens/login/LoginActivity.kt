@@ -8,7 +8,7 @@ import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.application.MyApplication
 import com.zcorp.opensportmanagement.screens.login.dagger.DaggerLoginComponent
 import com.zcorp.opensportmanagement.screens.login.dagger.LoginContextModule
-import com.zcorp.opensportmanagement.screens.teams.TeamsActivity
+import com.zcorp.opensportmanagement.screens.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
@@ -54,7 +54,7 @@ class LoginActivity : Activity(), LoginView, View.OnClickListener {
     }
 
     override fun navigateToHome() {
-        startActivity(Intent(this, TeamsActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 

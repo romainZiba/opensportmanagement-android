@@ -28,6 +28,9 @@ dependencies {
 //    kapt "com.google.dagger:dagger-compiler:2.14.1"
 //    annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
 
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.google.android.gms:play-services-plus:11.8.0'
     compile "com.google.dagger:dagger:2.14.1"
     compile "com.google.dagger:dagger-android:2.14.1"
     compile "com.google.dagger:dagger-android-support:2.14.1"
