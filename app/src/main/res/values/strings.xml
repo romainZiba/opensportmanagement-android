@@ -18,4 +18,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="network_error">Network error</string>
+    <string name="event">Event</string>
+    <string name="match">Match</string>
 </resources>

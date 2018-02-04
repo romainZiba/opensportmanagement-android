@@ -2,11 +2,14 @@ package com.zcorp.opensportmanagement.screens.main.fragments.EventFragment
 
 import android.app.Fragment
 import android.os.Bundle
+import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.api.EventApiImpl
 
@@ -28,6 +31,13 @@ class EventFragment : Fragment(), EventsView {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private var presenter: EventsPresenter? = null
+    private var fabExpanded: Boolean = true
+
+    private lateinit var fabEvent: LinearLayout
+    private lateinit var fabMatch: LinearLayout
+    private lateinit var fabDefaultEvent: LinearLayout
+    private lateinit var fabAddEvent: FloatingActionButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,13 +51,27 @@ class EventFragment : Fragment(), EventsView {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        swipeRefreshLayout = inflater!!.inflate(R.layout.fragment_event_list, container, false) as SwipeRefreshLayout
+        val coordinatorLayout = inflater!!.inflate(R.layout.fragment_event_list, container, false) as CoordinatorLayout
+        fabEvent = coordinatorLayout.findViewById(R.id.layoutFabAddEvent)
+        fabMatch = coordinatorLayout.findViewById(R.id.layoutFabAddMatch)
+        fabDefaultEvent = coordinatorLayout.findViewById(R.id.layoutFabAddDefaultEvent)
+        fabAddEvent = coordinatorLayout.findViewById(R.id.fabAddEvent)
+
+        swipeRefreshLayout = coordinatorLayout.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener { presenter!!.getEvents() }
         presenter!!.getEvents()
         recyclerView = swipeRefreshLayout.findViewById(R.id.list)
         // Set the adapter
         recyclerView.adapter = EventRecyclerAdapter(presenter!!)
-        return swipeRefreshLayout
+        closeSubMenusFab()
+        fabEvent.setOnClickListener {
+            if (fabExpanded) {
+                closeSubMenusFab()
+            } else {
+                openSubMenusFab()
+            }
+        }
+        return coordinatorLayout
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -69,6 +93,22 @@ class EventFragment : Fragment(), EventsView {
     override fun onDataAvailable() {
         recyclerView.adapter.notifyDataSetChanged()
         swipeRefreshLayout.isRefreshing = false
+    }
+
+    //closes FAB submenus
+    private fun closeSubMenusFab() {
+        fabMatch.visibility = View.INVISIBLE
+        fabDefaultEvent.visibility = View.INVISIBLE
+        fabAddEvent.setImageResource(R.drawable.ic_add_black_24dp)
+        fabExpanded = false
+    }
+
+    //Opens FAB submenus
+    private fun openSubMenusFab() {
+        fabMatch.visibility = View.VISIBLE
+        fabDefaultEvent.visibility = View.VISIBLE
+        fabAddEvent.setImageResource(R.drawable.ic_clear_black_24dp)
+        fabExpanded = true
     }
 
     companion object {
