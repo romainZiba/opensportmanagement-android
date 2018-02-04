@@ -11,29 +11,39 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        const val EVENTS = "EVENTS"
+        const val PLUS_ONE = "PLUS_ONE"
+    }
+
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val transaction = fragmentManager.beginTransaction()
-        val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
-        transaction.hide(currentFragment)
+        var eventsFragment = fragmentManager.findFragmentByTag(EVENTS)
+        if (eventsFragment != null) {
+            transaction.hide(eventsFragment)
+        }
+        var plusOneFragment = fragmentManager.findFragmentByTag(PLUS_ONE)
+        if (plusOneFragment != null) {
+            transaction.hide(plusOneFragment)
+        }
         when (item.itemId) {
             R.id.navigation_events -> {
-                var fragment = fragmentManager.findFragmentByTag("EVENTS")
-                if (fragment == null) {
-                    fragment = EventFragment()
-                    transaction.add(R.id.fragment_container, fragment, "EVENTS")
+                if (eventsFragment == null) {
+                    eventsFragment = EventFragment()
+                    transaction.add(R.id.fragment_container, eventsFragment, EVENTS)
                 } else {
-                    transaction.show(fragment)
+                    transaction.show(eventsFragment)
                 }
                 transaction.commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_google -> {
-                var fragment = fragmentManager.findFragmentByTag("PLUS_ONE")
-                if (fragment == null) {
-                    fragment = PlusOneFragment()
-                    transaction.add(R.id.fragment_container, fragment, "PLUS_ONE")
+                if (plusOneFragment == null) {
+                    plusOneFragment = PlusOneFragment()
+                    transaction.add(R.id.fragment_container, plusOneFragment, PLUS_ONE)
                 } else {
-                    transaction.show(fragment)
+                    transaction.show(plusOneFragment)
                 }
                 transaction.commit()
                 return@OnNavigationItemSelectedListener true
@@ -51,6 +61,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(main_toolbar as Toolbar)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, EventFragment()).commit()
+        transaction.replace(R.id.fragment_container, EventFragment(), EVENTS).commit()
     }
 }
