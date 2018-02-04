@@ -7,14 +7,21 @@
     android:layout_height="match_parent"
     tools:context="com.zcorp.opensportmanagement.screens.main.MainActivity">
 
-    <include
-        android:id="@+id/main_toolbar"
-        layout="@layout/toolbar"></include>
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/main_toolbar"
+            layout="@layout/toolbar"></include>
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></FrameLayout>
+
+    </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

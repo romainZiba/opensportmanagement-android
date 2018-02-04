@@ -2,6 +2,7 @@ package com.zcorp.opensportmanagement.screens.main.fragments.EventFragment
 
 import android.app.Fragment
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -23,43 +24,51 @@ import com.zcorp.opensportmanagement.api.EventApiImpl
 class EventFragment : Fragment(), EventsView {
 
     private var mColumnCount = 1
-    private lateinit var view: RecyclerView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
-    private val presenter: EventsPresenter = EventsPresenterImpl(this, EventsModelImpl(EventApiImpl()))
+    private var presenter: EventsPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         if (arguments != null) {
             mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
+        }
+        if (presenter == null) {
+            presenter = EventsPresenterImpl(this, EventsModelImpl(EventApiImpl()))
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.fragment_event_list, container, false)
+        swipeRefreshLayout = inflater!!.inflate(R.layout.fragment_event_list, container, false) as SwipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener { presenter!!.getEvents() }
+        presenter!!.getEvents()
+        recyclerView = swipeRefreshLayout.findViewById(R.id.list)
         // Set the adapter
-        if (view is RecyclerView) {
-            view.adapter = EventRecyclerAdapter(presenter)
-            this.view = view
+        recyclerView.adapter = EventRecyclerAdapter(presenter!!)
+        return swipeRefreshLayout
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putSerializable("presenter", presenter)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            presenter = savedInstanceState.getSerializable("presenter") as EventsPresenter
         }
-        return view
-    }
-
-    override fun showProgress() {
-//        events_list_progress.visibility = View.VISIBLE
-    }
-
-    override fun hideProgress() {
-//        events_list_progress.visibility = View.GONE
+        super.onViewStateRestored(savedInstanceState)
     }
 
     override fun showNetworkError() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onDataChanged() {
-        view.adapter.notifyDataSetChanged()
+    override fun onDataAvailable() {
+        recyclerView.adapter.notifyDataSetChanged()
+        swipeRefreshLayout.isRefreshing = false
     }
 
     companion object {

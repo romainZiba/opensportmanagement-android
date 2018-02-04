@@ -13,13 +13,29 @@ class MainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val transaction = fragmentManager.beginTransaction()
+        val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
+        transaction.hide(currentFragment)
         when (item.itemId) {
-            R.id.navigation_home -> {
-                transaction.replace(R.id.fragment_container, EventFragment()).commit()
+            R.id.navigation_events -> {
+                var fragment = fragmentManager.findFragmentByTag("EVENTS")
+                if (fragment == null) {
+                    fragment = EventFragment()
+                    transaction.add(R.id.fragment_container, fragment, "EVENTS")
+                } else {
+                    transaction.show(fragment)
+                }
+                transaction.commit()
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
-                transaction.replace(R.id.fragment_container, PlusOneFragment()).commit()
+            R.id.navigation_google -> {
+                var fragment = fragmentManager.findFragmentByTag("PLUS_ONE")
+                if (fragment == null) {
+                    fragment = PlusOneFragment()
+                    transaction.add(R.id.fragment_container, fragment, "PLUS_ONE")
+                } else {
+                    transaction.show(fragment)
+                }
+                transaction.commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {

@@ -17,13 +17,11 @@ class EventsPresenterImpl(private val eventsView: EventsView,
     }
 
     override fun getEvents() {
-        eventsView.showProgress()
         eventsModel.provideEvents().subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    eventsView.hideProgress()
                     mEvents = it
-                    eventsView.onDataChanged()
+                    eventsView.onDataAvailable()
                 })
     }
 
