@@ -4,6 +4,7 @@ import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.OtherEvent
 import com.zcorp.opensportmanagement.model.User
 import io.reactivex.Observable
+import java.io.IOException
 import java.util.*
 
 
@@ -15,7 +16,12 @@ class EventApiImpl : EventApi {
         return Observable.just(40)
     }
 
+    @Throws(IOException::class)
     override fun getEvents(user: User): Observable<List<Event>> {
+        val rand = Math.random()
+        if (rand > 0.5) {
+            throw IOException()
+        }
         return Observable.create {
             it.onNext(longRunningOperation())
             it.onComplete()

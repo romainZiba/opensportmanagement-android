@@ -4,11 +4,14 @@ import com.zcorp.opensportmanagement.api.EventApi
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.User
 import io.reactivex.Observable
+import java.io.IOException
 
 /**
  * Created by romainz on 03/02/18.
  */
 class EventsModelImpl(val api: EventApi) : EventsModel {
+
+    @Throws(IOException::class)
     override fun provideEvents(): Observable<List<Event>> {
         return api.getEvents(User("", "", mutableSetOf()))
     }

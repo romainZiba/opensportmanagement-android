@@ -3,6 +3,7 @@ package com.zcorp.opensportmanagement.screens.main.fragments.EventFragment
 import com.zcorp.opensportmanagement.model.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.io.IOException
 
 /**
  * Created by romainz on 03/02/18.
@@ -12,17 +13,17 @@ class EventsPresenterImpl(private val eventsView: EventsView,
 
     private var mEvents: List<Event> = mutableListOf()
 
-    init {
-        getEvents()
-    }
-
     override fun getEvents() {
-        eventsModel.provideEvents().subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    mEvents = it
-                    eventsView.onDataAvailable()
-                })
+        try {
+            eventsModel.provideEvents().subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        mEvents = it
+                        eventsView.onDataAvailable()
+                    })
+        } catch (e: IOException) {
+            eventsView.showNetworkError()
+        }
     }
 
     override fun getEventsCount(): Int {

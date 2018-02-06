@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun displayThirdFragment() {
     }
 
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_events -> {

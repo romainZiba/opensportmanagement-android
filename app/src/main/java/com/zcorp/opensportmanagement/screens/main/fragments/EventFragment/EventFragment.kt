@@ -10,8 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.api.EventApiImpl
+import kotlinx.android.synthetic.main.fragment_event_list.*
 
 /**
  * A fragment representing a list of Items.
@@ -29,6 +31,7 @@ class EventFragment : Fragment(), EventsView {
     private var mColumnCount = 1
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var eventsNetworkError: TextView
 
     private var presenter: EventsPresenter? = null
     private var fabExpanded: Boolean = true
@@ -56,11 +59,9 @@ class EventFragment : Fragment(), EventsView {
         fabMatch = coordinatorLayout.findViewById(R.id.layoutFabAddMatch)
         fabDefaultEvent = coordinatorLayout.findViewById(R.id.layoutFabAddDefaultEvent)
         fabAddEvent = coordinatorLayout.findViewById(R.id.fabAddEvent)
-
         swipeRefreshLayout = coordinatorLayout.findViewById(R.id.swipeRefreshLayout)
-        swipeRefreshLayout.setOnRefreshListener { presenter!!.getEvents() }
-        presenter!!.getEvents()
         recyclerView = swipeRefreshLayout.findViewById(R.id.list)
+        eventsNetworkError = coordinatorLayout.findViewById(R.id.eventsNetworkError)
         // Set the adapter
         recyclerView.adapter = EventRecyclerAdapter(presenter!!)
         closeSubMenusFab()
@@ -74,23 +75,21 @@ class EventFragment : Fragment(), EventsView {
         return coordinatorLayout
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putSerializable("presenter", presenter)
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
-            presenter = savedInstanceState.getSerializable("presenter") as EventsPresenter
-        }
-        super.onViewStateRestored(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+        swipeRefreshLayout.setOnRefreshListener { presenter!!.getEvents() }
+        presenter!!.getEvents()
     }
 
     override fun showNetworkError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        eventsNetworkError.visibility = View.VISIBLE
+        recyclerView.visibility = View.INVISIBLE
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onDataAvailable() {
+        recyclerView.visibility = View.VISIBLE
+        eventsNetworkError.visibility = View.INVISIBLE
         recyclerView.adapter.notifyDataSetChanged()
         swipeRefreshLayout.isRefreshing = false
     }
