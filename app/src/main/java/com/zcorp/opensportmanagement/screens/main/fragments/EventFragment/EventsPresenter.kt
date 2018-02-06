@@ -11,4 +11,5 @@ interface EventsPresenter : Serializable {
     fun getEvents()
     fun getEventsCount(): Int
     fun finish()
+    fun onItemClicked(s: String)
 }

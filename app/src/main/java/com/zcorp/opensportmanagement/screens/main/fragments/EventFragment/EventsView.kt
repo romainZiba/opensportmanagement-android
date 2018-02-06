@@ -6,4 +6,7 @@ package com.zcorp.opensportmanagement.screens.main.fragments.EventFragment
 interface EventsView {
     fun showNetworkError()
     fun onDataAvailable()
+    fun showRowClicked(s: String)
+    fun isFabButtonOpened(): Boolean
+    fun closeFabButton()
 }

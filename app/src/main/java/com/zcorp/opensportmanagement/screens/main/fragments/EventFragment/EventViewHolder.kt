@@ -8,14 +8,15 @@ import com.zcorp.opensportmanagement.R
 /**
  * Created by romainz on 03/02/18.
  */
-class EventViewHolder(mView: View) : RecyclerView.ViewHolder(mView), EventViewRow {
+class EventViewHolder(mView: View, presenter: EventsPresenter) : RecyclerView.ViewHolder(mView), EventViewRow {
 
-    val mNameView: TextView
-    val mDescriptionView: TextView
+    private val mNameView: TextView = mView.findViewById<TextView>(R.id.name) as TextView
+    private val mDescriptionView: TextView = mView.findViewById<TextView>(R.id.description) as TextView
 
     init {
-        mNameView = mView.findViewById<TextView>(R.id.name) as TextView
-        mDescriptionView = mView.findViewById<TextView>(R.id.description) as TextView
+        mView.setOnClickListener({
+            presenter.onItemClicked(mNameView.text.toString())
+        })
     }
 
     override fun setName(name: String) {
@@ -25,8 +26,7 @@ class EventViewHolder(mView: View) : RecyclerView.ViewHolder(mView), EventViewRo
     override fun setDescription(description: String) {
         mDescriptionView.text = description
     }
-
-
+    
     override fun toString(): String {
         return super.toString() + " '" + mDescriptionView.text + "'"
     }

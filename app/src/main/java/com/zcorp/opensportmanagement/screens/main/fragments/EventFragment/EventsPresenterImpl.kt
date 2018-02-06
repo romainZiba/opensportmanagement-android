@@ -38,4 +38,12 @@ class EventsPresenterImpl(private val eventsView: EventsView,
         holder.setName(mEvents[position].name)
         holder.setDescription(mEvents[position].description)
     }
+
+    override fun onItemClicked(s: String) {
+        if (eventsView.isFabButtonOpened()) {
+            eventsView.closeFabButton()
+        } else {
+            eventsView.showRowClicked(s)
+        }
+    }
 }

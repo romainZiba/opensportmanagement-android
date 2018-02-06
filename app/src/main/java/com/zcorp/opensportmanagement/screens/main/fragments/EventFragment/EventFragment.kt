@@ -9,7 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.github.clans.fab.FloatingActionButton
+import android.widget.Toast
+import com.github.clans.fab.FloatingActionMenu
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.api.EventApiImpl
 
@@ -30,15 +31,9 @@ class EventFragment : Fragment(), EventsView {
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var eventsNetworkError: TextView
+    private lateinit var menu: FloatingActionMenu
 
     private var presenter: EventsPresenter? = null
-    private var fabExpanded: Boolean = true
-
-    //    private lateinit var fabEvent: LinearLayout
-//    private lateinit var fabMatch: LinearLayout
-//    private lateinit var fabDefaultEvent: LinearLayout
-//    private lateinit var fabAddEvent: FloatingActionButton
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +49,7 @@ class EventFragment : Fragment(), EventsView {
                               savedInstanceState: Bundle?): View? {
         val coordinatorLayout = inflater!!.inflate(R.layout.fragment_event_list, container, false) as CoordinatorLayout
 
-//        fabAddEvent = coordinatorLayout.findViewById(R.id.menu)
+        menu = coordinatorLayout.findViewById(R.id.menu)
         swipeRefreshLayout = coordinatorLayout.findViewById(R.id.swipeRefreshLayout)
         recyclerView = swipeRefreshLayout.findViewById(R.id.list)
         eventsNetworkError = coordinatorLayout.findViewById(R.id.eventsNetworkError)
@@ -95,5 +90,17 @@ class EventFragment : Fragment(), EventsView {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun showRowClicked(s: String) {
+        Toast.makeText(this.activity, s, Toast.LENGTH_LONG).show()
+    }
+
+    override fun isFabButtonOpened(): Boolean {
+        return menu.isOpened
+    }
+
+    override fun closeFabButton() {
+        menu.close(true)
     }
 }
