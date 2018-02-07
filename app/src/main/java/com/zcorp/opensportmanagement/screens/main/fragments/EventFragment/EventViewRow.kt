@@ -6,4 +6,5 @@ package com.zcorp.opensportmanagement.screens.main.fragments.EventFragment
 interface EventViewRow {
     fun setName(name: String)
     fun setDescription(description: String)
+    fun setListener()
 }
