@@ -1,9 +1,12 @@
 package com.zcorp.opensportmanagement.screens.main.fragments.EventFragment
 
+import com.zcorp.opensportmanagement.application.MyApplication
+import com.zcorp.opensportmanagement.application.Utils
 import com.zcorp.opensportmanagement.model.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.IOException
+import java.util.*
 
 /**
  * Created by romainz on 03/02/18.
@@ -35,8 +38,9 @@ class EventsPresenterImpl(private val eventsView: EventsView,
     }
 
     override fun onBindEventRowViewAtPosition(position: Int, holder: EventViewRow) {
-        holder.setName(mEvents[position].name)
+        holder.setLocalTeamName(mEvents[position].name)
         holder.setDescription(mEvents[position].description)
+        holder.setDate(Utils.format(mEvents[position].fromDate, Locale(MyApplication.systemLanguage)))
         holder.setListener()
     }
 

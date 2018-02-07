@@ -6,7 +6,7 @@ abstract class Event() {
 
     var name: String = ""
     var description: String = ""
-    var fromDate: Date? = null
+    lateinit var fromDate: Date
     var toDate: Date? = null
     var place: String = ""
 

@@ -10,19 +10,21 @@ import com.zcorp.opensportmanagement.R
  */
 class EventViewHolder(private val mView: View, private val presenter: EventsPresenter) : RecyclerView.ViewHolder(mView), EventViewRow {
 
-    private val mNameView: TextView = mView.findViewById<TextView>(R.id.name) as TextView
-    private val mDescriptionView: TextView = mView.findViewById<TextView>(R.id.description) as TextView
+    private val mLocalTeamNameView: TextView = mView.findViewById(R.id.local_team_name)
+    private val mDate: TextView = mView.findViewById(R.id.date)
 
-    override fun setName(name: String) {
-        mNameView.text = name
+//    private val mDescriptionView: TextView = mView.findViewById(R.id.description)
+
+    override fun setLocalTeamName(name: String) {
+        mLocalTeamNameView.text = name
+    }
+
+    override fun setDate(dateAsString: String) {
+        mDate.text = dateAsString
     }
 
     override fun setDescription(description: String) {
-        mDescriptionView.text = description
-    }
-
-    override fun toString(): String {
-        return super.toString() + " '" + mDescriptionView.text + "'"
+//        mDescriptionView.text = description
     }
 
     override fun setListener() {

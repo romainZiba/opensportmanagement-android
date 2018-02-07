@@ -14,7 +14,7 @@ class EventRecyclerAdapter(private val presenter: EventsPresenter) : RecyclerVie
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_event, parent, false)
+                .inflate(R.layout.fragment_event_cardview, parent, false)
         return EventViewHolder(view, presenter)
     }
 

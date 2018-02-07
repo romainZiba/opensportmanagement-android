@@ -19,7 +19,7 @@ class EventApiImpl : EventApi {
     @Throws(IOException::class)
     override fun getEvents(user: User): Observable<List<Event>> {
         val rand = Math.random()
-        if (rand > 0.5) {
+        if (rand > 0.9) {
             throw IOException()
         }
         return Observable.create {
