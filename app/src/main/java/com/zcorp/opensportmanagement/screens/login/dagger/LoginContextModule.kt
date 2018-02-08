@@ -13,7 +13,7 @@ class LoginContextModule(private var loginContext: LoginActivity) {
 
     @LoginScope
     @Provides
-    internal fun provideSplashContext(): LoginActivity {
+    internal fun provideLoginActivity(): LoginActivity {
         return loginContext
     }
 }

@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import com.zcorp.opensportmanagement.application.builder.AppComponent
 import com.zcorp.opensportmanagement.application.builder.AppContextModule
 import com.zcorp.opensportmanagement.application.builder.DaggerAppComponent
-import com.zcorp.opensportmanagement.application.builder.UserApiModule
 import java.util.*
 
 /**
@@ -17,7 +16,6 @@ class MyApplication: Application() {
         super.onCreate()
         appComponent = DaggerAppComponent.builder()
                 .appContextModule(AppContextModule(this))
-                .userApiModule(UserApiModule())
                 .build()
         systemLanguage = Locale.getDefault().language
     }

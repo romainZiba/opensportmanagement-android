@@ -13,6 +13,12 @@ import android.widget.Toast
 import com.github.clans.fab.FloatingActionMenu
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.api.EventApiImpl
+import com.zcorp.opensportmanagement.application.MyApplication
+import com.zcorp.opensportmanagement.screens.dagger.DaggerMainComponent
+import com.zcorp.opensportmanagement.screens.dagger.MainModule
+import com.zcorp.opensportmanagement.screens.login.dagger.DaggerLoginComponent
+import com.zcorp.opensportmanagement.screens.login.dagger.LoginContextModule
+import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.
@@ -33,15 +39,19 @@ class EventFragment : Fragment(), EventsView {
     private lateinit var eventsNetworkError: TextView
     private lateinit var menu: FloatingActionMenu
 
-    private var presenter: EventsPresenter? = null
+    @Inject
+    lateinit var presenter: EventsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DaggerMainComponent.builder()
+                .appComponent(MyApplication.appComponent)
+                .mainModule(MainModule(this))
+                .build()
+                .inject(this)
+
         if (arguments != null) {
             mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
-        }
-        if (presenter == null) {
-            presenter = EventsPresenterImpl(this, EventsModelImpl(EventApiImpl()))
         }
     }
 
@@ -54,14 +64,14 @@ class EventFragment : Fragment(), EventsView {
         recyclerView = swipeRefreshLayout.findViewById(R.id.list)
         eventsNetworkError = coordinatorLayout.findViewById(R.id.eventsNetworkError)
         // Set the adapter
-        recyclerView.adapter = EventRecyclerAdapter(presenter!!)
+        recyclerView.adapter = EventRecyclerAdapter(presenter)
         return coordinatorLayout
     }
 
     override fun onResume() {
         super.onResume()
-        swipeRefreshLayout.setOnRefreshListener { presenter!!.getEvents() }
-        presenter!!.getEvents()
+        swipeRefreshLayout.setOnRefreshListener { presenter.getEvents() }
+        presenter.getEvents()
     }
 
     override fun showNetworkError() {
@@ -104,7 +114,7 @@ class EventFragment : Fragment(), EventsView {
         menu.close(true)
     }
 
-    fun setPresenter(p: EventsPresenter) {
+    fun setPresenterForTest(p: EventsPresenter) {
         presenter = p
     }
 }
