@@ -1,7 +1,5 @@
 package com.zcorp.opensportmanagement
 
-import android.view.View
-import android.widget.TextView
 import com.github.clans.fab.FloatingActionMenu
 import com.zcorp.opensportmanagement.screens.main.fragments.EventFragment.EventFragment
 import org.junit.Assert.*
@@ -17,15 +15,16 @@ import org.robolectric.util.FragmentTestUtil.startFragment
 @RunWith(RobolectricTestRunner::class)
 class EventFragmentTest {
     @Test
-    fun shouldShowNetworkError() {
-
+    fun clickFabInFragmentShouldOpenTheFabMenu() {
         val fragment = EventFragment.newInstance(1)
         startFragment(fragment)
         assertNotNull(fragment)
         val view = fragment.view
         assertNotNull(view)
-        val eventsNetworkError = view.findViewById<TextView>(R.id.eventsNetworkError)
-        assertNotNull(eventsNetworkError)
-        assertTrue(eventsNetworkError.visibility == View.VISIBLE)
+        val fabMenu = view.findViewById<FloatingActionMenu>(R.id.menu)
+        assertNotNull(fabMenu)
+        assertFalse(fabMenu.isOpened)
+        fabMenu.performClick()
+        assertTrue(fabMenu.isOpened)
     }
 }

@@ -13,7 +13,6 @@ import android.widget.Toast
 import com.github.clans.fab.FloatingActionMenu
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.api.EventApiImpl
-import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.
@@ -34,13 +33,15 @@ class EventFragment : Fragment(), EventsView {
     private lateinit var eventsNetworkError: TextView
     private lateinit var menu: FloatingActionMenu
 
-    @Inject
-    lateinit var presenter: EventsPresenter
+    private var presenter: EventsPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
+        }
+        if (presenter == null) {
+            presenter = EventsPresenterImpl(this, EventsModelImpl(EventApiImpl()))
         }
     }
 
@@ -57,8 +58,8 @@ class EventFragment : Fragment(), EventsView {
         return coordinatorLayout
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         swipeRefreshLayout.setOnRefreshListener { presenter!!.getEvents() }
         presenter!!.getEvents()
     }
@@ -79,7 +80,7 @@ class EventFragment : Fragment(), EventsView {
     companion object {
 
         // TODO: Customize parameter argument names
-        val ARG_COLUMN_COUNT = "column-count"
+        private val ARG_COLUMN_COUNT = "column-count"
 
         // TODO: Customize parameter initialization
         fun newInstance(columnCount: Int): EventFragment {
