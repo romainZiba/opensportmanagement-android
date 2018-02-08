@@ -5,13 +5,19 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.application.MyApplication
+import com.zcorp.opensportmanagement.screens.dagger.DaggerProductionScreenComponent
+import com.zcorp.opensportmanagement.screens.dagger.ScreenModule
 import com.zcorp.opensportmanagement.screens.main.fragments.ButtonFragment.PlusOneFragment
 import com.zcorp.opensportmanagement.screens.main.fragments.EventFragment.EventFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MainView {
 
-    private val mainPresenter = MainPresenterImpl(this)
+
+    @Inject
+    lateinit var mainPresenter: MainPresenter
 
     override fun displayEvents() {
         val transaction = fragmentManager.beginTransaction()
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+    val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_events -> {
                 mainPresenter.onDisplayEvents()
@@ -69,6 +75,13 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        DaggerProductionScreenComponent.builder()
+                .appComponent(MyApplication.appComponent)
+                .screenModule(ScreenModule())
+                .build()
+                .inject(this)
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(main_toolbar as Toolbar)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
