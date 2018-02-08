@@ -103,4 +103,8 @@ class EventFragment : Fragment(), EventsView {
     override fun closeFabButton() {
         menu.close(true)
     }
+
+    fun setPresenter(p: EventsPresenter) {
+        presenter = p
+    }
 }

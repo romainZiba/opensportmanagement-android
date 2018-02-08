@@ -1,10 +1,17 @@
 package com.zcorp.opensportmanagement
 
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import android.widget.TextView
 import com.github.clans.fab.FloatingActionMenu
+import com.nhaarman.mockito_kotlin.*
 import com.zcorp.opensportmanagement.screens.main.fragments.EventFragment.EventFragment
+import com.zcorp.opensportmanagement.screens.main.fragments.EventFragment.EventsPresenter
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.util.FragmentTestUtil.startFragment
 
@@ -14,17 +21,23 @@ import org.robolectric.util.FragmentTestUtil.startFragment
  */
 @RunWith(RobolectricTestRunner::class)
 class EventFragmentTest {
+
     @Test
-    fun clickFabInFragmentShouldOpenTheFabMenu() {
+    fun shouldShowNetworkError() {
+
+        val presenter: EventsPresenter = mock()
+        whenever(presenter.getEvents()).then{}
+        whenever(presenter.getEventsCount()).doReturn(3)
+
         val fragment = EventFragment.newInstance(1)
+        fragment.setPresenter(presenter)
         startFragment(fragment)
         assertNotNull(fragment)
+
         val view = fragment.view
-        assertNotNull(view)
-        val fabMenu = view.findViewById<FloatingActionMenu>(R.id.menu)
-        assertNotNull(fabMenu)
-        assertFalse(fabMenu.isOpened)
-        fabMenu.performClick()
-        assertTrue(fabMenu.isOpened)
+        val networkView = view.findViewById<TextView>(R.id.eventsNetworkError)
+        assertTrue(networkView.visibility == View.INVISIBLE)
+        fragment.showNetworkError()
+        assertTrue(networkView.visibility == View.VISIBLE)
     }
 }
