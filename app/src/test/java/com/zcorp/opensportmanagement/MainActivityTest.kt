@@ -1,7 +1,7 @@
 package com.zcorp.opensportmanagement
 
 import android.view.View
-import com.zcorp.opensportmanagement.screens.main.MainActivity
+import com.zcorp.opensportmanagement.ui.main.MainActivity
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

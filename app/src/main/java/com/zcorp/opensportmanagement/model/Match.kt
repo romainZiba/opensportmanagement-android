@@ -1,6 +1,5 @@
 package com.zcorp.opensportmanagement.model
 
-import java.time.LocalDateTime
 import java.util.*
 
 class Match : Event {

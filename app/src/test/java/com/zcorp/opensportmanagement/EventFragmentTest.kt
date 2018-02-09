@@ -2,10 +2,13 @@ package com.zcorp.opensportmanagement
 
 import android.view.View
 import android.widget.TextView
-import com.nhaarman.mockito_kotlin.*
-import com.zcorp.opensportmanagement.screens.main.fragments.EventFragment.EventFragment
-import com.zcorp.opensportmanagement.screens.main.fragments.EventFragment.EventsPresenter
-import org.junit.Assert.*
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
+import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventFragment
+import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenter
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
