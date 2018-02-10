@@ -19,7 +19,7 @@ import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 
 @Module
-class ActivityModule(private val mActivity: AppCompatActivity) {
+class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModule() {
 
     @Provides
     @ActivityContext
@@ -33,16 +33,6 @@ class ActivityModule(private val mActivity: AppCompatActivity) {
     }
 
     @Provides
-    internal fun provideCompositeDisposable(): CompositeDisposable {
-        return CompositeDisposable()
-    }
-
-    @Provides
-    internal fun provideSchedulerProvider(): SchedulerProvider {
-        return AppSchedulerProvider()
-    }
-
-    @Provides
     @PerActivity
     internal fun provideLoginPresenter(dataManager: IDataManager): ILoginPresenter {
         return LoginPresenter(dataManager)
@@ -52,12 +42,6 @@ class ActivityModule(private val mActivity: AppCompatActivity) {
     @PerActivity
     internal fun provideMainPresenter(): IMainPresenter {
         return MainPresenter()
-    }
-
-    @Provides
-    @PerActivity
-    internal fun provideEventsPresenter(dataManager: IDataManager): IEventsPresenter {
-        return EventsPresenter(dataManager)
     }
 
     @Provides

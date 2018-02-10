@@ -4,8 +4,7 @@ import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.utils.Utils
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
@@ -13,7 +12,7 @@ import javax.inject.Inject
 /**
  * Created by romainz on 03/02/18.
  */
-class EventsPresenter @Inject constructor(val api: EventApi) : IEventsPresenter {
+class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvider: SchedulerProvider) : IEventsPresenter {
 
     private var mEvents: List<Event> = mutableListOf()
 
@@ -23,8 +22,8 @@ class EventsPresenter @Inject constructor(val api: EventApi) : IEventsPresenter 
     override fun getEvents() {
         try {
             api.getEvents()
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(schedulerProvider.newThread())
+                    .observeOn(schedulerProvider.ui())
                     .subscribe({
                         mEvents = it
                         mView.onDataAvailable()

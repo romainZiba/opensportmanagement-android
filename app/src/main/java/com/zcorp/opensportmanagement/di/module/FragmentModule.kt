@@ -16,7 +16,7 @@ import io.reactivex.disposables.CompositeDisposable
  * Created by romainz on 09/02/18.
  */
 @Module
-class FragmentModule(private val mFragment: Fragment) {
+class FragmentModule(private val mFragment: Fragment): BaseContextModule() {
 
     @Provides
     internal fun provideContext(): Context {
@@ -29,18 +29,8 @@ class FragmentModule(private val mFragment: Fragment) {
     }
 
     @Provides
-    internal fun provideCompositeDisposable(): CompositeDisposable {
-        return CompositeDisposable()
-    }
-
-    @Provides
-    internal fun provideSchedulerProvider(): SchedulerProvider {
-        return AppSchedulerProvider()
-    }
-
-    @Provides
     @PerActivity
-    internal fun provideEventsPresenter(dataManager: IDataManager): IEventsPresenter {
-        return EventsPresenter(dataManager)
+    internal fun provideEventsPresenter(dataManager: IDataManager, schedulerProvider: SchedulerProvider): IEventsPresenter {
+        return EventsPresenter(dataManager, schedulerProvider)
     }
 }

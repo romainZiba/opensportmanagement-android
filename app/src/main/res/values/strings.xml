@@ -18,5 +18,8 @@
     <string name="event">Event</string>
     <string name="match">Match</string>
     <string name="vs">VS</string>
+    <string name="example_date">Lundi 1 Janvier 2018</string>
+    <string name="visitor_example">Visitor</string>
+    <string name="local_team_example">Local</string>
 
 </resources>

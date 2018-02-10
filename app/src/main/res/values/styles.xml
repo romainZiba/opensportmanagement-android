@@ -27,7 +27,7 @@
     </style>
 
     <style name="TextAppearance.Text.Bold" parent="android:TextAppearance">
-        <item name="android:font">@font/source_code_pro_extralight</item>
+        <item name="android:font">@font/source_code_pro_bold</item>
     </style>
 
     <style name="TextAppearance.Text.Light" parent="android:TextAppearance">
