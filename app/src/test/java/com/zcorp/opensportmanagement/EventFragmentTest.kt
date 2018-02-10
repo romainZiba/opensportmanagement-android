@@ -1,7 +1,7 @@
 package com.zcorp.opensportmanagement
 
+import android.support.v7.widget.AppCompatTextView
 import android.view.View
-import android.widget.TextView
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -25,7 +25,7 @@ class EventFragmentTest {
     fun shouldShowNetworkError() {
 
         val presenter: IEventsPresenter = mock()
-        whenever(presenter.getEvents()).then{}
+        whenever(presenter.getEvents()).then {}
         whenever(presenter.getEventsCount()).doReturn(3)
 
         val fragment = EventFragment.newInstance(1)
@@ -34,7 +34,7 @@ class EventFragmentTest {
         assertNotNull(fragment)
 
         val view = fragment.view
-        val networkView = view.findViewById<TextView>(R.id.eventsNetworkError)
+        val networkView = view.findViewById<AppCompatTextView>(R.id.eventsNetworkError)
         assertTrue(networkView.visibility == View.INVISIBLE)
         fragment.showNetworkError()
         assertTrue(networkView.visibility == View.VISIBLE)

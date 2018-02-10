@@ -3,7 +3,7 @@
 
     <!-- Strings related to login -->
     <string name="password">password</string>
-    <string name="login">login</string>
+    <string name="login">OK</string>
     <string name="username">Username</string>
     <string name="login_text">Log in</string>
     <string name="username_error">This username is invalid</string>
@@ -20,5 +20,6 @@
     <string name="example_date">Lundi 1 Janvier 2018</string>
     <string name="visitor_example">Visitor</string>
     <string name="local_team_example">Local</string>
+    <string name="title_events">Events</string>
 
 </resources>

@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/btn_star_big_on" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             style="@style/TextStyle.Heading"
             android:id="@+id/local_team_name"
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             app:layout_constraintTop_toBottomOf="@+id/local_team_image"
             tools:text="@string/local_team_example" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             style="@style/TextStyle.Heading"
             android:id="@+id/vs"
             android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             style="@style/TextStyle.Heading"
             android:id="@+id/visitor_team_name"
             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/star_on" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             style="@style/TextStyle.Heading"
             android:id="@+id/date"
             android:layout_width="wrap_content"

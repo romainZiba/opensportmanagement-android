@@ -4,16 +4,18 @@
 
     <!-- Strings related to login -->
     <string name="password">Mot de passe</string>
-    <string name="login">login</string>
+    <string name="login">OK</string>
     <string name="username">Nom d\'utilisateur</string>
     <string name="login_text">Se connecter</string>
     <string name="username_error">Nom d\'utilisateur invalide</string>
     <string name="password_error">Mot de passe invalide</string>
 
     <string name="title_activity_main">OpenSportManagement</string>
-    <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_events">Evènements</string>
+
+
     <string name="network_error">Erreur réseau</string>
     <string name="event">Nouvel évènement</string>
     <string name="match">Nouveau match</string>

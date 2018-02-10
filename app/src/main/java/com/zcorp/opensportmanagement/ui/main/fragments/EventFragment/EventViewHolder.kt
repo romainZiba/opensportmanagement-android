@@ -1,8 +1,8 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.EventFragment
 
+import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.TextView
 import com.zcorp.opensportmanagement.R
 
 /**
@@ -10,8 +10,8 @@ import com.zcorp.opensportmanagement.R
  */
 class EventViewHolder(private val mView: View, private val presenter: IEventsPresenter) : RecyclerView.ViewHolder(mView), IEventViewRow {
 
-    private val mLocalTeamNameView: TextView = mView.findViewById(R.id.local_team_name)
-    private val mDate: TextView = mView.findViewById(R.id.date)
+    private val mLocalTeamNameView: AppCompatTextView = mView.findViewById(R.id.local_team_name)
+    private val mDate: AppCompatTextView = mView.findViewById(R.id.date)
 
     override fun setLocalTeamName(name: String) {
         mLocalTeamNameView.text = name

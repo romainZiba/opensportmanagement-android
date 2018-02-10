@@ -13,29 +13,13 @@
         <item name="android:textSize">16sp</item>
         <item name="android:typeface">sans</item>
         <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
-        <item name="android:textAppearance">@style/TextAppearance.Text.Regular</item>
+        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24px</item>
     </style>
 
     <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">false</item>
         <item name="color">@color/white</item>
-    </style>
-
-    <style name="TextAppearance.Text.Regular" parent="android:TextAppearance">
-        <item name="android:font">@font/source_code_pro_extralight</item>
-    </style>
-
-    <style name="TextAppearance.Text.Bold" parent="android:TextAppearance">
-        <item name="android:font">@font/source_code_pro_bold</item>
-    </style>
-
-    <style name="TextAppearance.Text.Light" parent="android:TextAppearance">
-        <item name="android:font">@font/source_code_pro_extralight</item>
-    </style>
-
-    <style name="TextAppearance.Text.Italic" parent="android:TextAppearance">
-        <item name="android:font">@font/source_code_pro_extralight</item>
     </style>
 
     <style name="TextStyle">
@@ -47,22 +31,22 @@
     </style>
 
     <style name="TextStyle.Title" parent="TextStyle">
-        <item name="android:textAppearance">@style/TextAppearance.Text.Regular</item>
+        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
     </style>
 
     <style name="TextStyle.Title.Sub" parent="TextStyle.Title">
-        <item name="android:textAppearance">@style/TextAppearance.Text.Light</item>
+        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TextStyle.Heading" parent="TextStyle">
         <item name="android:textSize">16sp</item>
-        <item name="android:textAppearance">@style/TextAppearance.Text.Bold</item>
+        <item name="android:fontFamily">@font/source_code_pro_bold</item>
     </style>
 
     <style name="TextStyle.Comment" parent="TextStyle">
         <item name="android:textSize">16sp</item>
-        <item name="android:textAppearance">@style/TextAppearance.Text.Italic</item>
+        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
     </style>
 
     <style name="Toolbar" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -70,6 +54,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Toolbar.TitleText" parent="TextStyle.Heading">
@@ -110,7 +95,7 @@
     </style>
 
     <style name="TextStyle.EditText" parent="TextStyle">
-        <item name="android:textAppearance">@style/TextAppearance.Text.Regular</item>
+        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
     </style>
 
     <style name="Button.Action.Positive" parent="Button">
