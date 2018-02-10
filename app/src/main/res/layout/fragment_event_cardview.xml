@@ -13,9 +13,8 @@
         android:layout_height="match_parent">
 
         <ImageView
+            style="@style/TeamImage"
             android:id="@+id/local_team_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
             android:layout_marginEnd="64dp"
             android:layout_marginTop="28dp"
             app:layout_constraintEnd_toStartOf="@+id/vs"
@@ -58,9 +57,8 @@
             tools:text="@string/visitor_example" />
 
         <ImageView
+            style="@style/TeamImage"
             android:id="@+id/visitor_team_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
             android:layout_marginStart="60dp"
             android:layout_marginTop="28dp"
             app:layout_constraintStart_toEndOf="@+id/vs"

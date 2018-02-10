@@ -11,4 +11,7 @@ interface IEventsPresenter : IBasePresenter<IEventsView> {
     fun getEvents()
     fun getEventsCount(): Int
     fun onItemClicked(adapterPosition: Int)
+    fun onFloatingMenuClicked()
+    fun onAddMatchClicked()
+    fun onAddEventClicked()
 }

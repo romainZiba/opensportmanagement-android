@@ -1,13 +1,16 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.EventFragment
 
 import android.app.Fragment
+import android.content.Context
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.di.ActivityContext
 import com.zcorp.opensportmanagement.di.component.DaggerFragmentComponent
 import com.zcorp.opensportmanagement.di.module.FragmentModule
 import kotlinx.android.synthetic.main.fragment_event_list.*
@@ -50,6 +53,9 @@ class EventFragment : Fragment(), IEventsView {
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_event_list, container, false)
         view.list.adapter = EventRecyclerAdapter(presenter)
+        view.menu.setOnMenuButtonClickListener({
+            presenter.onFloatingMenuClicked()
+        })
         return view
     }
 
@@ -91,12 +97,28 @@ class EventFragment : Fragment(), IEventsView {
         Toast.makeText(this.activity, s, Toast.LENGTH_LONG).show()
     }
 
-    override fun isFabButtonOpened(): Boolean {
+    override fun isFloatingMenuOpened(): Boolean {
         return menu.isOpened
     }
 
-    override fun closeFabButton() {
+    override fun openFloatingMenu() {
+        menu.open(true)
+    }
+
+    override fun closeFloatingMenu() {
         menu.close(true)
+    }
+
+    override fun setBackgroundAlpha(alpha: Float) {
+        events_background_layout.alpha = alpha
+    }
+
+    override fun setBackgroundColor(colorResourceId: Int) {
+        events_background_layout.setBackgroundColor(colorResourceId)
+    }
+
+    override fun setBackground(drawableId: Int) {
+        events_background_layout.background = ContextCompat.getDrawable(activity.baseContext, drawableId)
     }
 
     fun setPresenterForTest(p: IEventsPresenter) {

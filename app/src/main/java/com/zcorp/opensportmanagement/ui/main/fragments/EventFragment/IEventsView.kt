@@ -9,6 +9,10 @@ interface IEventsView : IBaseView {
     fun showNetworkError()
     fun onDataAvailable()
     fun showRowClicked(s: String)
-    fun isFabButtonOpened(): Boolean
-    fun closeFabButton()
+    fun isFloatingMenuOpened(): Boolean
+    fun closeFloatingMenu()
+    fun openFloatingMenu()
+    fun setBackgroundAlpha(alpha: Float)
+    fun setBackgroundColor(colorResourceId: Int)
+    fun setBackground(drawableId: Int)
 }

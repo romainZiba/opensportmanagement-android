@@ -1,6 +1,7 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.EventFragment
 
 import com.zcorp.opensportmanagement.MyApplication
+import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.utils.Utils
@@ -47,11 +48,31 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
     }
 
     override fun onItemClicked(adapterPosition: Int) {
-        if (mView.isFabButtonOpened()) {
-            mView.closeFabButton()
+        if (mView.isFloatingMenuOpened()) {
+            // Do nothing
         } else {
             mView.showRowClicked(mEvents[adapterPosition].name)
         }
+    }
+
+    override fun onFloatingMenuClicked() {
+        if (mView.isFloatingMenuOpened()) {
+            mView.closeFloatingMenu()
+            mView.setBackgroundAlpha(1F)
+            mView.setBackground(R.drawable.background_blue_design)
+        } else {
+            mView.openFloatingMenu()
+            mView.setBackgroundAlpha(0.4F)
+            mView.setBackground(R.drawable.background_light_design)
+        }
+    }
+
+    override fun onAddMatchClicked() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onAddEventClicked() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onAttach(view: IEventsView) {

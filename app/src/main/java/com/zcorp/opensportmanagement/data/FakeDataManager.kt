@@ -52,7 +52,7 @@ class FakeDataManager : IDataManager {
 
     private fun loginFromNetwork(): String {
         try {
-            Thread.sleep(2000)
+            Thread.sleep(800)
         } catch (e: InterruptedException) {
             // error
         }
@@ -61,7 +61,7 @@ class FakeDataManager : IDataManager {
 
     private fun getEventsFromNetwork(): List<Event> {
         try {
-            Thread.sleep(5000)
+            Thread.sleep(1000)
         } catch (e: InterruptedException) {
             // error
         }
