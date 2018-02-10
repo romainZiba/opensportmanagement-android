@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity(), LoginView, View.OnClickListener {
 
         presenter.onAttach(this)
         setContentView(R.layout.activity_login)
-        sign_in_button.setOnClickListener(this)
+        btn_server_login.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -39,19 +39,21 @@ class LoginActivity : AppCompatActivity(), LoginView, View.OnClickListener {
     }
 
     override fun showProgress() {
-        login_progress.visibility = View.VISIBLE
+        progressBar_login.visibility = View.VISIBLE
+        cardView_login.alpha = 0.3F
     }
 
     override fun hideProgress() {
-        login_progress.visibility = View.GONE
+        progressBar_login.visibility = View.GONE
+        cardView_login.alpha = 1F
     }
 
     override fun setUsernameError() {
-        username.error = getString(R.string.username_error)
+        et_username.error = getString(R.string.username_error)
     }
 
     override fun setPasswordError() {
-        password.error = getString(R.string.password_error)
+        et_password.error = getString(R.string.password_error)
     }
 
     override fun navigateToHome() {
@@ -60,6 +62,6 @@ class LoginActivity : AppCompatActivity(), LoginView, View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        presenter.validateCredentials(username.text.toString(), password.text.toString())
+        presenter.validateCredentials(et_username.text.toString(), et_password.text.toString())
     }
 }
