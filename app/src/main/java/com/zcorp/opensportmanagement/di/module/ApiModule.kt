@@ -1,9 +1,9 @@
 package com.zcorp.opensportmanagement.di.module
 
-import com.zcorp.opensportmanagement.api.EventApi
-import com.zcorp.opensportmanagement.api.EventApiImpl
-import com.zcorp.opensportmanagement.api.UserApi
-import com.zcorp.opensportmanagement.api.UserApiImpl
+import com.zcorp.opensportmanagement.data.api.EventApi
+import com.zcorp.opensportmanagement.data.api.FakeEventApiImpl
+import com.zcorp.opensportmanagement.data.api.UserApi
+import com.zcorp.opensportmanagement.data.api.FakeUserApiImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -16,12 +16,12 @@ class ApiModule {
     @Singleton
     @Provides
     internal fun provideUserApi(): UserApi {
-        return UserApiImpl()
+        return FakeUserApiImpl()
     }
 
     @Singleton
     @Provides
     internal fun provideEventApi(): EventApi {
-        return EventApiImpl()
+        return FakeEventApiImpl()
     }
 }

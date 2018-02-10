@@ -2,7 +2,7 @@ package com.zcorp.opensportmanagement.di.module
 
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
-import com.zcorp.opensportmanagement.api.UserApi
+import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.di.ActivityContext
 import com.zcorp.opensportmanagement.di.PerActivity
 import com.zcorp.opensportmanagement.ui.login.LoginPresenter

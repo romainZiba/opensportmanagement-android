@@ -1,9 +1,8 @@
-package com.zcorp.opensportmanagement.api
+package com.zcorp.opensportmanagement.data.api
 
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.OtherEvent
-import com.zcorp.opensportmanagement.model.User
-import io.reactivex.Observable
+import io.reactivex.Single
 import java.io.IOException
 import java.util.*
 
@@ -11,28 +10,29 @@ import java.util.*
 /**
  * Created by romainz on 02/02/18.
  */
-class EventApiImpl : EventApi {
-    override fun getEventsCount(): Observable<Int> {
-        return Observable.just(40)
+class FakeEventApiImpl : EventApi {
+
+    override fun getEventsCount(): Single<Int> {
+        return Single.just(40)
     }
 
-    @Throws(IOException::class)
-    override fun getEvents(user: User): Observable<List<Event>> {
+    override fun getEvents(): Single<List<Event>> {
         val rand = Math.random()
         if (rand > 0.9) {
-            throw IOException()
+            return Single.create {
+                it.onError(IOException())
+            }
         }
-        return Observable.create {
-            it.onNext(longRunningOperation())
-            it.onComplete()
+        return Single.create {
+            it.onSuccess(getEventsFromNetwork())
         }
     }
 
-    override fun createEvent(user: User, event: Event) {
+    override fun createEvent(event: Event): Single<Event> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun longRunningOperation(): List<Event> {
+    private fun getEventsFromNetwork(): List<Event> {
         try {
             Thread.sleep(5000)
         } catch (e: InterruptedException) {

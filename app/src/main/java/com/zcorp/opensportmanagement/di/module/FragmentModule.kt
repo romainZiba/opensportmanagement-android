@@ -2,7 +2,7 @@ package com.zcorp.opensportmanagement.di.module
 
 import android.app.Fragment
 import android.content.Context
-import com.zcorp.opensportmanagement.api.EventApi
+import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.di.PerActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenterImpl

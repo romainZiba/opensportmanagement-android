@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.api
+package com.zcorp.opensportmanagement.data.api
 
 import com.zcorp.opensportmanagement.model.Team
 import com.zcorp.opensportmanagement.model.User

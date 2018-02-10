@@ -1,6 +1,6 @@
 package com.zcorp.opensportmanagement.ui.login
 
-import com.zcorp.opensportmanagement.api.UserApi
+import com.zcorp.opensportmanagement.data.api.UserApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -14,12 +14,12 @@ class LoginPresenterImpl @Inject constructor(val api: UserApi) : LoginPresenter 
         var observable = api.login(username, password)
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { aBoolean ->
+                .subscribe { token ->
                     run {
-                        if (aBoolean) {
-                            loginView?.navigateToHome()
-                        } else {
+                        if (token == null) {
                             loginView?.setPasswordError()
+                        } else {
+                            loginView?.navigateToHome()
                         }
                     }
                 }
