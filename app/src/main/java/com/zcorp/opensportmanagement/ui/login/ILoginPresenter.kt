@@ -1,7 +1,7 @@
 package com.zcorp.opensportmanagement.ui.login
 
-interface ILoginPresenter {
+import com.zcorp.opensportmanagement.ui.base.IBasePresenter
+
+interface ILoginPresenter: IBasePresenter<ILoginView> {
     fun validateCredentials(username: String, password: String)
-    fun onAttach(view: ILoginView)
-    fun onDetach()
 }

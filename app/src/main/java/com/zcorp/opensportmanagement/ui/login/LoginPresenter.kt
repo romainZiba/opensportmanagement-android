@@ -1,6 +1,7 @@
 package com.zcorp.opensportmanagement.ui.login
 
 import com.zcorp.opensportmanagement.data.api.UserApi
+import com.zcorp.opensportmanagement.ui.base.IBaseView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

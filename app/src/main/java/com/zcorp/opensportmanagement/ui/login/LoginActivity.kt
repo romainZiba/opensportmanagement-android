@@ -8,11 +8,12 @@ import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.di.component.DaggerActivityComponent
 import com.zcorp.opensportmanagement.di.module.ActivityModule
+import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity(), ILoginView, View.OnClickListener {
+class LoginActivity : BaseActivity(), ILoginView, View.OnClickListener {
 
     val TAG = LoginActivity::class.java.name
 
@@ -21,15 +22,9 @@ class LoginActivity : AppCompatActivity(), ILoginView, View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        DaggerActivityComponent.builder()
-                .appComponent(MyApplication.appComponent)
-                .activityModule(ActivityModule(this))
-                .build()
-                .inject(this)
-
-        presenter.onAttach(this)
+        super.mActivityComponent.inject(this)
         setContentView(R.layout.activity_login)
+        presenter.onAttach(this)
         btn_server_login.setOnClickListener(this)
     }
 
