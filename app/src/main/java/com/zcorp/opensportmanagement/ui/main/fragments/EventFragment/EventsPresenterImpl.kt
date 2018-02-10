@@ -1,6 +1,7 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.EventFragment
 
 import com.zcorp.opensportmanagement.MyApplication
+import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.utils.Utils

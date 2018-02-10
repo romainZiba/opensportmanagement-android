@@ -2,7 +2,7 @@ package com.zcorp.opensportmanagement.di.module
 
 import android.app.Fragment
 import android.content.Context
-import com.zcorp.opensportmanagement.data.api.EventApi
+import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.PerActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenterImpl
@@ -40,7 +40,7 @@ class FragmentModule(private val mFragment: Fragment) {
 
     @Provides
     @PerActivity
-    internal fun provideEventsPresenter(api: EventApi): EventsPresenter {
-        return EventsPresenterImpl(api)
+    internal fun provideEventsPresenter(dataManager: IDataManager): EventsPresenter {
+        return EventsPresenterImpl(dataManager)
     }
 }

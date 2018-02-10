@@ -2,7 +2,7 @@ package com.zcorp.opensportmanagement.data.pref
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.zcorp.opensportmanagement.data.DataManager
+import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.ApplicationContext
 import com.zcorp.opensportmanagement.di.PreferenceInfo
 import javax.inject.Inject
@@ -49,10 +49,10 @@ constructor(@ApplicationContext context: Context,
 
     override fun getCurrentUserLoggedInMode(): Int {
         return mPrefs.getInt(PREF_KEY_USER_LOGGED_IN_MODE,
-                DataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT.type)
+                IDataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT.type)
     }
 
-    override fun setCurrentUserLoggedInMode(mode: DataManager.LoggedInMode) {
+    override fun setCurrentUserLoggedInMode(mode: IDataManager.LoggedInMode) {
         mPrefs.edit().putInt(PREF_KEY_USER_LOGGED_IN_MODE, mode.type).apply()
     }
 

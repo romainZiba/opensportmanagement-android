@@ -1,6 +1,6 @@
 package com.zcorp.opensportmanagement.data.pref;
 
-import com.zcorp.opensportmanagement.data.DataManager;
+import com.zcorp.opensportmanagement.data.IDataManager;
 
 /**
  * Created by janisharali on 27/01/17.
@@ -10,7 +10,7 @@ public interface PreferencesHelper {
 
     int getCurrentUserLoggedInMode();
 
-    void setCurrentUserLoggedInMode(DataManager.LoggedInMode mode);
+    void setCurrentUserLoggedInMode(IDataManager.LoggedInMode mode);
 
     Long getCurrentUserId();
 
