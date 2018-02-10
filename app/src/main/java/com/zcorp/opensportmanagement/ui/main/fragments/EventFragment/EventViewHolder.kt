@@ -13,8 +13,6 @@ class EventViewHolder(private val mView: View, private val presenter: IEventsPre
     private val mLocalTeamNameView: TextView = mView.findViewById(R.id.local_team_name)
     private val mDate: TextView = mView.findViewById(R.id.date)
 
-//    private val mDescriptionView: TextView = mView.findViewById(R.id.description)
-
     override fun setLocalTeamName(name: String) {
         mLocalTeamNameView.text = name
     }
@@ -24,7 +22,6 @@ class EventViewHolder(private val mView: View, private val presenter: IEventsPre
     }
 
     override fun setDescription(description: String) {
-//        mDescriptionView.text = description
     }
 
     override fun setListener() {
