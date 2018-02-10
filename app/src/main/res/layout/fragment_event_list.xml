@@ -72,7 +72,7 @@
                 app:fab_colorNormal="@color/colorPrimary"
                 app:fab_colorPressed="@color/colorAccent"
                 app:fab_colorRipple="@color/colorPrimaryDark"
-                fab:fab_label="Event"
+                fab:fab_label="@string/event"
                 fab:fab_size="mini" />
 
             <com.github.clans.fab.FloatingActionButton
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_airport_shuttle_black_24dp"
-                fab:fab_label="Match"
+                fab:fab_label="@string/match"
                 fab:fab_size="mini" />
 
         </com.github.clans.fab.FloatingActionMenu>

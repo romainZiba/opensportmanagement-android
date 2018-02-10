@@ -4,13 +4,12 @@
     <!-- Strings related to login -->
     <string name="password">password</string>
     <string name="login">login</string>
-    <string name="email">Email</string>
     <string name="username">Username</string>
     <string name="login_text">Log in</string>
     <string name="username_error">This username is invalid</string>
     <string name="password_error">This password is not correct</string>
 
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">OpenSportManagement</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
