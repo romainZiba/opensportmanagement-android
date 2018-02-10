@@ -28,7 +28,7 @@ import javax.inject.Inject
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class EventFragment : Fragment(), EventsView {
+class EventFragment : Fragment(), IEventsView {
 
     private var mColumnCount = 1
     private lateinit var recyclerView: RecyclerView
@@ -37,7 +37,7 @@ class EventFragment : Fragment(), EventsView {
     private lateinit var menu: FloatingActionMenu
 
     @Inject
-    lateinit var presenter: EventsPresenter
+    lateinit var presenter: IEventsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +112,7 @@ class EventFragment : Fragment(), EventsView {
         menu.close(true)
     }
 
-    fun setPresenterForTest(p: EventsPresenter) {
+    fun setPresenterForTest(p: IEventsPresenter) {
         presenter = p
     }
 }

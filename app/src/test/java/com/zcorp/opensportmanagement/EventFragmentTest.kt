@@ -6,7 +6,7 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenter
+import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.IEventsPresenter
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -24,7 +24,7 @@ class EventFragmentTest {
     @Test
     fun shouldShowNetworkError() {
 
-        val presenter: EventsPresenter = mock()
+        val presenter: IEventsPresenter = mock()
         whenever(presenter.getEvents()).then{}
         whenever(presenter.getEventsCount()).doReturn(3)
 

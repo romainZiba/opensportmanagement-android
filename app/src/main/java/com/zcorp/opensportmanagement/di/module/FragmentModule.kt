@@ -4,8 +4,8 @@ import android.app.Fragment
 import android.content.Context
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.PerActivity
+import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.IEventsPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenter
-import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenterImpl
 import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import dagger.Module
@@ -40,7 +40,7 @@ class FragmentModule(private val mFragment: Fragment) {
 
     @Provides
     @PerActivity
-    internal fun provideEventsPresenter(dataManager: IDataManager): EventsPresenter {
-        return EventsPresenterImpl(dataManager)
+    internal fun provideEventsPresenter(dataManager: IDataManager): IEventsPresenter {
+        return EventsPresenter(dataManager)
     }
 }

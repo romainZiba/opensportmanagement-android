@@ -12,12 +12,12 @@ import com.zcorp.opensportmanagement.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity(), LoginView, View.OnClickListener {
+class LoginActivity : AppCompatActivity(), ILoginView, View.OnClickListener {
 
     val TAG = LoginActivity::class.java.name
 
     @Inject
-    lateinit var presenter: LoginPresenter
+    lateinit var presenter: ILoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

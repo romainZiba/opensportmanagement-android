@@ -6,7 +6,7 @@ import com.zcorp.opensportmanagement.data.IDataManager;
  * Created by janisharali on 27/01/17.
  */
 
-public interface PreferencesHelper {
+public interface IPreferencesHelper {
 
     int getCurrentUserLoggedInMode();
 

@@ -10,7 +10,7 @@ import com.zcorp.opensportmanagement.R
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
-class EventRecyclerAdapter(private val presenter: EventsPresenter) : RecyclerView.Adapter<EventViewHolder>() {
+class EventRecyclerAdapter(private val presenter: IEventsPresenter) : RecyclerView.Adapter<EventViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val view = LayoutInflater.from(parent.context)

@@ -1,6 +1,6 @@
 package com.zcorp.opensportmanagement.ui.login
 
-interface LoginView {
+interface ILoginView {
     fun showProgress()
 
     fun hideProgress()

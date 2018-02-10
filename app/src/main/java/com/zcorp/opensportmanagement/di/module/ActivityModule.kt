@@ -5,13 +5,13 @@ import android.support.v7.app.AppCompatActivity
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.ActivityContext
 import com.zcorp.opensportmanagement.di.PerActivity
+import com.zcorp.opensportmanagement.ui.login.ILoginPresenter
 import com.zcorp.opensportmanagement.ui.login.LoginPresenter
-import com.zcorp.opensportmanagement.ui.login.LoginPresenterImpl
+import com.zcorp.opensportmanagement.ui.main.IMainPresenter
 import com.zcorp.opensportmanagement.ui.main.MainPresenter
-import com.zcorp.opensportmanagement.ui.main.MainPresenterImpl
 import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenter
-import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenterImpl
+import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.IEventsPresenter
 import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import dagger.Module
@@ -44,20 +44,20 @@ class ActivityModule(private val mActivity: AppCompatActivity) {
 
     @Provides
     @PerActivity
-    internal fun provideLoginPresenter(dataManager: IDataManager): LoginPresenter {
-        return LoginPresenterImpl(dataManager)
+    internal fun provideLoginPresenter(dataManager: IDataManager): ILoginPresenter {
+        return LoginPresenter(dataManager)
     }
 
     @Provides
     @PerActivity
-    internal fun provideMainPresenter(): MainPresenter {
-        return MainPresenterImpl()
+    internal fun provideMainPresenter(): IMainPresenter {
+        return MainPresenter()
     }
 
     @Provides
     @PerActivity
-    internal fun provideEventsPresenter(dataManager: IDataManager): EventsPresenter {
-        return EventsPresenterImpl(dataManager)
+    internal fun provideEventsPresenter(dataManager: IDataManager): IEventsPresenter {
+        return EventsPresenter(dataManager)
     }
 
     @Provides

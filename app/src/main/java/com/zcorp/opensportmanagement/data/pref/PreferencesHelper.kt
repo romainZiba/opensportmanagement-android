@@ -9,9 +9,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppPreferencesHelper @Inject
+class PreferencesHelper @Inject
 constructor(@ApplicationContext context: Context,
-            @PreferenceInfo prefFileName: String) : PreferencesHelper {
+            @PreferenceInfo prefFileName: String) : IPreferencesHelper {
 
     private val mPrefs: SharedPreferences = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE)
 

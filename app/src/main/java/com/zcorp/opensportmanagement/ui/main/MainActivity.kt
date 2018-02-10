@@ -13,10 +13,10 @@ import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventFragme
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : AppCompatActivity(), IMainView {
 
     @Inject
-    lateinit var mainPresenter: MainPresenter
+    lateinit var mainPresenter: IMainPresenter
 
     override fun displayEvents() {
         val transaction = fragmentManager.beginTransaction()
