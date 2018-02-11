@@ -1,9 +1,6 @@
 package com.zcorp.opensportmanagement.data
 
-import com.zcorp.opensportmanagement.model.Event
-import com.zcorp.opensportmanagement.model.OtherEvent
-import com.zcorp.opensportmanagement.model.Team
-import com.zcorp.opensportmanagement.model.User
+import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Single
 import java.io.IOException
 import java.util.*
@@ -65,11 +62,18 @@ class FakeDataManager : IDataManager {
         } catch (e: InterruptedException) {
             // error
         }
-        return IntRange(1, 41).map { createDummyEvent(it) }.toList()
+        var events: MutableList<Event> = IntRange(1, 10).map { createDummyEvent(it) }.toMutableList()
+        events.addAll(3, IntRange(1, 10).map { createDummyMatch(it) }.toList())
+        return events.toList()
     }
 
     private fun createDummyEvent(position: Int): Event {
         return OtherEvent("Apéro " + (position).toString(),
                 "Une soirée " + position, Date(), Date(), "Ici")
     }
+
+    private fun createDummyMatch(position: Int): Event {
+        return Match("Match de championnat", "", Date(), Date(), "ici", "TCMS2")
+    }
+
 }

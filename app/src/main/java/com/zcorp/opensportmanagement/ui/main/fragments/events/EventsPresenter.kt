@@ -1,9 +1,12 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.EventFragment
+package com.zcorp.opensportmanagement.ui.main.fragments.events
 
+import android.support.v7.widget.RecyclerView
 import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.model.Event
+import com.zcorp.opensportmanagement.model.EventType
+import com.zcorp.opensportmanagement.model.Match
 import com.zcorp.opensportmanagement.utils.Utils
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import java.io.IOException
@@ -20,7 +23,7 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
     @Inject
     lateinit var mView: IEventsView
 
-    override fun getEvents() {
+    override fun getEventsFromModel() {
         try {
             api.getEvents()
                     .subscribeOn(schedulerProvider.newThread())
@@ -40,11 +43,22 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
         return mEvents.size
     }
 
-    override fun onBindEventRowViewAtPosition(position: Int, holder: IEventViewRow) {
-        holder.setLocalTeamName(mEvents[position].name)
-        holder.setDescription(mEvents[position].description)
-        holder.setDate(Utils.format(mEvents[position].fromDate, Locale(MyApplication.systemLanguage)))
-        holder.setListener()
+    override fun onBindEventRowViewAtPosition(position: Int, holder: RecyclerView.ViewHolder) {
+        val event = mEvents[position]
+        when (holder) {
+            is MatchViewHolder -> {
+                event as Match
+                holder.setLocalTeamName("Local")
+                holder.setVisitorTeamName(event.opponent)
+                holder.setDate(Utils.format(event.fromDate, Locale(MyApplication.systemLanguage)))
+                holder.setListener()
+            }
+            is EventViewHolder -> {
+                holder.setDescription(event.description)
+                holder.setDate(Utils.format(event.fromDate, Locale(MyApplication.systemLanguage)))
+                holder.setListener()
+            }
+        }
     }
 
     override fun onItemClicked(adapterPosition: Int) {
@@ -62,7 +76,7 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
             mView.setBackground(R.drawable.background_blue_design)
         } else {
             mView.openFloatingMenu()
-            mView.setBackgroundAlpha(0.4F)
+            mView.setBackgroundAlpha(0.2F)
             mView.setBackground(R.drawable.background_light_design)
         }
     }
@@ -80,5 +94,13 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
     }
 
     override fun onDetach() {
+    }
+
+    override fun getEventType(position: Int): Int {
+        val event = mEvents[position]
+        return when (event) {
+            is Match -> EventType.CHAMPIONSHIP.ordinal //TODO: distinguish between championship / Tournament /Friendly...
+            else -> EventType.OTHER.ordinal
+        }
     }
 }

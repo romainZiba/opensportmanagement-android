@@ -5,8 +5,8 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.Toolbar
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
-import com.zcorp.opensportmanagement.ui.main.fragments.ButtonFragment.PlusOneFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventFragment
+import com.zcorp.opensportmanagement.ui.main.fragments.button.PlusOneFragment
+import com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 

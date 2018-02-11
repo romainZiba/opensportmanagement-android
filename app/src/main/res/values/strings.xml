@@ -21,5 +21,6 @@
     <string name="visitor_example">Visitor</string>
     <string name="local_team_example">Local</string>
     <string name="title_events">Events</string>
+    <string name="description">description</string>
 
 </resources>

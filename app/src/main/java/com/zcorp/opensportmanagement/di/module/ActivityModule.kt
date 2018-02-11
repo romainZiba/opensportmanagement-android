@@ -9,14 +9,9 @@ import com.zcorp.opensportmanagement.ui.login.ILoginPresenter
 import com.zcorp.opensportmanagement.ui.login.LoginPresenter
 import com.zcorp.opensportmanagement.ui.main.IMainPresenter
 import com.zcorp.opensportmanagement.ui.main.MainPresenter
-import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventsPresenter
-import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.IEventsPresenter
-import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider
-import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
+import com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment
 import dagger.Module
 import dagger.Provides
-import io.reactivex.disposables.CompositeDisposable
 
 @Module
 class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModule() {

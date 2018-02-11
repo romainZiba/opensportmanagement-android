@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.EventFragment
+package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import com.zcorp.opensportmanagement.ui.base.IBaseView
 

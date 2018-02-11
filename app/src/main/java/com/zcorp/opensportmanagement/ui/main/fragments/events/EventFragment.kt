@@ -1,7 +1,6 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.EventFragment
+package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import android.app.Fragment
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.di.ActivityContext
 import com.zcorp.opensportmanagement.di.component.DaggerFragmentComponent
 import com.zcorp.opensportmanagement.di.module.FragmentModule
 import kotlinx.android.synthetic.main.fragment_event_list.*
@@ -61,8 +59,8 @@ class EventFragment : Fragment(), IEventsView {
 
     override fun onResume() {
         super.onResume()
-        swipeRefreshLayout.setOnRefreshListener { presenter.getEvents() }
-        presenter.getEvents()
+        swipeRefreshLayout.setOnRefreshListener { presenter.getEventsFromModel() }
+        presenter.getEventsFromModel()
     }
 
     override fun showNetworkError() {

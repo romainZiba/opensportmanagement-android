@@ -15,4 +15,6 @@ class Match : Event {
         this.presentPlayers = mutableSetOf()
         this.notPresentPlayers = mutableSetOf()
     }
+
+
 }

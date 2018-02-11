@@ -13,30 +13,30 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/local_team_image"
+            android:id="@+id/iv_local_team_match"
             style="@style/TeamImage"
             android:layout_height="42dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="80dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/vs"
+            app:layout_constraintEnd_toStartOf="@+id/tv_vs_match"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/btn_star_big_on" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/local_team_name"
+            android:id="@+id/tv_local_name_match"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/local_team_image"
-            app:layout_constraintTop_toBottomOf="@+id/local_team_image"
+            app:layout_constraintStart_toStartOf="@+id/iv_local_team_match"
+            app:layout_constraintTop_toBottomOf="@+id/iv_local_team_match"
             tools:text="@string/local_team_example" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/vs"
+            android:id="@+id/tv_vs_match"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -50,29 +50,29 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/visitor_team_name"
+            android:id="@+id/tv_visitor_name_match"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/visitor_team_image"
-            app:layout_constraintTop_toBottomOf="@+id/visitor_team_image"
+            app:layout_constraintEnd_toEndOf="@+id/iv_visitor_match"
+            app:layout_constraintTop_toBottomOf="@+id/iv_visitor_match"
             tools:text="@string/visitor_example" />
 
         <ImageView
-            android:id="@+id/visitor_team_image"
+            android:id="@+id/iv_visitor_match"
             style="@style/TeamImage"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="80dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/vs"
+            app:layout_constraintStart_toEndOf="@+id/tv_vs_match"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/star_on" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/date"
+            android:id="@+id/tv_date_match"
             style="@style/TextStyle.Heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

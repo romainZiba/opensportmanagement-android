@@ -7,7 +7,7 @@
     android:id="@+id/event_list_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventFragment">
+    tools:context="com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment">
 
     <LinearLayout
         android:id="@+id/events_background_layout"
@@ -29,7 +29,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 app:layoutManager="LinearLayoutManager"
-                tools:listitem="@layout/fragment_event_cardview" />
+                tools:listitem="@layout/fragment_match_item" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

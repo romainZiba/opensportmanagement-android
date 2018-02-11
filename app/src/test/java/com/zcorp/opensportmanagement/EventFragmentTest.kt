@@ -5,8 +5,8 @@ import android.view.View
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.EventFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.EventFragment.IEventsPresenter
+import com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment
+import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -25,7 +25,7 @@ class EventFragmentTest {
     fun shouldShowNetworkError() {
 
         val presenter: IEventsPresenter = mock()
-        whenever(presenter.getEvents()).then {}
+        whenever(presenter.getEventsFromModel()).then {}
         whenever(presenter.getEventsCount()).doReturn(3)
 
         val fragment = EventFragment.newInstance(1)

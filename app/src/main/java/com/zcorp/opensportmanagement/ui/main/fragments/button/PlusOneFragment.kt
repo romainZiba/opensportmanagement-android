@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.ButtonFragment
+package com.zcorp.opensportmanagement.ui.main.fragments.button
 
 
 import android.app.Fragment
