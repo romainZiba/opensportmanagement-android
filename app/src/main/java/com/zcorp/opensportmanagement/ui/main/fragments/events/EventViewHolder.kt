@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.fragment_event_item.view.*
 /**
  * Created by romainz on 03/02/18.
  */
-class EventViewHolder(private val mView: View, private val presenter: IEventsPresenter) : RecyclerView.ViewHolder(mView), IEventViewRow {
+class EventViewHolder(private val mView: View, private val presenter: IEventsPresenter) : RecyclerView.ViewHolder(mView), IEventViewHolder {
 
     override fun setDate(dateAsString: String) {
         mView.tv_date_event.text = dateAsString

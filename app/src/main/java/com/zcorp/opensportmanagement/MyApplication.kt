@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import com.zcorp.opensportmanagement.di.component.AppComponent
 import com.zcorp.opensportmanagement.di.component.DaggerAppComponent
 import com.zcorp.opensportmanagement.di.module.ApplicationModule
+import net.danlew.android.joda.JodaTimeAndroid
 import java.util.*
 
 /**
@@ -18,6 +19,7 @@ class MyApplication : Application() {
                 .applicationModule(ApplicationModule(this))
                 .build()
         systemLanguage = Locale.getDefault().language
+        JodaTimeAndroid.init(this)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {

@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.fragment_match_item.view.*
 /**
  * Created by romainz on 03/02/18.
  */
-class MatchViewHolder(private val mView: View, private val presenter: IEventsPresenter) : RecyclerView.ViewHolder(mView), IMatchViewRow {
+class MatchViewHolder(private val mView: View, private val presenter: IEventsPresenter) : RecyclerView.ViewHolder(mView), IMatchViewHolder {
 
     override fun setLocalTeamName(name: String) {
         mView.tv_local_name_match.text = name

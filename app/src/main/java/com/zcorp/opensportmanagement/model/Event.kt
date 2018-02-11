@@ -1,8 +1,12 @@
 package com.zcorp.opensportmanagement.model
 
-import java.util.*
+import org.joda.time.LocalDateTime
 
-abstract class Event(var name: String, var description: String, var fromDate: Date, var toDate: Date, var place: String) {
+abstract class Event(var name: String,
+                     var description: String,
+                     var fromDate: LocalDateTime,
+                     var toDate: LocalDateTime,
+                     var place: String) {
 
     override fun toString(): String {
         return "Event(name='$name', description='$description')"

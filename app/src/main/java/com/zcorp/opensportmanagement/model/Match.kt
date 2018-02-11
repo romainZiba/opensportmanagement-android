@@ -1,6 +1,6 @@
 package com.zcorp.opensportmanagement.model
 
-import java.util.*
+import org.joda.time.LocalDateTime
 
 class Match : Event {
 
@@ -8,7 +8,7 @@ class Match : Event {
     val presentPlayers: MutableSet<String>
     val notPresentPlayers: MutableSet<String>
 
-    constructor(name: String, description: String, fromDate: Date, toDate: Date, place: String,
+    constructor(name: String, description: String, fromDate: LocalDateTime, toDate: LocalDateTime, place: String,
                 opponent: String) :
             super(name, description, fromDate, toDate, place) {
         this.opponent = opponent

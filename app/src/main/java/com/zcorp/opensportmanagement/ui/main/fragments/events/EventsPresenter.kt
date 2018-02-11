@@ -1,16 +1,14 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import android.support.v7.widget.RecyclerView
-import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.EventType
 import com.zcorp.opensportmanagement.model.Match
-import com.zcorp.opensportmanagement.utils.Utils
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
+import net.danlew.android.joda.DateUtils
 import java.io.IOException
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -19,8 +17,6 @@ import javax.inject.Inject
 class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvider: SchedulerProvider) : IEventsPresenter {
 
     private var mEvents: List<Event> = mutableListOf()
-
-    @Inject
     lateinit var mView: IEventsView
 
     override fun getEventsFromModel() {
@@ -43,19 +39,19 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
         return mEvents.size
     }
 
-    override fun onBindEventRowViewAtPosition(position: Int, holder: RecyclerView.ViewHolder) {
+    override fun onBindEventRowViewAtPosition(position: Int, holder: IViewHolder) {
         val event = mEvents[position]
         when (holder) {
             is MatchViewHolder -> {
                 event as Match
                 holder.setLocalTeamName("Local")
                 holder.setVisitorTeamName(event.opponent)
-                holder.setDate(Utils.format(event.fromDate, Locale(MyApplication.systemLanguage)))
+                holder.setDate(DateUtils.formatDateTime(null, event.fromDate, DateUtils.FORMAT_SHOW_DATE))
                 holder.setListener()
             }
             is EventViewHolder -> {
                 holder.setDescription(event.description)
-                holder.setDate(Utils.format(event.fromDate, Locale(MyApplication.systemLanguage)))
+                holder.setDate(DateUtils.formatDateTime(null, event.fromDate, DateUtils.FORMAT_SHOW_DATE))
                 holder.setListener()
             }
         }

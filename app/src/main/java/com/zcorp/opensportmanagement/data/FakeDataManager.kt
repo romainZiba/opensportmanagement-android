@@ -2,6 +2,7 @@ package com.zcorp.opensportmanagement.data
 
 import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Single
+import org.joda.time.LocalDateTime
 import java.io.IOException
 import java.util.*
 
@@ -63,17 +64,25 @@ class FakeDataManager : IDataManager {
             // error
         }
         var events: MutableList<Event> = IntRange(1, 10).map { createDummyEvent(it) }.toMutableList()
-        events.addAll(3, IntRange(1, 10).map { createDummyMatch(it) }.toList())
+        events.addAll(IntRange(10, 21).map { createDummyMatch(it) }.toList())
         return events.toList()
     }
 
     private fun createDummyEvent(position: Int): Event {
         return OtherEvent("Apéro " + (position).toString(),
-                "Une soirée " + position, Date(), Date(), "Ici")
+                "Une soirée " + position,
+                LocalDateTime(2018, 1, 1 + position % 28, 20, 30, 0),
+                LocalDateTime(2018, 1, 1 + position % 28, 22, 30, 0),
+                "Ici")
     }
 
     private fun createDummyMatch(position: Int): Event {
-        return Match("Match de championnat", "", Date(), Date(), "ici", "TCMS2")
+        return Match("Match de championnat",
+                "",
+                LocalDateTime(2018, 1, 1 + position % 28, 20, 30, 0),
+                LocalDateTime(2018, 1, 1 + position % 28, 22, 30, 0),
+                "ici",
+                "TCMS2")
     }
 
 }

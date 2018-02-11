@@ -28,7 +28,7 @@ class EventRecyclerAdapter(private val presenter: IEventsPresenter) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        presenter.onBindEventRowViewAtPosition(position, holder)
+        presenter.onBindEventRowViewAtPosition(position, holder as IViewHolder)
     }
 
     override fun getItemCount(): Int {

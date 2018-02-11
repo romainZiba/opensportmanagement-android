@@ -1,7 +1,5 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
-import android.support.v7.widget.RecyclerView
-import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.ui.base.IBasePresenter
 
 /**
@@ -9,7 +7,7 @@ import com.zcorp.opensportmanagement.ui.base.IBasePresenter
  */
 interface IEventsPresenter : IBasePresenter<IEventsView> {
 
-    fun onBindEventRowViewAtPosition(position: Int, holder: RecyclerView.ViewHolder)
+    fun onBindEventRowViewAtPosition(position: Int, holder: IViewHolder)
     fun getEventsFromModel()
     fun getEventsCount(): Int
     fun onItemClicked(adapterPosition: Int)
