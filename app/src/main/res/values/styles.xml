@@ -13,7 +13,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:typeface">sans</item>
         <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
-        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
+        <item name="android:fontFamily">@font/ubuntu</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24px</item>
     </style>
 
@@ -31,22 +31,25 @@
     </style>
 
     <style name="TextStyle.Title" parent="TextStyle">
-        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
+        <item name="android:fontFamily">@font/ubuntu_bold</item>
     </style>
 
     <style name="TextStyle.Title.Sub" parent="TextStyle.Title">
-        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
+        <item name="android:fontFamily">@font/ubuntu_medium</item>
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="TextStyle.Heading" parent="TextStyle">
+    <style name="TextStyle.Heading" parent="TextStyle.Title">
         <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/source_code_pro_bold</item>
     </style>
 
     <style name="TextStyle.Comment" parent="TextStyle">
         <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
+        <item name="android:fontFamily">@font/ubuntu_light</item>
+    </style>
+
+    <style name="TextStyle.EditText" parent="TextStyle">
+        <item name="android:fontFamily">@font/ubuntu</item>
     </style>
 
     <style name="Toolbar" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -92,10 +95,6 @@
 
     <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/gray</item>
-    </style>
-
-    <style name="TextStyle.EditText" parent="TextStyle">
-        <item name="android:fontFamily">@font/source_code_pro_extralight</item>
     </style>
 
     <style name="Button.Action.Positive" parent="Button">
