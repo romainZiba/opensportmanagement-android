@@ -1,10 +1,11 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.events
+package com.zcorp.opensportmanagement.ui.main.fragments.events.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.EventType
+import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
 
 /**
  * [RecyclerView.Adapter] that can display a [Event]

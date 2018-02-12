@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.events
+package com.zcorp.opensportmanagement.ui.main.fragments.events.adapter
 
 import android.graphics.drawable.Drawable
 

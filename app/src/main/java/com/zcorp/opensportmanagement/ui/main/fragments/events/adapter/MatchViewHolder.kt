@@ -1,21 +1,19 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.events
+package com.zcorp.opensportmanagement.ui.main.fragments.events.adapter
 
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
 import kotlinx.android.synthetic.main.fragment_match_item.view.*
 
 /**
  * Created by romainz on 03/02/18.
  */
-class MatchViewHolder(private val mView: View, private val presenter: IEventsPresenter) : RecyclerView.ViewHolder(mView), IMatchViewHolder {
+class MatchViewHolder(
+        private val mView: View,
+        presenter: IEventsPresenter) : BaseViewHolder(mView, presenter), IMatchViewHolder {
 
     override fun setLocalTeamName(name: String) {
         mView.tv_local_name_match.text = name
-    }
-
-    override fun setDate(dateAsString: String) {
-        mView.tv_date_match.text = dateAsString
     }
 
     override fun setVisitorTeamName(name: String) {
@@ -28,11 +26,5 @@ class MatchViewHolder(private val mView: View, private val presenter: IEventsPre
 
     override fun setVisitorTeamImage(drawable: Drawable) {
         mView.iv_visitor_match.setImageDrawable(drawable)
-    }
-
-    override fun setListener() {
-        mView.setOnClickListener({
-            presenter.onItemClicked(adapterPosition)
-        })
     }
 }

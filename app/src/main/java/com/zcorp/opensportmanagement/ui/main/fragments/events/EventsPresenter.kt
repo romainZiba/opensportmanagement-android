@@ -1,11 +1,13 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
-import android.support.v7.widget.RecyclerView
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.EventType
 import com.zcorp.opensportmanagement.model.Match
+import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventViewHolder
+import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.IViewHolder
+import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.MatchViewHolder
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import net.danlew.android.joda.DateUtils
 import java.io.IOException
@@ -21,6 +23,7 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
 
     override fun getEventsFromModel() {
         try {
+            mView.showProgress()
             api.getEvents()
                     .subscribeOn(schedulerProvider.newThread())
                     .observeOn(schedulerProvider.ui())

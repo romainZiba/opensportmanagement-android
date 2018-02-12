@@ -15,4 +15,5 @@ interface IEventsView : IBaseView {
     fun setBackgroundAlpha(alpha: Float)
     fun setBackgroundColor(colorResourceId: Int)
     fun setBackground(drawableId: Int)
+    fun showProgress()
 }

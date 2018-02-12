@@ -4,8 +4,8 @@ import android.app.Fragment
 import android.content.Context
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.PerActivity
-import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsPresenter
+import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import dagger.Module
 import dagger.Provides

@@ -2,12 +2,8 @@ package com.zcorp.opensportmanagement.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.di.component.DaggerActivityComponent
-import com.zcorp.opensportmanagement.di.module.ActivityModule
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*

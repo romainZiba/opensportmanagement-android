@@ -4,7 +4,6 @@ import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Single
 import org.joda.time.LocalDateTime
 import java.io.IOException
-import java.util.*
 
 /**
  * Created by romainz on 10/02/18.

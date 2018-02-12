@@ -1,6 +1,7 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import com.zcorp.opensportmanagement.ui.base.IBasePresenter
+import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.IViewHolder
 
 /**
  * Created by romainz on 03/02/18.
