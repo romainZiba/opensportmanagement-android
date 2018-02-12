@@ -27,7 +27,6 @@
         <ImageView
             android:id="@+id/iv_local_team_match"
             style="@style/TeamImage"
-            android:layout_height="42dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="80dp"
             android:layout_marginTop="50dp"
@@ -35,7 +34,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_vs_match"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            app:srcCompat="@drawable/houston_rockets" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_local_name_match"
@@ -83,7 +82,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_vs_match"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/star_on" />
+            app:srcCompat="@drawable/bos" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
