@@ -3,9 +3,7 @@ package com.zcorp.opensportmanagement.ui.main.fragments.events
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
@@ -44,6 +42,26 @@ class EventFragment : Fragment(), IEventsView {
 
         if (arguments != null) {
             mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater!!.inflate(R.menu.events_toolbar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.refresh_events -> {
+                presenter.getEventsFromModel()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 
