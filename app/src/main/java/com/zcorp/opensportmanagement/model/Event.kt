@@ -1,6 +1,6 @@
 package com.zcorp.opensportmanagement.model
 
-import org.joda.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 abstract class Event(var name: String,
                      var description: String,

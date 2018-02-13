@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
+import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.model.Event
@@ -9,7 +10,7 @@ import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventViewH
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.IViewHolder
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.MatchViewHolder
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
-import net.danlew.android.joda.DateUtils
+import org.threeten.bp.format.DateTimeFormatter
 import java.io.IOException
 import javax.inject.Inject
 
@@ -44,18 +45,17 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
 
     override fun onBindEventRowViewAtPosition(position: Int, holder: IViewHolder) {
         val event = mEvents[position]
+        val fmt: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy")
+        holder.setDate(fmt.format(event.fromDate))
+        holder.setListener()
         when (holder) {
             is MatchViewHolder -> {
                 event as Match
                 holder.setLocalTeamName("Local")
                 holder.setVisitorTeamName(event.opponent)
-                holder.setDate(DateUtils.formatDateTime(null, event.fromDate, DateUtils.FORMAT_SHOW_DATE))
-                holder.setListener()
             }
             is EventViewHolder -> {
                 holder.setDescription(event.description)
-                holder.setDate(DateUtils.formatDateTime(null, event.fromDate, DateUtils.FORMAT_SHOW_DATE))
-                holder.setListener()
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.zcorp.opensportmanagement.model
 
-import org.joda.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 
 class OtherEvent : Event {

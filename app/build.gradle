@@ -55,8 +55,8 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:2.14.1"
     kapt "com.google.dagger:dagger-android-processor:2.11"
 
-//    Joda Time: java.time appears in android-26 only
-    compile 'net.danlew:android.joda:2.9.9.2'
+//    JSR-310 implementation
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
 
 //  Testing
     testImplementation 'junit:junit:4.12'

@@ -28,22 +28,23 @@
             android:id="@+id/iv_local_team_match"
             style="@style/TeamImage"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:contentDescription="@string/local_team_description"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_vs_match"
+            app:layout_constraintEnd_toEndOf="@+id/tv_local_name_match"
+            app:layout_constraintStart_toStartOf="@+id/tv_local_name_match"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/houston_rockets" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_local_name_match"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginStart="38dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/iv_local_team_match"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_local_team_match"
             tools:text="@string/local_team_example" />
 
@@ -65,10 +66,11 @@
             android:id="@+id/tv_visitor_name_match"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="38dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/iv_visitor_match"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_visitor_match"
             tools:text="@string/visitor_example" />
 
@@ -76,11 +78,12 @@
             android:id="@+id/iv_visitor_match"
             style="@style/TeamImage"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:contentDescription="@string/visitor_team_description"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_visitor_name_match"
             app:layout_constraintStart_toEndOf="@+id/tv_vs_match"
+            app:layout_constraintStart_toStartOf="@+id/tv_visitor_name_match"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/bos" />
 
