@@ -8,9 +8,9 @@ class Match : Event {
     val presentPlayers: MutableSet<String>
     val notPresentPlayers: MutableSet<String>
 
-    constructor(name: String, description: String, fromDate: LocalDateTime, toDate: LocalDateTime, place: String,
+    constructor(id: Int, name: String, description: String, fromDate: LocalDateTime, toDate: LocalDateTime, place: String,
                 opponent: String) :
-            super(name, description, fromDate, toDate, place) {
+            super(name, description, fromDate, toDate, place, id) {
         this.opponent = opponent
         this.presentPlayers = mutableSetOf()
         this.notPresentPlayers = mutableSetOf()

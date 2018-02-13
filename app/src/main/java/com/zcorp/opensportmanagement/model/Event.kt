@@ -6,7 +6,8 @@ abstract class Event(var name: String,
                      var description: String,
                      var fromDate: LocalDateTime,
                      var toDate: LocalDateTime,
-                     var place: String) {
+                     var place: String,
+                     var id: Int) {
 
     override fun toString(): String {
         return "Event(name='$name', description='$description')"

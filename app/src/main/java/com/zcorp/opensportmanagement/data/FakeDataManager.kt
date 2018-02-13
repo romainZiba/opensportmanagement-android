@@ -68,7 +68,8 @@ class FakeDataManager : IDataManager {
     }
 
     private fun createDummyEvent(position: Int): Event {
-        return OtherEvent("Apéro " + (position).toString(),
+        return OtherEvent(position,
+                "Apéro " + (position).toString(),
                 "Une soirée " + position,
                 LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
                 LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),
@@ -76,7 +77,8 @@ class FakeDataManager : IDataManager {
     }
 
     private fun createDummyMatch(position: Int): Event {
-        return Match("Match de championnat",
+        return Match(position,
+                "Match de championnat",
                 "",
                 LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
                 LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),

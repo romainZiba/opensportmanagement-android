@@ -7,4 +7,6 @@
     <dimen name="cardview_horizontal_padding">10dp</dimen>
     <dimen name="cardCornerRadius">10dp</dimen>
     <dimen name="cardElevation">10dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

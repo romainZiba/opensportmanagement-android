@@ -1,15 +1,17 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import android.app.Fragment
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.*
-import android.widget.Toast
 import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.di.component.DaggerFragmentComponent
 import com.zcorp.opensportmanagement.di.module.FragmentModule
+import com.zcorp.opensportmanagement.model.Event
+import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import kotlinx.android.synthetic.main.fragment_event_list.view.*
@@ -46,8 +48,8 @@ class EventFragment : Fragment(), IEventsView, SwipeRefreshLayout.OnRefreshListe
         swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun showRowClicked(s: String) {
-        Toast.makeText(this.activity, s, Toast.LENGTH_LONG).show()
+    override fun showEventDetails(eventId: Int) {
+        startActivity(Intent(activity, EventDetailActivity::class.java))
     }
 
     override fun isFloatingMenuOpened(): Boolean {

@@ -1,0 +1,22 @@
+package com.zcorp.opensportmanagement.ui.eventdetails
+
+import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity
+import com.zcorp.opensportmanagement.R
+import kotlinx.android.synthetic.main.activity_event_detail.*
+
+class EventDetailActivity : AppCompatActivity(), IEventDetailView {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_event_detail)
+        setSupportActionBar(toolbar_event_details)
+        event_detail_subscription_fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+}

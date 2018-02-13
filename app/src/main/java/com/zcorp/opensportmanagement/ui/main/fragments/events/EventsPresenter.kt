@@ -64,7 +64,7 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
         if (mView.isFloatingMenuOpened()) {
             // Do nothing
         } else {
-            mView.showRowClicked(mEvents[adapterPosition].name)
+            mView.showEventDetails(mEvents[adapterPosition].id)
         }
     }
 

@@ -8,7 +8,7 @@ import com.zcorp.opensportmanagement.ui.base.IBaseView
 interface IEventsView : IBaseView {
     fun showNetworkError()
     fun onDataAvailable()
-    fun showRowClicked(s: String)
+    fun showEventDetails(eventId: Int)
     fun isFloatingMenuOpened(): Boolean
     fun closeFloatingMenu()
     fun openFloatingMenu()
