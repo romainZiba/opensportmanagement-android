@@ -3,12 +3,21 @@ package com.zcorp.opensportmanagement.data
 import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Single
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.OffsetDateTime
 import java.io.IOException
 
 /**
  * Created by romainz on 10/02/18.
  */
 class FakeDataManager : IDataManager {
+
+    override fun getMessages(): Single<List<InAppMessage>> {
+        return Single.create {
+            it.onSuccess(listOf(InAppMessage("Premier message", "Romain", OffsetDateTime.now()),
+                    InAppMessage("Second Message", "Un autre", OffsetDateTime.now())))
+        }
+    }
+
     override fun login(username: String, password: String): Single<String> {
         return Single.create({
             it.onSuccess(loginFromNetwork())

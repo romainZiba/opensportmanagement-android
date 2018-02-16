@@ -8,5 +8,5 @@ import com.zcorp.opensportmanagement.ui.base.IBaseView
 interface IMainView : IBaseView {
     fun displayEvents()
     fun displayGoogle()
-    fun displayThirdFragment()
+    fun displayMessages()
 }

@@ -6,33 +6,33 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/iv_local_team_match"
+        android:id="@+id/iv_local_team_match_white"
         style="@style/TeamImage"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/local_team_description"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_vs_match"
+        app:layout_constraintEnd_toStartOf="@+id/tv_vs_match_white"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/houston_rockets" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_local_name_match"
+        android:id="@+id/tv_local_name_match_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_local_team_match"
-        app:layout_constraintStart_toStartOf="@+id/iv_local_team_match"
-        app:layout_constraintEnd_toEndOf="@+id/iv_local_team_match"
+        app:layout_constraintTop_toBottomOf="@+id/iv_local_team_match_white"
+        app:layout_constraintStart_toStartOf="@+id/iv_local_team_match_white"
+        app:layout_constraintEnd_toEndOf="@+id/iv_local_team_match_white"
         tools:layout_editor_absoluteX="41dp"
         tools:text="@string/local_team_example" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_vs_match"
+        android:id="@+id/tv_vs_match_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -41,33 +41,33 @@
         android:layout_marginTop="8dp"
         android:text="@string/vs"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_local_team_match"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_local_team_match_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_local_team_match" />
+        app:layout_constraintTop_toTopOf="@+id/iv_local_team_match_white" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_visitor_name_match"
+        android:id="@+id/tv_visitor_name_match_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_visitor_match"
-        app:layout_constraintStart_toStartOf="@+id/iv_visitor_match"
-        app:layout_constraintEnd_toEndOf="@+id/iv_visitor_match"
+        app:layout_constraintTop_toBottomOf="@+id/iv_visitor_match_white"
+        app:layout_constraintStart_toStartOf="@+id/iv_visitor_match_white"
+        app:layout_constraintEnd_toEndOf="@+id/iv_visitor_match_white"
         tools:layout_editor_absoluteX="234dp"
         tools:text="@string/visitor_example" />
 
     <ImageView
-        android:id="@+id/iv_visitor_match"
+        android:id="@+id/iv_visitor_match_white"
         style="@style/TeamImage"
         android:layout_marginStart="16dp"
         android:contentDescription="@string/visitor_team_description"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_vs_match"
-        app:layout_constraintStart_toEndOf="@+id/tv_vs_match"
-        app:layout_constraintTop_toTopOf="@+id/tv_vs_match"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_vs_match_white"
+        app:layout_constraintStart_toEndOf="@+id/tv_vs_match_white"
+        app:layout_constraintTop_toTopOf="@+id/tv_vs_match_white"
         app:srcCompat="@drawable/bos" />
 
     <android.support.constraint.Guideline

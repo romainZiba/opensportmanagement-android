@@ -16,7 +16,7 @@ class MainPresenter : IMainPresenter {
     }
 
     override fun onDisplayThirdFragment() {
-        mainView?.displayThirdFragment()
+        mainView?.displayMessages()
     }
 
     override fun onAttach(view: IMainView) {

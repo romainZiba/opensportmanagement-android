@@ -58,6 +58,9 @@ dependencies {
 //    JSR-310 implementation
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
 
+//    HTTP requests
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+
 //  Testing
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.6.1"

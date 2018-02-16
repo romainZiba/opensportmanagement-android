@@ -1,16 +1,12 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
-import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.*
-import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.di.component.DaggerFragmentComponent
-import com.zcorp.opensportmanagement.di.module.FragmentModule
-import com.zcorp.opensportmanagement.model.Event
+import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.*
@@ -28,7 +24,7 @@ import javax.inject.Inject
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class EventFragment : Fragment(), IEventsView, SwipeRefreshLayout.OnRefreshListener {
+class EventFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshListener {
 
     private var mColumnCount = 1
 
@@ -82,11 +78,7 @@ class EventFragment : Fragment(), IEventsView, SwipeRefreshLayout.OnRefreshListe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerFragmentComponent.builder()
-                .appComponent(MyApplication.appComponent)
-                .fragmentModule(FragmentModule(this))
-                .build()
-                .inject(this)
+        super.mFragmentComponent.inject(this)
         presenter.onAttach(this)
 
         if (arguments != null) {

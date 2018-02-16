@@ -3,7 +3,7 @@ package com.zcorp.opensportmanagement.ui.main.fragments.events.adapter
 import android.graphics.drawable.Drawable
 import android.view.View
 import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
-import kotlinx.android.synthetic.main.fragment_match_item.view.*
+import kotlinx.android.synthetic.main.match_description_layout_black_text_color.view.*
 
 /**
  * Created by romainz on 03/02/18.

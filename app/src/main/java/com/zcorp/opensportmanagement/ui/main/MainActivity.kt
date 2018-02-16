@@ -7,6 +7,7 @@ import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.button.PlusOneFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment
+import com.zcorp.opensportmanagement.ui.main.fragments.messages.MessagesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -65,7 +66,24 @@ class MainActivity : BaseActivity(), IMainView {
         transaction.commit()
     }
 
-    override fun displayThirdFragment() {
+    override fun displayMessages() {
+        val transaction = fragmentManager.beginTransaction()
+        val eventsFragment = fragmentManager.findFragmentByTag(EVENTS)
+        val plusOneFragment = fragmentManager.findFragmentByTag(PLUS_ONE)
+        if (eventsFragment != null) {
+            transaction.hide(eventsFragment)
+        }
+        if (plusOneFragment != null) {
+            transaction.hide(plusOneFragment)
+        }
+        var messagesFragment = fragmentManager.findFragmentByTag(MESSAGES)
+        if (messagesFragment == null) {
+            messagesFragment = MessagesFragment()
+            transaction.add(R.id.fragment_container, messagesFragment, MESSAGES)
+        } else {
+            transaction.show(messagesFragment)
+        }
+        transaction.commit()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,5 +99,6 @@ class MainActivity : BaseActivity(), IMainView {
     companion object {
         const val EVENTS = "EVENTS"
         const val PLUS_ONE = "PLUS_ONE"
+        const val MESSAGES = "MESSAGES"
     }
 }
