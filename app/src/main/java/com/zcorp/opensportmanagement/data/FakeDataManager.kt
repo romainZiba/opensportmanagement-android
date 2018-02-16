@@ -1,15 +1,18 @@
 package com.zcorp.opensportmanagement.data
 
+import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Single
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * Created by romainz on 10/02/18.
  */
-class FakeDataManager : IDataManager {
+class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHelper) : IDataManager {
+
 
     override fun getMessages(): Single<List<InAppMessage>> {
         return Single.create {
@@ -18,9 +21,9 @@ class FakeDataManager : IDataManager {
         }
     }
 
-    override fun login(username: String, password: String): Single<String> {
+    override fun login(username: String, password: String): Single<LoginResponse> {
         return Single.create({
-            it.onSuccess(loginFromNetwork())
+            it.onSuccess(loginFromNetwork(username))
         })
     }
 
@@ -48,21 +51,28 @@ class FakeDataManager : IDataManager {
         return Single.just(40)
     }
 
-    override fun updateUserInfo(accessToken: String, userId: Long?, loggedInMode: IDataManager.LoggedInMode, userName: String, email: String, profilePicPath: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun updateUserInfo(accessToken: String, userId: Int, loggedInMode: IDataManager.LoggedInMode,
+                                userName: String, email: String, profilePicPath: String) {
+        mPreferencesHelper.setCurrentUserId(userId)
+        mPreferencesHelper.setCurrentUserName(userName)
+        mPreferencesHelper.setAccessToken(accessToken)
+        mPreferencesHelper.setCurrentUserLoggedInMode(loggedInMode)
+        mPreferencesHelper.setCurrentUserEmail(email)
+        mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicPath)
     }
 
     override fun createEvent(event: Event): Single<Event> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun loginFromNetwork(): String {
+    private fun loginFromNetwork(username: String): LoginResponse {
         try {
             Thread.sleep(800)
         } catch (e: InterruptedException) {
             // error
         }
-        return "aaabckdld"
+        return LoginResponse(1, "abc", username, username + "@gmail.com", "",
+                "", "")
     }
 
     private fun getEventsFromNetwork(): List<Event> {
@@ -95,4 +105,52 @@ class FakeDataManager : IDataManager {
                 "TCMS2")
     }
 
+
+    override fun getCurrentUserLoggedInMode(): Int {
+        return mPreferencesHelper.getCurrentUserLoggedInMode()
+    }
+
+    override fun setCurrentUserLoggedInMode(mode: IDataManager.LoggedInMode) {
+        mPreferencesHelper.setCurrentUserLoggedInMode(mode)
+    }
+
+    override fun getCurrentUserId(): Int {
+        return mPreferencesHelper.getCurrentUserId()
+    }
+
+    override fun getCurrentUserName(): String {
+        return mPreferencesHelper.getCurrentUserName()
+    }
+
+    override fun getCurrentUserEmail(): String {
+        return mPreferencesHelper.getCurrentUserEmail()
+    }
+
+    override fun setCurrentUserEmail(email: String) {
+        mPreferencesHelper.setCurrentUserEmail(email)
+    }
+
+    override fun getCurrentUserProfilePicUrl(): String {
+        return mPreferencesHelper.getCurrentUserProfilePicUrl()
+    }
+
+    override fun setCurrentUserProfilePicUrl(profilePicUrl: String) {
+        mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicUrl)
+    }
+
+    override fun getAccessToken(): String {
+        return mPreferencesHelper.getAccessToken()
+    }
+
+    override fun setAccessToken(accessToken: String) {
+        mPreferencesHelper.setAccessToken(accessToken)
+    }
+
+    override fun setCurrentUserId(userId: Int) {
+        mPreferencesHelper.setCurrentUserId(userId)
+    }
+
+    override fun setCurrentUserName(username: String) {
+        mPreferencesHelper.setCurrentUserName(username)
+    }
 }

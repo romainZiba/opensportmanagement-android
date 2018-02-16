@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
-import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
-import kotlinx.android.synthetic.main.fragment_messages.*
 import javax.inject.Inject
 
 
@@ -20,9 +18,6 @@ class MessagesFragment : BaseFragment() {
 
     @Inject
     lateinit var dataManager: IDataManager
-
-    @Inject
-    lateinit var schedulerProvider: SchedulerProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +30,4 @@ class MessagesFragment : BaseFragment() {
         return inflater!!.inflate(R.layout.fragment_messages, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
-        dataManager.getMessages().subscribeOn(schedulerProvider.newThread())
-                .observeOn(schedulerProvider.ui())
-                .subscribe({
-                    tv_messages.text = it.map { inAppMessage -> inAppMessage.message }.reduce { a, b -> a + "\n" + b }
-                }, {
-                })
-
-    }
 }

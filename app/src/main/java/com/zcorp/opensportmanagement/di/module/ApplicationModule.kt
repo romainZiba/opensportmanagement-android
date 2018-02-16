@@ -6,6 +6,8 @@ import com.zcorp.opensportmanagement.data.FakeDataManager
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.UserApi
+import com.zcorp.opensportmanagement.data.pref.FakePreferencesHelper
+import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.di.ApplicationContext
 import com.zcorp.opensportmanagement.di.PreferenceInfo
 import dagger.Module
@@ -29,8 +31,14 @@ class ApplicationModule(private val context: Context) {
 
     @Provides
     @Singleton
-    internal fun provideDataManager(): IDataManager {
-        return FakeDataManager()
+    internal fun providePreferencesHelper(fakePreferencesHelper: FakePreferencesHelper): IPreferencesHelper {
+        return fakePreferencesHelper
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideDataManager(dataManager: FakeDataManager): IDataManager {
+        return dataManager
     }
 
     @Provides

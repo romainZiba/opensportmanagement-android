@@ -4,14 +4,15 @@ import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.MessagesApi
 import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
+import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 
 /**
  * Created by romainz on 10/02/18.
  */
-interface IDataManager : EventApi, TeamApi, UserApi, MessagesApi {
+interface IDataManager : IPreferencesHelper, EventApi, TeamApi, UserApi, MessagesApi {
     fun updateUserInfo(
             accessToken: String,
-            userId: Long?,
+            userId: Int,
             loggedInMode: LoggedInMode,
             userName: String,
             email: String,

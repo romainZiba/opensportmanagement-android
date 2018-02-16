@@ -1,24 +1,30 @@
 package com.zcorp.opensportmanagement.ui.login
 
-import com.zcorp.opensportmanagement.data.api.UserApi
+import com.zcorp.opensportmanagement.data.IDataManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class LoginPresenter @Inject constructor(val api: UserApi) : ILoginPresenter {
+class LoginPresenter @Inject constructor(val dataManager: IDataManager) : ILoginPresenter {
 
     private var loginView: ILoginView? = null
 
     override fun validateCredentials(username: String, password: String) {
         loginView?.showProgress()
-        var observable = api.login(username, password)
+        var observable = dataManager.login(username, password)
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { token ->
+                .subscribe { loginResponse ->
                     run {
-                        if (token == null) {
+                        if (loginResponse == null) {
                             loginView?.setPasswordError()
                         } else {
+                            dataManager.updateUserInfo(loginResponse.accessToken,
+                                    loginResponse.userId,
+                                    IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
+                                    loginResponse.username,
+                                    loginResponse.userEmail,
+                                    loginResponse.userPictureUrl)
                             loginView?.navigateToHome()
                         }
                     }
