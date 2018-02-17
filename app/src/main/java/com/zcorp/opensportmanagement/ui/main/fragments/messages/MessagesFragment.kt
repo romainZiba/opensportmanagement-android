@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter.MessageRecyclerAdapter
@@ -54,6 +55,7 @@ class MessagesFragment : BaseFragment(), IMessagesView {
     override fun onResume() {
         super.onResume()
         presenter.getMessagesFromApi()
+        Toast.makeText(activity.baseContext, "Current user is " + presenter.getCurrentUserName(), Toast.LENGTH_LONG).show()
     }
 
 }

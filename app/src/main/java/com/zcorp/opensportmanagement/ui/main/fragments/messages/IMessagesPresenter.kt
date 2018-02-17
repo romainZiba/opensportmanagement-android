@@ -12,4 +12,10 @@ interface IMessagesPresenter : IBasePresenter<IMessagesView> {
     fun getMessagesCount(): Int
     fun onPostMessage()
     fun getMessageType(position: Int): Int
+    fun getCurrentUserName(): String
+
+    companion object {
+        const val CURRENT_USER = 0
+        const val FRIEND = 1
+    }
 }

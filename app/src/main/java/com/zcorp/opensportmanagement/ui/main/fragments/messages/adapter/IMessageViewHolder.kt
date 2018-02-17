@@ -5,4 +5,5 @@ package com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter
  */
 interface IMessageViewHolder {
     fun setMessage(message: String)
+    fun getType(): Int
 }

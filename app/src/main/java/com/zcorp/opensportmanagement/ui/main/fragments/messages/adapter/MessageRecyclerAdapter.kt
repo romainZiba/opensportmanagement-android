@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter
-import com.zcorp.opensportmanagement.ui.main.fragments.messages.MessagesPresenter
 
 /**
  * [RecyclerView.Adapter] that can display a [Event]
@@ -14,15 +13,15 @@ class MessageRecyclerAdapter(private val presenter: IMessagesPresenter) : Recycl
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            MessagesPresenter.CURRENT_USER -> {
+            IMessagesPresenter.CURRENT_USER -> {
                 val view = LayoutInflater.from(parent.context)
                         .inflate(R.layout.rv_item_message_current_user, parent, false)
-                MessageViewHolder(view)
+                MessageViewHolder(view, IMessagesPresenter.CURRENT_USER)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context)
                         .inflate(R.layout.rv_item_message_friend, parent, false)
-                MessageViewHolder(view)
+                MessageViewHolder(view, IMessagesPresenter.FRIEND)
             }
 
         }

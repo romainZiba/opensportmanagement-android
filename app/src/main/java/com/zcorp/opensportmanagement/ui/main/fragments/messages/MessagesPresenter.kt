@@ -2,6 +2,8 @@ package com.zcorp.opensportmanagement.ui.main.fragments.messages
 
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.model.InAppMessage
+import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter.Companion.CURRENT_USER
+import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter.Companion.FRIEND
 import com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter.IMessageViewHolder
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import javax.inject.Inject
@@ -11,7 +13,7 @@ import javax.inject.Inject
  */
 class MessagesPresenter @Inject constructor(
         val dataManager: IDataManager,
-        val schedulerProvider: SchedulerProvider) : IMessagesPresenter {
+        private val schedulerProvider: SchedulerProvider) : IMessagesPresenter {
 
     private var mMessages: List<InAppMessage> = mutableListOf()
     lateinit var mMessagesView: IMessagesView
@@ -53,8 +55,7 @@ class MessagesPresenter @Inject constructor(
         }
     }
 
-    companion object {
-        const val CURRENT_USER = 0
-        const val FRIEND = 1
+    override fun getCurrentUserName(): String {
+        return dataManager.getCurrentUserName()
     }
 }
