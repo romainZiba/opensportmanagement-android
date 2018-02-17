@@ -2,7 +2,7 @@ package com.zcorp.opensportmanagement.ui.main.fragments.events.adapter
 
 import android.view.View
 import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
-import kotlinx.android.synthetic.main.fragment_event_item.view.*
+import kotlinx.android.synthetic.main.rv_item_event.view.*
 
 /**
  * Created by romainz on 03/02/18.

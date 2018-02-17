@@ -22,14 +22,14 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/list"
+                android:id="@+id/rv_events_list"
                 android:name="com.zcorp.opensportmanagement.screens.main.fragments.EventFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 app:layoutManager="LinearLayoutManager"
-                tools:listitem="@layout/fragment_match_item" />
+                tools:listitem="@layout/rv_item_match" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

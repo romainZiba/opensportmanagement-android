@@ -33,14 +33,14 @@ class EventFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshL
 
     override fun showNetworkError() {
         eventsNetworkError.visibility = View.VISIBLE
-        list.visibility = View.INVISIBLE
+        rv_events_list.visibility = View.INVISIBLE
         swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onDataAvailable() {
-        list.visibility = View.VISIBLE
+        rv_events_list.visibility = View.VISIBLE
         eventsNetworkError.visibility = View.INVISIBLE
-        list.adapter.notifyDataSetChanged()
+        rv_events_list.adapter.notifyDataSetChanged()
         swipeRefreshLayout.isRefreshing = false
     }
 
@@ -89,7 +89,7 @@ class EventFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshL
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_event_list, container, false)
-        view.list.adapter = EventRecyclerAdapter(presenter)
+        view.rv_events_list.adapter = EventRecyclerAdapter(presenter)
         view.menu.setOnMenuButtonClickListener({
             presenter.onFloatingMenuClicked()
         })

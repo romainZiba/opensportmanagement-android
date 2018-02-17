@@ -16,12 +16,12 @@ class EventRecyclerAdapter(private val presenter: IEventsPresenter) : RecyclerVi
         return when (viewType) {
             EventType.CHAMPIONSHIP.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.fragment_match_item, parent, false)
+                        .inflate(R.layout.rv_item_match, parent, false)
                 MatchViewHolder(view, presenter)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.fragment_event_item, parent, false)
+                        .inflate(R.layout.rv_item_event, parent, false)
                 EventViewHolder(view, presenter)
             }
 
@@ -29,7 +29,7 @@ class EventRecyclerAdapter(private val presenter: IEventsPresenter) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        presenter.onBindEventRowViewAtPosition(position, holder as IViewHolder)
+        presenter.onBindEventRowViewAtPosition(position, holder as IEventViewHolder)
     }
 
     override fun getItemCount(): Int {

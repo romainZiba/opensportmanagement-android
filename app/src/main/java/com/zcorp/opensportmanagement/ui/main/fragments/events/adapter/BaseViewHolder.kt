@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.event_participant_number.view.*
  * Created by romainz on 12/02/18.
  */
 abstract class BaseViewHolder(private val mView: View,
-                              private val presenter: IEventsPresenter) : RecyclerView.ViewHolder(mView), IViewHolder {
+                              private val presenter: IEventsPresenter) : RecyclerView.ViewHolder(mView), IEventViewHolder {
 
     override fun setListener() {
         mView.setOnClickListener({

@@ -12,6 +12,10 @@ class MatchViewHolder(
         private val mView: View,
         presenter: IEventsPresenter) : BaseViewHolder(mView, presenter), IMatchViewHolder {
 
+    override fun setDescription(description: String) {
+
+    }
+
     override fun setLocalTeamName(name: String) {
         mView.tv_local_name_match.text = name
     }

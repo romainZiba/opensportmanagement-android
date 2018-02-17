@@ -1,13 +1,12 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
-import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.EventType
 import com.zcorp.opensportmanagement.model.Match
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventViewHolder
-import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.IViewHolder
+import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.IEventViewHolder
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.MatchViewHolder
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import org.threeten.bp.format.DateTimeFormatter
@@ -43,7 +42,7 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
         return mEvents.size
     }
 
-    override fun onBindEventRowViewAtPosition(position: Int, holder: IViewHolder) {
+    override fun onBindEventRowViewAtPosition(position: Int, holder: IEventViewHolder) {
         val event = mEvents[position]
         val fmt: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy")
         holder.setDate(fmt.format(event.fromDate))
