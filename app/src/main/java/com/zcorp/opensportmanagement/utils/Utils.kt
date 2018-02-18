@@ -1,7 +1,6 @@
 package com.zcorp.opensportmanagement.utils
 
-import java.text.DateFormat
-import java.util.*
+import org.threeten.bp.format.DateTimeFormatter
 
 /**
  * Created by romainz on 07/02/18.
@@ -9,8 +8,8 @@ import java.util.*
 class Utils {
 
     companion object {
-        fun format(date: Date, locale: Locale): String {
-            return DateFormat.getDateInstance(DateFormat.FULL, locale).format(date)
-        }
+        val dateFormatterWithDayOfWeek: DateTimeFormatter = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy")
+        val dateFormatterForMessages: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY HH:mm")
+
     }
 }

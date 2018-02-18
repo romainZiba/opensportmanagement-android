@@ -25,11 +25,13 @@ class MessagesPresenter @Inject constructor(
     override fun onDetach() {}
 
     override fun onBindMessageRowViewAtPosition(position: Int, holder: IMessageViewHolder) {
-        holder.setMessage(mMessages[position].message)
+        val message = mMessages[position]
+        holder.setMessage(message.message)
+        holder.setMessageUserAndDate(message.from, message.dateTime)
     }
 
     override fun getMessagesFromApi() {
-        dataManager.getMessages().subscribeOn(schedulerProvider.newThread())
+        dataManager.getMessagesOrderedByDate().subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
                 .subscribe({
                     mMessages = it

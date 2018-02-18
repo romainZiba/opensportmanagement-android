@@ -14,12 +14,17 @@ import javax.inject.Inject
 class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHelper) : IDataManager {
 
 
-    override fun getMessages(): Single<List<InAppMessage>> {
+    override fun getMessagesOrderedByDate(): Single<List<InAppMessage>> {
         return Single.create {
-            it.onSuccess(listOf(InAppMessage("Premier message", "Romain", OffsetDateTime.now()),
-                    InAppMessage("Second Message", "Un autre", OffsetDateTime.now())))
+            val messagesFromRomain = IntRange(1, 21).filter { it % 2 == 0 }.map { createDummyMessage(it, "Romain") }.toList()
+            val messagesFromFriend = IntRange(1, 21).filter { (it + 1) % 2 == 0 }.map { createDummyMessage(it, "Ami") }.toList()
+            val messages = listOf(messagesFromRomain, messagesFromFriend).flatMap { it.toList() }.sortedBy { it.dateTime }
+            it.onSuccess(messages)
         }
     }
+
+    private fun createDummyMessage(position: Int, username: String) =
+            InAppMessage("Message " + position, username, OffsetDateTime.now().minusMonths(1).plusHours(position.toLong()))
 
     override fun login(username: String, password: String): Single<LoginResponse> {
         return Single.create({

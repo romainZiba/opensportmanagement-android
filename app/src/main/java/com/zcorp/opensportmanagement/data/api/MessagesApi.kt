@@ -10,5 +10,5 @@ import java.io.IOException
 interface MessagesApi {
 
     @Throws(IOException::class)
-    fun getMessages(): Single<List<InAppMessage>>
+    fun getMessagesOrderedByDate(): Single<List<InAppMessage>>
 }
