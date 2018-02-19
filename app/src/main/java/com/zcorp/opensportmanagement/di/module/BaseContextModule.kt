@@ -2,6 +2,8 @@ package com.zcorp.opensportmanagement.di.module
 
 import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
+import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
+import com.zcorp.opensportmanagement.utils.stomp.StompClientProvider
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
@@ -19,5 +21,10 @@ abstract class BaseContextModule {
     @Provides
     internal fun provideSchedulerProvider(): SchedulerProvider {
         return AppSchedulerProvider()
+    }
+
+    @Provides
+    internal fun provideStompClientProvider(): IStompClientProvider {
+        return StompClientProvider()
     }
 }

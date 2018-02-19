@@ -9,8 +9,10 @@ import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.messages.MessagesPresenter
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
+import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
 import dagger.Module
 import dagger.Provides
+import ua.naiksoftware.stomp.client.StompClient
 
 /**
  * Created by romainz on 09/02/18.
@@ -24,7 +26,7 @@ class FragmentModule(private val mFragment: Fragment) : BaseContextModule() {
     }
 
     @Provides
-    internal fun provideActivity(): Fragment {
+    internal fun provideFragment(): Fragment {
         return mFragment
     }
 
@@ -36,7 +38,9 @@ class FragmentModule(private val mFragment: Fragment) : BaseContextModule() {
 
     @Provides
     @PerActivity
-    internal fun provideMessagesPresenter(dataManager: IDataManager, schedulerProvider: SchedulerProvider): IMessagesPresenter {
-        return MessagesPresenter(dataManager, schedulerProvider)
+    internal fun provideMessagesPresenter(dataManager: IDataManager,
+                                          schedulerProvider: SchedulerProvider,
+                                          stompClientProvider: IStompClientProvider): IMessagesPresenter {
+        return MessagesPresenter(dataManager, schedulerProvider, stompClientProvider)
     }
 }

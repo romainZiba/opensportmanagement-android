@@ -6,6 +6,9 @@ package com.zcorp.opensportmanagement.ui.main.fragments.messages
 interface IMessagesView {
     fun showNetworkError()
     fun onMessagesAvailable()
+    fun showNewMessageIndicator()
+    fun scrollToPosition(position: Int)
+    fun closeKeyboardAndClear()
     fun showProgress()
     fun sendMessage(message: String)
 }

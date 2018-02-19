@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.ui.main
 
+import android.app.FragmentTransaction
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.Toolbar
@@ -36,10 +37,8 @@ class MainActivity : BaseActivity(), IMainView {
 
     override fun displayEvents() {
         val transaction = fragmentManager.beginTransaction()
-        val plusOneFragment = fragmentManager.findFragmentByTag(PLUS_ONE)
-        if (plusOneFragment != null) {
-            transaction.hide(plusOneFragment)
-        }
+        hideFragmentWithTag(transaction, PLUS_ONE)
+        hideFragmentWithTag(transaction, MESSAGES)
         var eventsFragment = fragmentManager.findFragmentByTag(EVENTS)
         if (eventsFragment == null) {
             eventsFragment = EventFragment()
@@ -52,10 +51,8 @@ class MainActivity : BaseActivity(), IMainView {
 
     override fun displayGoogle() {
         val transaction = fragmentManager.beginTransaction()
-        val eventsFragment = fragmentManager.findFragmentByTag(EVENTS)
-        if (eventsFragment != null) {
-            transaction.hide(eventsFragment)
-        }
+        hideFragmentWithTag(transaction, EVENTS)
+        hideFragmentWithTag(transaction, MESSAGES)
         var plusOneFragment = fragmentManager.findFragmentByTag(PLUS_ONE)
         if (plusOneFragment == null) {
             plusOneFragment = PlusOneFragment()
@@ -68,14 +65,8 @@ class MainActivity : BaseActivity(), IMainView {
 
     override fun displayMessages() {
         val transaction = fragmentManager.beginTransaction()
-        val eventsFragment = fragmentManager.findFragmentByTag(EVENTS)
-        val plusOneFragment = fragmentManager.findFragmentByTag(PLUS_ONE)
-        if (eventsFragment != null) {
-            transaction.hide(eventsFragment)
-        }
-        if (plusOneFragment != null) {
-            transaction.hide(plusOneFragment)
-        }
+        hideFragmentWithTag(transaction, EVENTS)
+        hideFragmentWithTag(transaction, PLUS_ONE)
         var messagesFragment = fragmentManager.findFragmentByTag(MESSAGES)
         if (messagesFragment == null) {
             messagesFragment = MessagesFragment()
@@ -94,6 +85,13 @@ class MainActivity : BaseActivity(), IMainView {
         setSupportActionBar(main_toolbar as Toolbar)
         mainPresenter.onAttach(this)
         navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+    }
+
+    private fun hideFragmentWithTag(transaction: FragmentTransaction, tag: String) {
+        val fragment = fragmentManager.findFragmentByTag(tag)
+        if (fragment != null) {
+            transaction.hide(fragment)
+        }
     }
 
     companion object {

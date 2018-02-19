@@ -10,7 +10,7 @@ interface IMessagesPresenter : IBasePresenter<IMessagesView> {
     fun onBindMessageRowViewAtPosition(position: Int, holder: IMessageViewHolder)
     fun getMessagesFromApi()
     fun getMessagesCount(): Int
-    fun onPostMessage()
+    fun onPostMessage(stringMessage: String)
     fun getMessageType(position: Int): Int
     fun getCurrentUserName(): String
 

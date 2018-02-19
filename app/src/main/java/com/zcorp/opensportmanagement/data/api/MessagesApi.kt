@@ -8,7 +8,6 @@ import java.io.IOException
  * Created by romainz on 01/02/18.
  */
 interface MessagesApi {
-
-    @Throws(IOException::class)
     fun getMessagesOrderedByDate(): Single<List<InAppMessage>>
+    fun createMessage(message: InAppMessage): Single<InAppMessage>
 }
