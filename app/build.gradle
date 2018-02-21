@@ -64,12 +64,15 @@ dependencies {
 
     //    HTTP requests
     compile 'com.squareup.okhttp3:okhttp:3.9.1'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
     // JSON serialization/deserialization
     compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0'
     compile 'com.github.joschi.jackson:jackson-datatype-threetenbp:2.8.4', {
         exclude group: 'org.threeten'
     }
+    compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
 
     // WebSocket
     compile 'com.github.NaikSoftware:StompProtocolAndroid:1.4.4'
@@ -80,6 +83,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     testCompile "com.nhaarman:mockito-kotlin:1.5.0"
+    testCompile "com.willowtreeapps.assertk:assertk:0.9"
+
 }
 
 kapt {

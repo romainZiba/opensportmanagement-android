@@ -1,12 +1,8 @@
 package com.zcorp.opensportmanagement.model
 
+import retrofit2.http.Header
+
 /**
  * Created by romainz on 16/02/18.
  */
-data class LoginResponse(val userId: Int,
-                         val accessToken: String,
-                         val username: String,
-                         var userEmail: String,
-                         var userPictureUrl: String,
-                         var fbPictureUrl: String,
-                         var googlePictureUrl: String)
+data class LoginResponse(@Header("Authorization") val accessToken: String)

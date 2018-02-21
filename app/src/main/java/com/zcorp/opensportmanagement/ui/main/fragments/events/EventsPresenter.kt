@@ -8,9 +8,8 @@ import com.zcorp.opensportmanagement.model.Match
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventViewHolder
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.IEventViewHolder
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.MatchViewHolder
-import com.zcorp.opensportmanagement.utils.Utils
+import com.zcorp.opensportmanagement.utils.datetime.DateTimeFormatter
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
-import org.threeten.bp.format.DateTimeFormatter
 import java.io.IOException
 import javax.inject.Inject
 
@@ -45,7 +44,7 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
 
     override fun onBindEventRowViewAtPosition(position: Int, holder: IEventViewHolder) {
         val event = mEvents[position]
-        holder.setDate(Utils.dateFormatterWithDayOfWeek.format(event.fromDate))
+        holder.setDate(DateTimeFormatter.dateFormatterWithDayOfWeek.format(event.fromDate))
         holder.setListener()
         when (holder) {
             is MatchViewHolder -> {

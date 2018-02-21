@@ -2,6 +2,7 @@ package com.zcorp.opensportmanagement.di.module
 
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.ActivityContext
 import com.zcorp.opensportmanagement.di.PerActivity
@@ -29,8 +30,8 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
 
     @Provides
     @PerActivity
-    internal fun provideLoginPresenter(dataManager: IDataManager): ILoginPresenter {
-        return LoginPresenter(dataManager)
+    internal fun provideLoginPresenter(dataManager: IDataManager, objectMapper: ObjectMapper): ILoginPresenter {
+        return LoginPresenter(dataManager, objectMapper)
     }
 
     @Provides

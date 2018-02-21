@@ -1,9 +1,12 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.messages
 
 import android.util.Log
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zcorp.opensportmanagement.data.IDataManager
+import com.zcorp.opensportmanagement.di.module.NetModule.Companion.HOST
+import com.zcorp.opensportmanagement.di.module.NetModule.Companion.PORT
 import com.zcorp.opensportmanagement.model.InAppMessage
 import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter.Companion.CURRENT_USER
 import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter.Companion.FRIEND
@@ -21,29 +24,29 @@ import javax.inject.Inject
 class MessagesPresenter @Inject constructor(
         private val dataManager: IDataManager,
         private val schedulerProvider: SchedulerProvider,
-        private val stompClientProvider: IStompClientProvider) : IMessagesPresenter {
+        private val stompClientProvider: IStompClientProvider,
+        private val objectMapper: ObjectMapper) : IMessagesPresenter {
 
+    val TAG = MessagesPresenter::class.java.name
     private var mMessages: MutableList<InAppMessage> = mutableListOf()
     private lateinit var mMessagesView: IMessagesView
     private lateinit var mStompClient: StompClient
 
     override fun onAttach(view: IMessagesView) {
         mMessagesView = view
-        mStompClient = stompClientProvider.client("ws://192.168.1.122:8090/chatWS/websocket")
+        mStompClient = stompClientProvider.client("ws://$HOST:$PORT/chatWS/websocket")
         mStompClient.topic("/topic/messages")
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
-                { topicMessage ->
-                    run {
-                        val mapper = jacksonObjectMapper()
-                        mapper.findAndRegisterModules()
-                        addSortedMessage(mapper.readValue(topicMessage.payload))
-                        mMessagesView.onMessagesAvailable()
-                        mMessagesView.showNewMessageIndicator()
-                    }
-                },
-                { error -> Log.d("From websocket", error.toString()) })
+                        { topicMessage ->
+                            run {
+                                addSortedMessage(objectMapper.readValue(topicMessage.payload))
+                                mMessagesView.onMessagesAvailable()
+                                mMessagesView.showNewMessageIndicator()
+                            }
+                        },
+                        { error -> Log.d("From websocket", error.toString()) })
         mStompClient.connect()
     }
 
@@ -58,7 +61,8 @@ class MessagesPresenter @Inject constructor(
     }
 
     override fun getMessagesFromApi() {
-        dataManager.getMessagesOrderedByDate().subscribeOn(schedulerProvider.newThread())
+        dataManager.getMessagesOrderedByDate()
+                .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
                 .subscribe({
                     mMessages = it.toMutableList()
@@ -77,11 +81,14 @@ class MessagesPresenter @Inject constructor(
         dataManager.createMessage(postedMessage)
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
-                .subscribe {
-                    message -> addSortedMessage(message)
+                .subscribe({ message ->
+                    addSortedMessage(message)
                     mMessagesView.onMessagesAvailable()
                     mMessagesView.scrollToPosition(mMessages.size - 1)
-                }
+                }, {
+                    Log.d(TAG, it.localizedMessage)
+                    mMessagesView.showNetworkError()
+                })
         mMessagesView.closeKeyboardAndClear()
     }
 

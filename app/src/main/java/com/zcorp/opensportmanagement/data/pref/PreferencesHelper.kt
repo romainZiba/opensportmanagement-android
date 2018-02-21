@@ -15,14 +15,6 @@ constructor(@ApplicationContext context: Context,
 
     private val mPrefs: SharedPreferences = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE)
 
-    override fun getCurrentUserId(): Int {
-        return mPrefs.getInt(PREF_KEY_CURRENT_USER_ID, -1)
-    }
-
-    override fun setCurrentUserId(userId: Int) {
-        mPrefs.edit().putInt(PREF_KEY_CURRENT_USER_ID, userId).apply()
-    }
-
     override fun getCurrentUserName(): String {
         return mPrefs.getString(PREF_KEY_CURRENT_USER_NAME, "")
     }

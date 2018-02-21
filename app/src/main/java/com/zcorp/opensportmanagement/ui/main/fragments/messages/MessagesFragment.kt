@@ -4,6 +4,7 @@ package com.zcorp.opensportmanagement.ui.main.fragments.messages
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +16,6 @@ import com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter.MessageR
 import kotlinx.android.synthetic.main.fragment_messages.*
 import kotlinx.android.synthetic.main.fragment_messages.view.*
 import javax.inject.Inject
-import android.content.Context.INPUT_METHOD_SERVICE
-
-
 
 
 /**
@@ -31,7 +29,7 @@ class MessagesFragment : BaseFragment(), IMessagesView {
     lateinit var mSnackbar: Snackbar
 
     override fun showNetworkError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d("", "we should show a network error")
     }
 
     override fun onMessagesAvailable() {

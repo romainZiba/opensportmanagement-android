@@ -2,6 +2,7 @@ package com.zcorp.opensportmanagement.di.module
 
 import android.content.Context
 import com.zcorp.opensportmanagement.MyApplication
+import com.zcorp.opensportmanagement.data.DataManager
 import com.zcorp.opensportmanagement.data.FakeDataManager
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
@@ -37,7 +38,7 @@ class ApplicationModule(private val context: Context) {
 
     @Provides
     @Singleton
-    internal fun provideDataManager(dataManager: FakeDataManager): IDataManager {
+    internal fun provideDataManager(dataManager: DataManager): IDataManager {
         return dataManager
     }
 

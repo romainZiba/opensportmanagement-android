@@ -3,7 +3,7 @@ package com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter
-import com.zcorp.opensportmanagement.utils.Utils
+import com.zcorp.opensportmanagement.utils.datetime.DateTimeFormatter
 import kotlinx.android.synthetic.main.rv_item_message_current_user.view.*
 import kotlinx.android.synthetic.main.rv_item_message_friend.view.*
 import org.threeten.bp.OffsetDateTime
@@ -21,7 +21,7 @@ class MessageViewHolder(private val mView: View, private val mType: Int) : Recyc
     }
 
     override fun setMessageUserAndDate(user: String, dateTime: OffsetDateTime) {
-        val toDisplay = user + " - " + Utils.dateFormatterForMessages.format(dateTime)
+        val toDisplay = user + " - " + DateTimeFormatter.dateFormatterForMessages.format(dateTime)
         when (mType) {
             IMessagesPresenter.CURRENT_USER -> mView.tv_user_message_username_and_date.text = toDisplay
             else -> mView.tv_friend_message_username_and_date.text = toDisplay

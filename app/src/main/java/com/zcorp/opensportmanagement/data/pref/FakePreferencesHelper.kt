@@ -8,12 +8,8 @@ import javax.inject.Singleton
 @Singleton
 class FakePreferencesHelper @Inject constructor() : IPreferencesHelper {
 
-    var currentUser: User = User(1, "", "", IDataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT,
+    var currentUser: User = User("FakePerson", "", IDataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT,
             "", "", mutableSetOf())
-
-    override fun getCurrentUserId(): Int {
-        return currentUser.userId
-    }
 
     override fun getCurrentUserName(): String {
         return currentUser.username
@@ -49,10 +45,6 @@ class FakePreferencesHelper @Inject constructor() : IPreferencesHelper {
 
     override fun setAccessToken(accessToken: String) {
         currentUser.accessToken = accessToken
-    }
-
-    override fun setCurrentUserId(userId: Int) {
-        currentUser.userId = userId
     }
 
     override fun setCurrentUserName(username: String) {

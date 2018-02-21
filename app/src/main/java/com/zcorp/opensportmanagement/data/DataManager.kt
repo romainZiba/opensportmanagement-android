@@ -1,51 +1,40 @@
 package com.zcorp.opensportmanagement.data
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import com.zcorp.opensportmanagement.data.api.MessagesApi
+import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.model.*
-import io.reactivex.Observable
 import io.reactivex.Single
-import okhttp3.Headers
-import okhttp3.MediaType
 import okhttp3.ResponseBody
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.OffsetDateTime
 import retrofit2.Response
+import retrofit2.Retrofit
 import java.io.IOException
 import javax.inject.Inject
 
 /**
- * Created by romainz on 10/02/18.
+ * A nearly not fake data manager as for now, it only makes few real API calls
  */
-class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHelper) : IDataManager {
-
-    private var mMessages: MutableList<InAppMessage> = mutableListOf()
+class DataManager @Inject constructor(private val mPreferencesHelper: IPreferencesHelper,
+                                      private val retrofit: Retrofit,
+                                      private val objectMapper: ObjectMapper) : IDataManager {
 
     override fun getMessagesOrderedByDate(): Single<List<InAppMessage>> {
-        return Single.create {
-            val messagesFromRomain = IntRange(1, 21).filter { it % 2 == 0 }.map { createDummyMessage(it, "Romain") }.toList()
-            val messagesFromFriend = IntRange(1, 21).filter { (it + 1) % 2 == 0 }.map { createDummyMessage(it, "Ami") }.toList()
-            mMessages = listOf(messagesFromRomain, messagesFromFriend).flatMap { it.toList() }.sortedBy { it.time }.toMutableList()
-            it.onSuccess(mMessages.toList())
-        }
+        return retrofit.create(MessagesApi::class.java).getMessagesOrderedByDate()
+    }
+
+    fun getMessagesFromServerResponse(string: String): List<InAppMessage> {
+        return objectMapper.readValue(string)
     }
 
     override fun createMessage(message: InAppMessage): Single<InAppMessage> {
-        mMessages.add(message)
-        return Single.create {
-            it.onSuccess(message)
-        }
+        return retrofit.create(MessagesApi::class.java).createMessage(message)
     }
 
-    private fun createDummyMessage(position: Int, username: String) =
-            InAppMessage("Message " + position, username, OffsetDateTime.now().minusMonths(1).plusHours(position.toLong()))
-
     override fun login(loginRequest: LoginRequest): Single<Response<ResponseBody>> {
-        return Single.create({
-            loginFromNetwork(loginRequest.username)
-            val responseBody = ResponseBody.create(MediaType.parse("application/json"), "")
-            val headers = Headers.of("Authorization", "Bearer kjfkkf.kdjdjd.kkff")
-            it.onSuccess(Response.success(responseBody, headers))
-        })
+        return retrofit.create(UserApi::class.java).login(loginRequest)
     }
 
     override fun getTeams(user: User): List<Team> {

@@ -12,7 +12,6 @@ import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 interface IDataManager : IPreferencesHelper, EventApi, TeamApi, UserApi, MessagesApi {
     fun updateUserInfo(
             accessToken: String,
-            userId: Int,
             loggedInMode: LoggedInMode,
             userName: String,
             email: String,

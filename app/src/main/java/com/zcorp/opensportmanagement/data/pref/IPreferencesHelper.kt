@@ -11,10 +11,6 @@ interface IPreferencesHelper {
 
     fun setCurrentUserLoggedInMode(mode: IDataManager.LoggedInMode)
 
-    fun getCurrentUserId(): Int
-
-    fun setCurrentUserId(userId: Int)
-
     fun getCurrentUserName(): String
 
     fun setCurrentUserName(username: String)
