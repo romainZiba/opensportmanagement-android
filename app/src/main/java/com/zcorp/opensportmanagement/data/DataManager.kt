@@ -2,7 +2,9 @@ package com.zcorp.opensportmanagement.data
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.MessagesApi
+import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.model.*
@@ -11,7 +13,6 @@ import okhttp3.ResponseBody
 import org.threeten.bp.LocalDateTime
 import retrofit2.Response
 import retrofit2.Retrofit
-import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -20,6 +21,14 @@ import javax.inject.Inject
 class DataManager @Inject constructor(private val mPreferencesHelper: IPreferencesHelper,
                                       private val retrofit: Retrofit,
                                       private val objectMapper: ObjectMapper) : IDataManager {
+
+    override fun getCurrentTeamId(): Int {
+        return mPreferencesHelper.getCurrentTeamId()
+    }
+
+    override fun setCurrentTeamId(teamId: Int) {
+        mPreferencesHelper.setCurrentTeamId(teamId)
+    }
 
     override fun getMessagesOrderedByDate(): Single<List<InAppMessage>> {
         return retrofit.create(MessagesApi::class.java).getMessagesOrderedByDate()
@@ -37,28 +46,22 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
         return retrofit.create(UserApi::class.java).login(loginRequest)
     }
 
-    override fun getTeams(user: User): List<Team> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getTeams(): Single<List<Team>> {
+        return retrofit.create(TeamApi::class.java).getTeams()
     }
 
-    override fun getEvents(): Single<List<Event>> {
-        val rand = Math.random()
-        if (rand > 0.9) {
-            return Single.create {
-                it.onError(IOException())
-            }
-        }
-        return Single.create {
-            it.onSuccess(getEventsFromNetwork())
-        }
-    }
-
-    override fun getTeam(user: User, teamId: Int): Team {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getTeam(teamId: Int): Single<Team> {
+        return retrofit.create(TeamApi::class.java).getTeam(teamId)
     }
 
     override fun getEventsCount(): Single<Int> {
-        return Single.just(40)
+//        return retrofit.create(EventApi::class.java).getEventsCount()
+        //TODO: remove this by a real API call
+        return Single.just(20)
+    }
+
+    override fun getEvents(teamId: Int): Single<List<Event>> {
+        return retrofit.create(EventApi::class.java).getEvents(teamId)
     }
 
     override fun updateUserInfo(accessToken: String, loggedInMode: IDataManager.LoggedInMode,
@@ -73,46 +76,6 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
     override fun createEvent(event: Event): Single<Event> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-    private fun loginFromNetwork(username: String): LoginResponse {
-        try {
-            Thread.sleep(800)
-        } catch (e: InterruptedException) {
-            // error
-        }
-        return LoginResponse("")
-    }
-
-    private fun getEventsFromNetwork(): List<Event> {
-        try {
-            Thread.sleep(1000)
-        } catch (e: InterruptedException) {
-            // error
-        }
-        var events: MutableList<Event> = IntRange(1, 10).map { createDummyEvent(it) }.toMutableList()
-        events.addAll(IntRange(10, 21).map { createDummyMatch(it) }.toList())
-        return events.toList()
-    }
-
-    private fun createDummyEvent(position: Int): Event {
-        return OtherEvent(position,
-                "Apéro " + (position).toString(),
-                "Une soirée " + position,
-                LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
-                LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),
-                "Ici")
-    }
-
-    private fun createDummyMatch(position: Int): Event {
-        return Match(position,
-                "Match de championnat",
-                "",
-                LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
-                LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),
-                "ici",
-                "TCMS2")
-    }
-
 
     override fun getCurrentUserLoggedInMode(): Int {
         return mPreferencesHelper.getCurrentUserLoggedInMode()

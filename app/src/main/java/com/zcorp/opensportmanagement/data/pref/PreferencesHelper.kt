@@ -56,12 +56,20 @@ constructor(@ApplicationContext context: Context,
         mPrefs.edit().putString(PREF_KEY_ACCESS_TOKEN, accessToken).apply()
     }
 
+    override fun getCurrentTeamId(): Int {
+        return mPrefs.getInt(PREF_KEY_CURRENT_TEAM, 0)
+    }
+
+    override fun setCurrentTeamId(teamId: Int) {
+        mPrefs.edit().putInt(PREF_KEY_CURRENT_TEAM, teamId).apply()
+    }
+
     companion object {
         private const val PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE"
-        private const val PREF_KEY_CURRENT_USER_ID = "PREF_KEY_CURRENT_USER_ID"
         private const val PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME"
         private const val PREF_KEY_CURRENT_USER_EMAIL = "PREF_KEY_CURRENT_USER_EMAIL"
         private const val PREF_KEY_CURRENT_USER_PROFILE_PIC_URL = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL"
         private const val PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN"
+        private const val PREF_KEY_CURRENT_TEAM = "PREF_KEY_CURRENT_TEAM"
     }
 }

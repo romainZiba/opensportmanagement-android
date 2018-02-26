@@ -11,6 +11,7 @@ import com.zcorp.opensportmanagement.ui.login.LoginPresenter
 import com.zcorp.opensportmanagement.ui.main.IMainPresenter
 import com.zcorp.opensportmanagement.ui.main.MainPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment
+import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 
@@ -36,8 +37,8 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
 
     @Provides
     @PerActivity
-    internal fun provideMainPresenter(): IMainPresenter {
-        return MainPresenter()
+    internal fun provideMainPresenter(dataManager: IDataManager, schedulerProvider: SchedulerProvider): IMainPresenter {
+        return MainPresenter(dataManager, schedulerProvider)
     }
 
     @Provides

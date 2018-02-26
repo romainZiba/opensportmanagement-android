@@ -1,30 +1,48 @@
 package com.zcorp.opensportmanagement.ui.main
 
+import android.util.Log
+import com.zcorp.opensportmanagement.data.IDataManager
+import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
+import javax.inject.Inject
+
 /**
  * Created by romainz on 06/02/18.
  */
-class MainPresenter : IMainPresenter {
+class MainPresenter @Inject constructor(val dataManager: IDataManager, val schedulerProvider: SchedulerProvider) : IMainPresenter {
 
-    private var mainView: IMainView? = null
+    companion object {
+        private val  TAG = MainPresenter::class.java.simpleName
+    }
+
+    private lateinit var mainView: IMainView
 
     override fun onDisplayEvents() {
-        mainView?.displayEvents()
+        mainView.displayEvents()
     }
 
     override fun onDisplayGoogle() {
-        mainView?.displayGoogle()
+        mainView.displayGoogle()
     }
 
     override fun onDisplayThirdFragment() {
-        mainView?.displayMessages()
+        mainView.displayMessages()
     }
 
     override fun onAttach(view: IMainView) {
         mainView = view
-        mainView?.displayEvents()
+        dataManager.getTeams()
+                .subscribeOn(schedulerProvider.newThread())
+                .observeOn(schedulerProvider.ui())
+                .subscribe({
+                    if (it.isNotEmpty()) {
+                        dataManager.setCurrentTeamId(it[0]._id)
+                        mainView.displayEvents()
+                    }
+                }, {
+                    Log.d(TAG, "Error while retrieving teams")
+                })
     }
 
     override fun onDetach() {
-        mainView = null
     }
 }

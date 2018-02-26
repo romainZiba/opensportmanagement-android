@@ -1,9 +1,8 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.data.api.EventApi
+import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.model.Event
-import com.zcorp.opensportmanagement.model.EventType
 import com.zcorp.opensportmanagement.model.Match
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventViewHolder
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.IEventViewHolder
@@ -16,15 +15,15 @@ import javax.inject.Inject
 /**
  * Created by romainz on 03/02/18.
  */
-class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvider: SchedulerProvider) : IEventsPresenter {
+class EventsPresenter @Inject constructor(val dataManager: IDataManager, val schedulerProvider: SchedulerProvider) : IEventsPresenter {
 
     private var mEvents: List<Event> = mutableListOf()
-    lateinit var mView: IEventsView
+    private lateinit var mView: IEventsView
 
     override fun getEventsFromModel() {
         try {
             mView.showProgress()
-            api.getEvents()
+            dataManager.getEvents(dataManager.getCurrentTeamId())
                     .subscribeOn(schedulerProvider.newThread())
                     .observeOn(schedulerProvider.ui())
                     .subscribe({
@@ -96,8 +95,8 @@ class EventsPresenter @Inject constructor(val api: EventApi, val schedulerProvid
     override fun getEventType(position: Int): Int {
         val event = mEvents[position]
         return when (event) {
-            is Match -> EventType.CHAMPIONSHIP.ordinal //TODO: distinguish between championship / Tournament /Friendly...
-            else -> EventType.OTHER.ordinal
+            is Match -> Event.EventType.CHAMPIONSHIP.ordinal //TODO: distinguish between championship / Tournament /Friendly...
+            else -> Event.EventType.OTHER.ordinal
         }
     }
 }

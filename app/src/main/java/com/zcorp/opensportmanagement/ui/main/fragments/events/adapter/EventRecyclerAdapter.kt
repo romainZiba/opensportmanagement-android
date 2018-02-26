@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.model.EventType
+import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
 
 /**
@@ -14,7 +14,7 @@ class EventRecyclerAdapter(private val presenter: IEventsPresenter) : RecyclerVi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            EventType.CHAMPIONSHIP.ordinal -> {
+            Event.EventType.CHAMPIONSHIP.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
                         .inflate(R.layout.rv_item_match, parent, false)
                 MatchViewHolder(view, presenter)

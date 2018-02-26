@@ -27,4 +27,8 @@ interface IPreferencesHelper {
 
     fun setAccessToken(accessToken: String)
 
+    fun getCurrentTeamId(): Int
+
+    fun setCurrentTeamId(teamId: Int)
+
 }

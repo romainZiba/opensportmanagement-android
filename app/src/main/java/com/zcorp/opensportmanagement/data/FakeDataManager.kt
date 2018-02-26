@@ -2,7 +2,6 @@ package com.zcorp.opensportmanagement.data
 
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.model.*
-import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.Headers
 import okhttp3.MediaType
@@ -19,6 +18,14 @@ import javax.inject.Inject
 class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHelper) : IDataManager {
 
     private var mMessages: MutableList<InAppMessage> = mutableListOf()
+
+    override fun getCurrentTeamId(): Int {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun setCurrentTeamId(teamId: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun getMessagesOrderedByDate(): Single<List<InAppMessage>> {
         return Single.create {
@@ -48,11 +55,11 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
         })
     }
 
-    override fun getTeams(user: User): List<Team> {
+    override fun getTeams(): Single<List<Team>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getEvents(): Single<List<Event>> {
+    override fun getEvents(teamId: Int): Single<List<Event>> {
         val rand = Math.random()
         if (rand > 0.9) {
             return Single.create {
@@ -64,7 +71,7 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
         }
     }
 
-    override fun getTeam(user: User, teamId: Int): Team {
+    override fun getTeam(teamId: Int): Single<Team> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -106,7 +113,7 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
     }
 
     private fun createDummyEvent(position: Int): Event {
-        return OtherEvent(position,
+        return Event(position,
                 "Apéro " + (position).toString(),
                 "Une soirée " + position,
                 LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
