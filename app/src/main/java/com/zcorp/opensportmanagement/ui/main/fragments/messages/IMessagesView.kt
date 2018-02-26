@@ -10,5 +10,4 @@ interface IMessagesView {
     fun scrollToPosition(position: Int)
     fun closeKeyboardAndClear()
     fun showProgress()
-    fun sendMessage(message: String)
 }

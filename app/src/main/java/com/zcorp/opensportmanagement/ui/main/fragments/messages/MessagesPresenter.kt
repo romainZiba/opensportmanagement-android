@@ -2,7 +2,6 @@ package com.zcorp.opensportmanagement.ui.main.fragments.messages
 
 import android.util.Log
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.HOST
@@ -34,7 +33,7 @@ class MessagesPresenter @Inject constructor(
 
     override fun onAttach(view: IMessagesView) {
         mMessagesView = view
-        mStompClient = stompClientProvider.client("ws://$HOST:$PORT/chatWS/websocket")
+        mStompClient = stompClientProvider.client("wss://$HOST:$PORT/chatWS/websocket")
         mStompClient.topic("/topic/messages")
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
@@ -43,6 +42,7 @@ class MessagesPresenter @Inject constructor(
                             run {
                                 addSortedMessage(objectMapper.readValue(topicMessage.payload))
                                 mMessagesView.onMessagesAvailable()
+                                mMessagesView.scrollToPosition(mMessages.size - 1)
                                 mMessagesView.showNewMessageIndicator()
                             }
                         },
@@ -81,10 +81,8 @@ class MessagesPresenter @Inject constructor(
         dataManager.createMessage(postedMessage)
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
-                .subscribe({ message ->
-                    addSortedMessage(message)
-                    mMessagesView.onMessagesAvailable()
-                    mMessagesView.scrollToPosition(mMessages.size - 1)
+                .subscribe({
+                    // Do nothing
                 }, {
                     Log.d(TAG, it.localizedMessage)
                     mMessagesView.showNetworkError()

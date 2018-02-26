@@ -1,6 +1,5 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.messages
 
-
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -9,14 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter.MessageRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_messages.*
 import kotlinx.android.synthetic.main.fragment_messages.view.*
 import javax.inject.Inject
-
 
 /**
  * A fragment with messages
@@ -26,7 +24,7 @@ class MessagesFragment : BaseFragment(), IMessagesView {
     @Inject
     lateinit var presenter: IMessagesPresenter
 
-    lateinit var mSnackbar: Snackbar
+    var mSnackbar: Snackbar? = null
 
     override fun showNetworkError() {
         Log.d("", "we should show a network error")
@@ -50,18 +48,15 @@ class MessagesFragment : BaseFragment(), IMessagesView {
     }
 
     override fun showNewMessageIndicator() {
-        mSnackbar = Snackbar.make(this.view, "New message available", Snackbar.LENGTH_LONG)
-                .setAction("OK", { mSnackbar.dismiss() })
-        mSnackbar.setActionTextColor(resources.getColor(R.color.light_green))
-        mSnackbar.view.findViewById<TextView>(android.support.design.R.id.snackbar_text).setTextColor(resources.getColor(R.color.white))
-        mSnackbar.show()
+        mSnackbar = ThemedSnackbar.make(this.view, "New message available", Snackbar.LENGTH_LONG)
+                .setAction("OK", {
+                    mSnackbar!!.dismiss()
+                    mSnackbar = null
+                })
+        mSnackbar!!.show()
     }
 
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun sendMessage(message: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

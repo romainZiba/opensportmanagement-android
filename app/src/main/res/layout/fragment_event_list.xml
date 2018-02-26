@@ -33,14 +33,6 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <TextView
-            android:id="@+id/eventsNetworkError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/network_error"
-            android:visibility="invisible" />
-
     </LinearLayout>
 
     <FrameLayout

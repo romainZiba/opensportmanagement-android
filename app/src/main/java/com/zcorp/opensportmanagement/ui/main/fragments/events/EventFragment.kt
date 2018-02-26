@@ -2,10 +2,12 @@ package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.*
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventRecyclerAdapter
@@ -32,14 +34,11 @@ class EventFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshL
     lateinit var presenter: IEventsPresenter
 
     override fun showNetworkError() {
-        eventsNetworkError.visibility = View.VISIBLE
-        rv_events_list.visibility = View.INVISIBLE
+        ThemedSnackbar.make(view, R.string.network_error, Snackbar.LENGTH_LONG).show()
         swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onDataAvailable() {
-        rv_events_list.visibility = View.VISIBLE
-        eventsNetworkError.visibility = View.INVISIBLE
         rv_events_list.adapter.notifyDataSetChanged()
         swipeRefreshLayout.isRefreshing = false
     }
