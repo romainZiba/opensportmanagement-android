@@ -1,8 +1,10 @@
 package com.zcorp.opensportmanagement.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.threeten.bp.LocalDateTime
 
-open class Event(var id: Int,
+@JsonIgnoreProperties(ignoreUnknown = true)
+open class Event(var _id: Int,
                  var name: String,
                  var description: String,
                  var fromDate: LocalDateTime,

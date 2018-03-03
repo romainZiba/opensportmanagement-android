@@ -7,7 +7,7 @@
     android:id="@+id/event_list_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment">
+    tools:context="com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment">
 
     <LinearLayout
         android:id="@+id/events_background_layout"
@@ -17,7 +17,7 @@
         android:background="@drawable/background_blue_design">
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+            android:id="@+id/event_swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

@@ -5,8 +5,8 @@ import android.view.View
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
+import com.zcorp.opensportmanagement.ui.main.fragments.conversations.IConversationsPresenter
+import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -19,16 +19,16 @@ import org.robolectric.util.FragmentTestUtil.startFragment
  * Created by romainz on 07/02/18.
  */
 @RunWith(RobolectricTestRunner::class)
-class EventFragmentTest {
+class EventsFragmentTest {
 
     @Test
     fun shouldShowNetworkError() {
 
-        val presenter: IEventsPresenter = mock()
-        whenever(presenter.getEventsFromModel()).then {}
-        whenever(presenter.getEventsCount()).doReturn(3)
+        val presenter: IConversationsPresenter = mock()
+        whenever(presenter.getConversationsFromModel()).then {}
+        whenever(presenter.getConversationsCount()).doReturn(3)
 
-        val fragment = EventFragment.newInstance(1)
+        val fragment = EventsFragment.newInstance(1)
         fragment.setPresenterForTest(presenter)
         startFragment(fragment)
         assertNotNull(fragment)

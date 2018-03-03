@@ -1,8 +1,8 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter
+package com.zcorp.opensportmanagement.ui.messages.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter
+import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter
 import com.zcorp.opensportmanagement.utils.datetime.DateTimeFormatter
 import kotlinx.android.synthetic.main.rv_item_message_current_user.view.*
 import kotlinx.android.synthetic.main.rv_item_message_friend.view.*

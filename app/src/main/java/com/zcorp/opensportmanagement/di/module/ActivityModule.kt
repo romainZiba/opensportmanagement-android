@@ -10,8 +10,11 @@ import com.zcorp.opensportmanagement.ui.login.ILoginPresenter
 import com.zcorp.opensportmanagement.ui.login.LoginPresenter
 import com.zcorp.opensportmanagement.ui.main.IMainPresenter
 import com.zcorp.opensportmanagement.ui.main.MainPresenter
-import com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment
+import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
+import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter
+import com.zcorp.opensportmanagement.ui.messages.MessagesPresenter
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
+import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
 import dagger.Module
 import dagger.Provides
 
@@ -43,7 +46,16 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
 
     @Provides
     @PerActivity
-    internal fun provideEventsFragment(): EventFragment {
-        return EventFragment()
+    internal fun provideEventsFragment(): ConversationsFragment {
+        return ConversationsFragment()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideMessagesPresenter(dataManager: IDataManager,
+                                          schedulerProvider: SchedulerProvider,
+                                          stompClientProvider: IStompClientProvider,
+                                          objectMapper: ObjectMapper): IMessagesPresenter {
+        return MessagesPresenter(dataManager, schedulerProvider, stompClientProvider, objectMapper)
     }
 }

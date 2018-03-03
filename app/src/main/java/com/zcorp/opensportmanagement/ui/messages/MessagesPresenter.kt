@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.messages
+package com.zcorp.opensportmanagement.ui.messages
 
 import android.util.Log
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -6,10 +6,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.HOST
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.PORT
+import com.zcorp.opensportmanagement.di.module.NetModule.Companion.WSSCHEME
 import com.zcorp.opensportmanagement.model.InAppMessage
-import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter.Companion.CURRENT_USER
-import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter.Companion.FRIEND
-import com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter.IMessageViewHolder
+import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter.Companion.CURRENT_USER
+import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter.Companion.FRIEND
+import com.zcorp.opensportmanagement.ui.messages.adapter.IMessageViewHolder
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
 import org.threeten.bp.OffsetDateTime
@@ -30,11 +31,17 @@ class MessagesPresenter @Inject constructor(
     private var mMessages: MutableList<InAppMessage> = mutableListOf()
     private lateinit var mMessagesView: IMessagesView
     private lateinit var mStompClient: StompClient
+    private lateinit var mConversationId: String
+
+    override fun setConversationId(conversationId: String) {
+        this.mConversationId = conversationId
+    }
 
     override fun onAttach(view: IMessagesView) {
+        this.getMessagesFromApi()
         mMessagesView = view
-        mStompClient = stompClientProvider.client("wss://$HOST:$PORT/chatWS/websocket")
-        mStompClient.topic("/topic/messages")
+        mStompClient = stompClientProvider.client("$WSSCHEME://$HOST:$PORT/messagesWS/websocket")
+        mStompClient.topic("/topic/$mConversationId")
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(
@@ -61,7 +68,7 @@ class MessagesPresenter @Inject constructor(
     }
 
     override fun getMessagesFromApi() {
-        dataManager.getMessagesOrderedByDate()
+        dataManager.getMessagesOrderedByDate(mConversationId)
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
                 .subscribe({
@@ -77,7 +84,7 @@ class MessagesPresenter @Inject constructor(
     }
 
     override fun onPostMessage(stringMessage: String) {
-        val postedMessage = InAppMessage(stringMessage, dataManager.getCurrentUserName(), OffsetDateTime.now())
+        val postedMessage = InAppMessage(mConversationId, "", dataManager.getCurrentUserName(), stringMessage, OffsetDateTime.now())
         dataManager.createMessage(postedMessage)
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())

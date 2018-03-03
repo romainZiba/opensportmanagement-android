@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
+import android.util.Log
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.model.Event
@@ -16,7 +17,9 @@ import javax.inject.Inject
  * Created by romainz on 03/02/18.
  */
 class EventsPresenter @Inject constructor(val dataManager: IDataManager, val schedulerProvider: SchedulerProvider) : IEventsPresenter {
-
+    companion object {
+        val TAG = EventsPresenter::class.java.simpleName
+    }
     private var mEvents: List<Event> = mutableListOf()
     private lateinit var mView: IEventsView
 
@@ -30,9 +33,11 @@ class EventsPresenter @Inject constructor(val dataManager: IDataManager, val sch
                         mEvents = it
                         mView.onDataAvailable()
                     }, {
+                        Log.d(TAG, "Error while retrieving events $it")
                         mView.showNetworkError()
                     })
         } catch (e: IOException) {
+            Log.d(TAG, "Error while retrieving events $e")
             mView.showNetworkError()
         }
     }
@@ -61,7 +66,7 @@ class EventsPresenter @Inject constructor(val dataManager: IDataManager, val sch
         if (mView.isFloatingMenuOpened()) {
             // Do nothing
         } else {
-            mView.showEventDetails(mEvents[adapterPosition].id)
+            mView.showEventDetails(mEvents[adapterPosition]._id)
         }
     }
 

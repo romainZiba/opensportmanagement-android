@@ -17,17 +17,31 @@ import javax.inject.Inject
  */
 class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHelper) : IDataManager {
 
+    private var mConversations: MutableList<Conversation> = mutableListOf(
+            Conversation("AAAA-BBBB-CCC", "Bonjour à tous"),
+            Conversation("ABCD-KKKF-JKFKKF", "Match programmé"),
+            Conversation("AAAA-KOFOOFF-CCC", "Entraînement annulé")
+    )
+
     private var mMessages: MutableList<InAppMessage> = mutableListOf()
+    private var mCurrentTeamId: Int = 0
+
+
+    override fun getConversations(): Single<List<Conversation>> {
+        return Single.create {
+            it.onSuccess(mConversations)
+        }
+    }
 
     override fun getCurrentTeamId(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return mCurrentTeamId
     }
 
     override fun setCurrentTeamId(teamId: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mCurrentTeamId = teamId
     }
 
-    override fun getMessagesOrderedByDate(): Single<List<InAppMessage>> {
+    override fun getMessagesOrderedByDate(conversationId: String): Single<List<InAppMessage>> {
         return Single.create {
             val messagesFromRomain = IntRange(1, 21).filter { it % 2 == 0 }.map { createDummyMessage(it, "Romain") }.toList()
             val messagesFromFriend = IntRange(1, 21).filter { (it + 1) % 2 == 0 }.map { createDummyMessage(it, "Ami") }.toList()
@@ -44,19 +58,21 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
     }
 
     private fun createDummyMessage(position: Int, username: String) =
-            InAppMessage("Message " + position, username, OffsetDateTime.now().minusMonths(1).plusHours(position.toLong()))
+            InAppMessage("AAA", "Hello World", "Message $position", username, OffsetDateTime.now().minusMonths(1).plusHours(position.toLong()))
 
     override fun login(loginRequest: LoginRequest): Single<Response<ResponseBody>> {
         return Single.create({
             loginFromNetwork(loginRequest.username)
-            val responseBody = ResponseBody.create(MediaType.parse("application/json"), "")
+            val responseBody = ResponseBody.create(MediaType.parse("application/json"), "{\"username\": \"Romain\"}")
             val headers = Headers.of("Authorization", "Bearer kjfkkf.kdjdjd.kkff")
             it.onSuccess(Response.success(responseBody, headers))
         })
     }
 
     override fun getTeams(): Single<List<Team>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.create {
+            it.onSuccess(listOf(Team(1, "Astropico", Team.Sport.BASKETBALL, Team.Gender.BOTH, Team.AgeGroup.ADULTS)))
+        }
     }
 
     override fun getEvents(teamId: Int): Single<List<Event>> {

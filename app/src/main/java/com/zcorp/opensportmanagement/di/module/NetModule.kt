@@ -47,6 +47,7 @@ class NetModule {
 
     companion object {
         const val SCHEME = "https"
+        const val WSSCHEME = "wss"
         const val HOST = "ns3268474.ip-5-39-81.eu"
         const val PORT = 8090
     }

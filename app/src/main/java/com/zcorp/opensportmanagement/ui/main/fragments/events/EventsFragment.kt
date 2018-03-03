@@ -26,7 +26,7 @@ import javax.inject.Inject
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
  */
-class EventFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshListener {
+class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshListener {
 
     private var mColumnCount = 1
 
@@ -35,12 +35,12 @@ class EventFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshL
 
     override fun showNetworkError() {
         ThemedSnackbar.make(view, R.string.network_error, Snackbar.LENGTH_LONG).show()
-        swipeRefreshLayout.isRefreshing = false
+        event_swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onDataAvailable() {
         rv_events_list.adapter.notifyDataSetChanged()
-        swipeRefreshLayout.isRefreshing = false
+        event_swipeRefreshLayout.isRefreshing = false
     }
 
     override fun showEventDetails(eventId: Int) {
@@ -72,7 +72,7 @@ class EventFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshL
     }
 
     override fun showProgress() {
-        swipeRefreshLayout.isRefreshing = true
+        event_swipeRefreshLayout.isRefreshing = true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,7 +102,7 @@ class EventFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshL
 
     override fun onResume() {
         super.onResume()
-        swipeRefreshLayout.setOnRefreshListener(this)
+        event_swipeRefreshLayout.setOnRefreshListener(this)
         presenter.getEventsFromModel()
     }
 
@@ -131,8 +131,8 @@ class EventFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshL
         private val ARG_COLUMN_COUNT = "column-count"
 
         // TODO: Customize parameter initialization
-        fun newInstance(columnCount: Int): EventFragment {
-            val fragment = EventFragment()
+        fun newInstance(columnCount: Int): EventsFragment {
+            val fragment = EventsFragment()
             val args = Bundle()
             args.putInt(ARG_COLUMN_COUNT, columnCount)
             fragment.arguments = args

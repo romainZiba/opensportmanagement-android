@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter
+package com.zcorp.opensportmanagement.ui.messages.adapter
 
 import org.threeten.bp.OffsetDateTime
 

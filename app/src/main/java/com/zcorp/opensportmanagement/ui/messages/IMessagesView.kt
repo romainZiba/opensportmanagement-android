@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.messages
+package com.zcorp.opensportmanagement.ui.messages
 
 /**
  * Created by romainz on 16/02/18.

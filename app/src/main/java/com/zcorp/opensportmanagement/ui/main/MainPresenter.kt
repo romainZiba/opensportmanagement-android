@@ -25,7 +25,7 @@ class MainPresenter @Inject constructor(val dataManager: IDataManager, val sched
     }
 
     override fun onDisplayThirdFragment() {
-        mainView.displayMessages()
+        mainView.displayConversations()
     }
 
     override fun onAttach(view: IMainView) {

@@ -30,12 +30,12 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
         mPreferencesHelper.setCurrentTeamId(teamId)
     }
 
-    override fun getMessagesOrderedByDate(): Single<List<InAppMessage>> {
-        return retrofit.create(MessagesApi::class.java).getMessagesOrderedByDate()
+    override fun getConversations(): Single<List<Conversation>> {
+        return retrofit.create(MessagesApi::class.java).getConversations()
     }
 
-    fun getMessagesFromServerResponse(string: String): List<InAppMessage> {
-        return objectMapper.readValue(string)
+    override fun getMessagesOrderedByDate(conversationId: String): Single<List<InAppMessage>> {
+        return retrofit.create(MessagesApi::class.java).getMessagesOrderedByDate(conversationId)
     }
 
     override fun createMessage(message: InAppMessage): Single<InAppMessage> {
@@ -55,7 +55,7 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
     }
 
     override fun getEventsCount(): Single<Int> {
-//        return retrofit.create(EventApi::class.java).getEventsCount()
+//        return retrofit.create(EventApi::class.java).getConversationsCount()
         //TODO: remove this by a real API call
         return Single.just(20)
     }

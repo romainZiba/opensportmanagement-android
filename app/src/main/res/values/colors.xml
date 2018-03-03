@@ -16,6 +16,7 @@
     <color name="translucent_white">#88ffffff</color>
     <color name="fb">#3b5998</color>
     <color name="google">#d34836</color>
+    <color name="transparent_black">#4D000000</color>
 
     <!--Design colors-->
     <color name="red_dark">#F06423</color>

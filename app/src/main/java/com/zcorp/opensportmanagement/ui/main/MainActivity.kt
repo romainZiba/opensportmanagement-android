@@ -7,8 +7,8 @@ import android.support.v7.widget.Toolbar
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.button.PlusOneFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.events.EventFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.messages.MessagesFragment
+import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
+import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -38,10 +38,10 @@ class MainActivity : BaseActivity(), IMainView {
     override fun displayEvents() {
         val transaction = fragmentManager.beginTransaction()
         hideFragmentWithTag(transaction, PLUS_ONE)
-        hideFragmentWithTag(transaction, MESSAGES)
+        hideFragmentWithTag(transaction, CONVERSATIONS)
         var eventsFragment = fragmentManager.findFragmentByTag(EVENTS)
         if (eventsFragment == null) {
-            eventsFragment = EventFragment()
+            eventsFragment = EventsFragment()
             transaction.add(R.id.fragment_container, eventsFragment, EVENTS)
         } else {
             transaction.show(eventsFragment)
@@ -52,7 +52,7 @@ class MainActivity : BaseActivity(), IMainView {
     override fun displayGoogle() {
         val transaction = fragmentManager.beginTransaction()
         hideFragmentWithTag(transaction, EVENTS)
-        hideFragmentWithTag(transaction, MESSAGES)
+        hideFragmentWithTag(transaction, CONVERSATIONS)
         var plusOneFragment = fragmentManager.findFragmentByTag(PLUS_ONE)
         if (plusOneFragment == null) {
             plusOneFragment = PlusOneFragment()
@@ -63,16 +63,16 @@ class MainActivity : BaseActivity(), IMainView {
         transaction.commit()
     }
 
-    override fun displayMessages() {
+    override fun displayConversations() {
         val transaction = fragmentManager.beginTransaction()
         hideFragmentWithTag(transaction, EVENTS)
         hideFragmentWithTag(transaction, PLUS_ONE)
-        var messagesFragment = fragmentManager.findFragmentByTag(MESSAGES)
-        if (messagesFragment == null) {
-            messagesFragment = MessagesFragment()
-            transaction.add(R.id.fragment_container, messagesFragment, MESSAGES)
+        var conversationsFragment = fragmentManager.findFragmentByTag(CONVERSATIONS)
+        if (conversationsFragment == null) {
+            conversationsFragment = ConversationsFragment()
+            transaction.add(R.id.fragment_container, conversationsFragment, CONVERSATIONS)
         } else {
-            transaction.show(messagesFragment)
+            transaction.show(conversationsFragment)
         }
         transaction.commit()
     }
@@ -97,6 +97,6 @@ class MainActivity : BaseActivity(), IMainView {
     companion object {
         const val EVENTS = "EVENTS"
         const val PLUS_ONE = "PLUS_ONE"
-        const val MESSAGES = "MESSAGES"
+        const val CONVERSATIONS = "CONVERSATIONS"
     }
 }

@@ -121,4 +121,7 @@
     <string name="send">Send</string>
     <string name="some_text">Some text</string>
     <string name="someuser_and_date">someUser - 01/01/2016 10:47</string>
+    <string name="example_of_topic">Example of topic</string>
+    <string name="last_message_with_username">Romain: Last message with username</string>
+    <string name="example_date_message">10/01/2018</string>
 </resources>

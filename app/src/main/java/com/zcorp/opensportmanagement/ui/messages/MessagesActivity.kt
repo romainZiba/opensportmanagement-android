@@ -1,25 +1,23 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.messages
+package com.zcorp.opensportmanagement.ui.messages
 
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
-import com.zcorp.opensportmanagement.ui.base.BaseFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter.MessageRecyclerAdapter
-import kotlinx.android.synthetic.main.fragment_messages.*
-import kotlinx.android.synthetic.main.fragment_messages.view.*
+import com.zcorp.opensportmanagement.ui.base.BaseActivity
+import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment.Companion.CONVERSATION_ID_KEY
+import com.zcorp.opensportmanagement.ui.messages.adapter.MessageRecyclerAdapter
+import kotlinx.android.synthetic.main.activity_messages.*
 import javax.inject.Inject
 
 /**
  * A fragment with messages
  */
-class MessagesFragment : BaseFragment(), IMessagesView {
+class MessagesActivity : BaseActivity(), IMessagesView {
 
     @Inject
     lateinit var presenter: IMessagesPresenter
@@ -39,16 +37,17 @@ class MessagesFragment : BaseFragment(), IMessagesView {
     }
 
     override fun closeKeyboardAndClear() {
-        val view = activity.currentFocus
+        val view = this.currentFocus
         if (view != null) {
-            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
         et_message.text.clear()
     }
 
     override fun showNewMessageIndicator() {
-        mSnackbar = ThemedSnackbar.make(this.view, "New message available", Snackbar.LENGTH_LONG)
+        mSnackbar = ThemedSnackbar.make(findViewById<View>(android.R.id.content).rootView,
+                "New message available", Snackbar.LENGTH_LONG)
                 .setAction("OK", {
                     mSnackbar!!.dismiss()
                     mSnackbar = null
@@ -62,21 +61,12 @@ class MessagesFragment : BaseFragment(), IMessagesView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.mFragmentComponent.inject(this)
+        setContentView(R.layout.activity_messages)
+        super.mActivityComponent.inject(this)
+        val conversationId = intent.getStringExtra(CONVERSATION_ID_KEY)
+        presenter.setConversationId(conversationId)
         presenter.onAttach(this)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        val view = inflater!!.inflate(R.layout.fragment_messages, container, false)
-        view.rv_messages_list.adapter = MessageRecyclerAdapter(presenter)
-        view.btn_send_message.setOnClickListener { presenter.onPostMessage(view.et_message.text.toString()) }
-        return view
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.getMessagesFromApi()
+        rv_messages_list.adapter = MessageRecyclerAdapter(presenter)
+        btn_send_message.setOnClickListener { presenter.onPostMessage(et_message.text.toString()) }
     }
 }

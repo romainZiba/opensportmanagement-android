@@ -1,10 +1,10 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.messages.adapter
+package com.zcorp.opensportmanagement.ui.messages.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.ui.main.fragments.messages.IMessagesPresenter
+import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter
 
 /**
  * [RecyclerView.Adapter] that can display a [Event]
