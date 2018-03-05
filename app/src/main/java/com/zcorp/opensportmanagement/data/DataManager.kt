@@ -38,8 +38,8 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
         return retrofit.create(MessagesApi::class.java).getMessagesOrderedByDate(conversationId)
     }
 
-    override fun createMessage(message: InAppMessage): Single<InAppMessage> {
-        return retrofit.create(MessagesApi::class.java).createMessage(message)
+    override fun createMessage(conversationId: String, messageString: String): Single<InAppMessage> {
+        return retrofit.create(MessagesApi::class.java).createMessage(conversationId, messageString)
     }
 
     override fun login(loginRequest: LoginRequest): Single<Response<ResponseBody>> {

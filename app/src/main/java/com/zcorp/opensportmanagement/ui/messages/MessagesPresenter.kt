@@ -84,8 +84,7 @@ class MessagesPresenter @Inject constructor(
     }
 
     override fun onPostMessage(stringMessage: String) {
-        val postedMessage = InAppMessage(mConversationId, "", dataManager.getCurrentUserName(), stringMessage, OffsetDateTime.now())
-        dataManager.createMessage(postedMessage)
+        dataManager.createMessage(mConversationId, stringMessage)
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
                 .subscribe({

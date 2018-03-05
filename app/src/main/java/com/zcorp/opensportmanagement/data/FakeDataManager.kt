@@ -50,7 +50,8 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
         }
     }
 
-    override fun createMessage(message: InAppMessage): Single<InAppMessage> {
+    override fun createMessage(conversationId: String, messageString: String): Single<InAppMessage> {
+        val message = InAppMessage("", "", "", messageString, OffsetDateTime.now())
         mMessages.add(message)
         return Single.create {
             it.onSuccess(message)
