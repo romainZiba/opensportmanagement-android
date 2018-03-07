@@ -7,13 +7,13 @@ import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.HOST
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.PORT
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.WSSCHEME
+import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.InAppMessage
 import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter.Companion.CURRENT_USER
 import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter.Companion.FRIEND
 import com.zcorp.opensportmanagement.ui.messages.adapter.IMessageViewHolder
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
-import org.threeten.bp.OffsetDateTime
 import ua.naiksoftware.stomp.client.StompClient
 import javax.inject.Inject
 
@@ -53,7 +53,9 @@ class MessagesPresenter @Inject constructor(
                                 mMessagesView.showNewMessageIndicator()
                             }
                         },
-                        { error -> Log.d("From websocket", error.toString()) })
+                        { error ->
+                            Log.d("From websocket", error.toString())
+                        })
         mStompClient.connect()
     }
 
@@ -84,7 +86,7 @@ class MessagesPresenter @Inject constructor(
     }
 
     override fun onPostMessage(stringMessage: String) {
-        dataManager.createMessage(mConversationId, stringMessage)
+        dataManager.createMessage(mConversationId, MessageDto(stringMessage))
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
                 .subscribe({

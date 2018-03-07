@@ -1,10 +1,12 @@
 package com.zcorp.opensportmanagement.data
 
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
+import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Single
 import okhttp3.Headers
 import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
@@ -50,8 +52,8 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
         }
     }
 
-    override fun createMessage(conversationId: String, messageString: String): Single<InAppMessage> {
-        val message = InAppMessage("", "", "", messageString, OffsetDateTime.now())
+    override fun createMessage(conversationId: String, messageDto: MessageDto): Single<InAppMessage> {
+        val message = InAppMessage("", "", "", messageDto.message, OffsetDateTime.now())
         mMessages.add(message)
         return Single.create {
             it.onSuccess(message)

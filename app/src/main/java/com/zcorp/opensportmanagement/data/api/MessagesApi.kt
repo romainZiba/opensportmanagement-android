@@ -1,8 +1,10 @@
 package com.zcorp.opensportmanagement.data.api
 
+import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.Conversation
 import com.zcorp.opensportmanagement.model.InAppMessage
 import io.reactivex.Single
+import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -20,5 +22,5 @@ interface MessagesApi {
 
     @POST("conversations/{conversationId}/messages")
     fun createMessage(@Path("conversationId") conversationId: String,
-                      @Body messageString: String): Single<InAppMessage>
+                      @Body messageDto: MessageDto): Single<InAppMessage>
 }

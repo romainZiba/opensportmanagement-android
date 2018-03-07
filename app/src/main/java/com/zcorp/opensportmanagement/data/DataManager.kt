@@ -1,16 +1,17 @@
 package com.zcorp.opensportmanagement.data
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.MessagesApi
 import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
+import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Single
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import org.threeten.bp.LocalDateTime
 import retrofit2.Response
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -38,8 +39,8 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
         return retrofit.create(MessagesApi::class.java).getMessagesOrderedByDate(conversationId)
     }
 
-    override fun createMessage(conversationId: String, messageString: String): Single<InAppMessage> {
-        return retrofit.create(MessagesApi::class.java).createMessage(conversationId, messageString)
+    override fun createMessage(conversationId: String, messageDto: MessageDto): Single<InAppMessage> {
+        return retrofit.create(MessagesApi::class.java).createMessage(conversationId, messageDto)
     }
 
     override fun login(loginRequest: LoginRequest): Single<Response<ResponseBody>> {
