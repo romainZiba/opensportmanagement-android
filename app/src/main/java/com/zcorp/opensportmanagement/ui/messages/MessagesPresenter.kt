@@ -14,6 +14,7 @@ import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter.Companion.FR
 import com.zcorp.opensportmanagement.ui.messages.adapter.IMessageViewHolder
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
+import ua.naiksoftware.stomp.LifecycleEvent
 import ua.naiksoftware.stomp.client.StompClient
 import javax.inject.Inject
 
@@ -40,7 +41,12 @@ class MessagesPresenter @Inject constructor(
     override fun onAttach(view: IMessagesView) {
         this.getMessagesFromApi()
         mMessagesView = view
+        configureWebsocketConnection()
+    }
+
+    private fun configureWebsocketConnection() {
         mStompClient = stompClientProvider.client("$WSSCHEME://$HOST:$PORT/messagesWS/websocket")
+        mStompClient.connect()
         mStompClient.topic("/topic/$mConversationId")
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
@@ -56,7 +62,13 @@ class MessagesPresenter @Inject constructor(
                         { error ->
                             Log.d("From websocket", error.toString())
                         })
-        mStompClient.connect()
+        mStompClient.lifecycle().subscribe { lifecycleEvent ->
+            when (lifecycleEvent.type) {
+                LifecycleEvent.Type.OPENED -> Log.d(TAG, "Stomp connection opened")
+                LifecycleEvent.Type.ERROR -> Log.e(TAG, "Error", lifecycleEvent.exception)
+                LifecycleEvent.Type.CLOSED -> Log.d(TAG, "Stomp connection closed")
+            }
+        }
     }
 
     override fun onDetach() {

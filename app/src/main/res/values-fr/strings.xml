@@ -20,4 +20,5 @@
     <string name="event_item_date_example">Lundi 1 Janvier 2018</string>
     <string name="visitor_example">Visiteur</string>
     <string name="local_team_example">Local</string>
+    <string name="type_your_message">Taper votre message ici</string>
 </resources>

@@ -3,6 +3,8 @@ package com.zcorp.opensportmanagement.ui.messages
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -62,11 +64,23 @@ class MessagesActivity : BaseActivity(), IMessagesView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messages)
+        setSupportActionBar(messages_toolbar as Toolbar)
         super.mActivityComponent.inject(this)
         val conversationId = intent.getStringExtra(CONVERSATION_ID_KEY)
         presenter.setConversationId(conversationId)
-        presenter.onAttach(this)
         rv_messages_list.adapter = MessageRecyclerAdapter(presenter)
         btn_send_message.setOnClickListener { presenter.onPostMessage(et_message.text.toString()) }
+        val layoutManager = rv_messages_list.layoutManager as LinearLayoutManager
+        layoutManager.stackFromEnd = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.onAttach(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onDetach()
     }
 }
