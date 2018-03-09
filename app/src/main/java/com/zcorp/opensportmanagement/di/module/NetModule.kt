@@ -3,6 +3,7 @@ package com.zcorp.opensportmanagement.di.module
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import com.zcorp.opensportmanagement.BuildConfig
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.utils.network.TokenInterceptor
 import dagger.Module
@@ -40,7 +41,7 @@ class NetModule {
         return Retrofit.Builder()
                 .addConverterFactory(JacksonConverterFactory.create(mapper))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("$SCHEME://$HOST:$PORT")
+                .baseUrl("$SCHEME://${BuildConfig.HOST}:$PORT")
                 .client(okHttpClient)
                 .build()
     }
@@ -48,7 +49,6 @@ class NetModule {
     companion object {
         const val SCHEME = "https"
         const val WSSCHEME = "wss"
-        const val HOST = "localhost"
         const val PORT = 8090
     }
 }

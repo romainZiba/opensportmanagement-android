@@ -4,8 +4,7 @@ import android.app.Application
 import android.content.res.Configuration
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.zcorp.opensportmanagement.di.component.AppComponent
-import com.zcorp.opensportmanagement.di.component.DaggerAppComponent
-import com.zcorp.opensportmanagement.di.module.ApplicationModule
+import com.zcorp.opensportmanagement.di.component.ComponentFactory
 import java.util.*
 
 /**
@@ -15,9 +14,7 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
+        appComponent = ComponentFactory.create(this)
         systemLanguage = Locale.getDefault()
         AndroidThreeTen.init(this)
     }

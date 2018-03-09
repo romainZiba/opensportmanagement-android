@@ -3,8 +3,8 @@ package com.zcorp.opensportmanagement.ui.messages
 import android.util.Log
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.zcorp.opensportmanagement.BuildConfig
 import com.zcorp.opensportmanagement.data.IDataManager
-import com.zcorp.opensportmanagement.di.module.NetModule.Companion.HOST
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.PORT
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.WSSCHEME
 import com.zcorp.opensportmanagement.dto.MessageDto
@@ -45,7 +45,7 @@ class MessagesPresenter @Inject constructor(
     }
 
     private fun configureWebsocketConnection() {
-        mStompClient = stompClientProvider.client("$WSSCHEME://$HOST:$PORT/messagesWS/websocket")
+        mStompClient = stompClientProvider.client("$WSSCHEME://${BuildConfig.HOST}:$PORT/messagesWS/websocket")
         mStompClient.connect()
         mStompClient.topic("/topic/$mConversationId")
                 .subscribeOn(schedulerProvider.newThread())
