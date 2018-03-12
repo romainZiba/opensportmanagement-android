@@ -3,16 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="0dp">
 
     <ImageView
         android:id="@+id/iv_local_team_match"
         style="@style/TeamImage"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/local_team_description"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_vs_match"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/houston_rockets" />
@@ -23,12 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:text="@string/local_team_example"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_local_team_match"
-        app:layout_constraintStart_toStartOf="@+id/iv_local_team_match"
         app:layout_constraintEnd_toEndOf="@+id/iv_local_team_match"
-        tools:layout_editor_absoluteX="41dp"
-        tools:text="@string/local_team_example" />
+        app:layout_constraintStart_toStartOf="@+id/iv_local_team_match"
+        app:layout_constraintTop_toBottomOf="@+id/iv_local_team_match"
+        tools:layout_editor_absoluteX="41dp" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tv_vs_match"
@@ -50,12 +49,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:text="@string/visitor_example"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_visitor_match"
-        app:layout_constraintStart_toStartOf="@+id/iv_visitor_match"
         app:layout_constraintEnd_toEndOf="@+id/iv_visitor_match"
-        tools:layout_editor_absoluteX="234dp"
-        tools:text="@string/visitor_example" />
+        app:layout_constraintStart_toStartOf="@+id/iv_visitor_match"
+        app:layout_constraintTop_toBottomOf="@+id/iv_visitor_match"
+        tools:layout_editor_absoluteX="234dp" />
 
     <ImageView
         android:id="@+id/iv_visitor_match"
