@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_message_user"
+        android:id="@+id/civ_participant_user"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="8dp"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_user_message_content"
+        android:id="@+id/tv_participant_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -24,9 +24,9 @@
         android:background="@drawable/rounded_corner_messages_user"
         android:padding="10dp"
         android:text="@string/some_text"
-        app:layout_constraintEnd_toStartOf="@+id/civ_message_user"
+        app:layout_constraintEnd_toStartOf="@+id/civ_participant_user"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/civ_message_user" />
+        app:layout_constraintTop_toTopOf="@+id/civ_participant_user" />
 
     <TextView
         android:id="@+id/tv_user_message_username_and_date"
@@ -35,8 +35,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/someuser_and_date"
         android:textSize="@dimen/user_messages_text_size"
-        app:layout_constraintTop_toBottomOf="@+id/tv_user_message_content"
-        app:layout_constraintEnd_toEndOf="@id/tv_user_message_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_participant_name"
+        app:layout_constraintEnd_toEndOf="@id/tv_participant_name"
         tools:layout_editor_absoluteX="203dp" />
 
 

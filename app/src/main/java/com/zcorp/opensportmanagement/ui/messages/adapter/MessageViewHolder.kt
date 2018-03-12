@@ -15,7 +15,7 @@ class MessageViewHolder(private val mView: View, private val mType: Int) : Recyc
 
     override fun setMessage(message: String) {
         when (mType) {
-            IMessagesPresenter.CURRENT_USER -> mView.tv_user_message_content.text = message
+            IMessagesPresenter.CURRENT_USER -> mView.tv_participant_name.text = message
             else -> mView.tv_friend_message_content.text = message
         }
     }

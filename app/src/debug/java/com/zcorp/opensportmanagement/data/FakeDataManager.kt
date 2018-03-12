@@ -6,7 +6,6 @@ import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Single
 import okhttp3.Headers
 import okhttp3.MediaType
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
@@ -25,9 +24,24 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
             Conversation("AAAA-KOFOOFF-CCC", "Entraînement annulé")
     )
 
+    private var mTeamMembers: MutableList<User> = mutableListOf(
+            User("rza", "AAA", IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER, "rza@gmail.com", "",
+                    mutableSetOf()),
+            User("pol", "ABC", IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER, "pol@gmail.com", "",
+                    mutableSetOf()),
+            User("cdy", "AAA", IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER, "cdy@gmail.com", "",
+                    mutableSetOf())
+    )
+
     private var mMessages: MutableList<InAppMessage> = mutableListOf()
     private var mCurrentTeamId: Int = 0
 
+
+    override fun getTeamMembers(): Single<List<User>> {
+        return Single.create {
+            it.onSuccess(mTeamMembers)
+        }
+    }
 
     override fun getConversations(): Single<List<Conversation>> {
         return Single.create {
