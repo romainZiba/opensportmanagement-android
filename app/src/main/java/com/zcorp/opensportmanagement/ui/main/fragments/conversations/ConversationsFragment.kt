@@ -32,13 +32,11 @@ import javax.inject.Inject
  */
 class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLayout.OnRefreshListener {
 
-    private var mColumnCount = 1
-
     @Inject
     lateinit var presenter: IConversationsPresenter
 
     override fun showNetworkError() {
-        ThemedSnackbar.make(view, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
         conversations_swipeRefreshLayout.isRefreshing = false
     }
 
@@ -61,15 +59,10 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
         super.onCreate(savedInstanceState)
         super.mFragmentComponent.inject(this)
         presenter.onAttach(this)
-
-        if (arguments != null) {
-            mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
-        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_conversation_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_conversation_list, container, false)
         val recyclerView = view.rv_conversations_list
         recyclerView.adapter = ConversationsRecyclerAdapter(presenter)
         val dividerItemDecoration = DividerItemDecoration(recyclerView.context,
@@ -89,39 +82,11 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
         presenter.getConversationsFromModel()
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-//        super.onCreateOptionsMenu(menu, inflater)
-//        inflater!!.inflate(R.menu.events_toolbar, menu)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-//        return when (item?.itemId) {
-//            R.id.refresh_events -> {
-//                presenter.getConversationsFromModel()
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
-
     override fun onRefresh() {
         presenter.getConversationsFromModel()
     }
 
     companion object {
-
-        // TODO: Customize parameter argument names
-        private val ARG_COLUMN_COUNT = "column-count"
-
-        public val CONVERSATION_ID_KEY = "conversationId"
-
-        // TODO: Customize parameter initialization
-        fun newInstance(columnCount: Int): ConversationsFragment {
-            val fragment = ConversationsFragment()
-            val args = Bundle()
-            args.putInt(ARG_COLUMN_COUNT, columnCount)
-            fragment.arguments = args
-            return fragment
-        }
+        val CONVERSATION_ID_KEY = "conversationId"
     }
 }

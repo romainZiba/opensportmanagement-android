@@ -1,8 +1,8 @@
 package com.zcorp.opensportmanagement.ui.main
 
-import android.app.FragmentTransaction
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.Toolbar
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
@@ -36,10 +36,10 @@ class MainActivity : BaseActivity(), IMainView {
     }
 
     override fun displayEvents() {
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = supportFragmentManager.beginTransaction()
         hideFragmentWithTag(transaction, PLUS_ONE)
         hideFragmentWithTag(transaction, CONVERSATIONS)
-        var eventsFragment = fragmentManager.findFragmentByTag(EVENTS)
+        var eventsFragment = supportFragmentManager.findFragmentByTag(EVENTS)
         if (eventsFragment == null) {
             eventsFragment = EventsFragment()
             transaction.add(R.id.fragment_container, eventsFragment, EVENTS)
@@ -50,10 +50,10 @@ class MainActivity : BaseActivity(), IMainView {
     }
 
     override fun displayGoogle() {
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = supportFragmentManager.beginTransaction()
         hideFragmentWithTag(transaction, EVENTS)
         hideFragmentWithTag(transaction, CONVERSATIONS)
-        var plusOneFragment = fragmentManager.findFragmentByTag(PLUS_ONE)
+        var plusOneFragment = supportFragmentManager.findFragmentByTag(PLUS_ONE)
         if (plusOneFragment == null) {
             plusOneFragment = PlusOneFragment()
             transaction.add(R.id.fragment_container, plusOneFragment, PLUS_ONE)
@@ -64,10 +64,10 @@ class MainActivity : BaseActivity(), IMainView {
     }
 
     override fun displayConversations() {
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = supportFragmentManager.beginTransaction()
         hideFragmentWithTag(transaction, EVENTS)
         hideFragmentWithTag(transaction, PLUS_ONE)
-        var conversationsFragment = fragmentManager.findFragmentByTag(CONVERSATIONS)
+        var conversationsFragment = supportFragmentManager.findFragmentByTag(CONVERSATIONS)
         if (conversationsFragment == null) {
             conversationsFragment = ConversationsFragment()
             transaction.add(R.id.fragment_container, conversationsFragment, CONVERSATIONS)
@@ -88,7 +88,7 @@ class MainActivity : BaseActivity(), IMainView {
     }
 
     private fun hideFragmentWithTag(transaction: FragmentTransaction, tag: String) {
-        val fragment = fragmentManager.findFragmentByTag(tag)
+        val fragment = supportFragmentManager.findFragmentByTag(tag)
         if (fragment != null) {
             transaction.hide(fragment)
         }

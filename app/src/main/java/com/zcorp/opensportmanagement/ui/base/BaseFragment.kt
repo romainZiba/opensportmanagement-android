@@ -1,7 +1,7 @@
 package com.zcorp.opensportmanagement.ui.base
 
-import android.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.di.component.DaggerFragmentComponent
 import com.zcorp.opensportmanagement.di.component.FragmentComponent

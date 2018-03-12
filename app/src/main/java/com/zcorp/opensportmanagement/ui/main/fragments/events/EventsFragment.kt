@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -28,13 +29,14 @@ import javax.inject.Inject
  */
 class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshListener {
 
-    private var mColumnCount = 1
-
     @Inject
     lateinit var presenter: IEventsPresenter
 
+    @Inject
+    lateinit var fragmentContext: Context
+
     override fun showNetworkError() {
-        ThemedSnackbar.make(view, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
         event_swipeRefreshLayout.isRefreshing = false
     }
 
@@ -68,7 +70,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     }
 
     override fun setBackground(drawableId: Int) {
-        events_background_layout.background = ContextCompat.getDrawable(activity.baseContext, drawableId)
+        events_background_layout.background = ContextCompat.getDrawable(fragmentContext, drawableId)
     }
 
     override fun showProgress() {
@@ -79,15 +81,10 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
         super.onCreate(savedInstanceState)
         super.mFragmentComponent.inject(this)
         presenter.onAttach(this)
-
-        if (arguments != null) {
-            mColumnCount = arguments.getInt(ARG_COLUMN_COUNT)
-        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_event_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_event_list, container, false)
         view.rv_events_list.adapter = EventRecyclerAdapter(presenter)
         view.menu.setOnMenuButtonClickListener({
             presenter.onFloatingMenuClicked()
@@ -123,24 +120,5 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
 
     override fun onRefresh() {
         presenter.getEventsFromModel()
-    }
-
-    companion object {
-
-        // TODO: Customize parameter argument names
-        private val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        fun newInstance(columnCount: Int): EventsFragment {
-            val fragment = EventsFragment()
-            val args = Bundle()
-            args.putInt(ARG_COLUMN_COUNT, columnCount)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
-    fun setPresenterForTest(p: IEventsPresenter) {
-        presenter = p
     }
 }

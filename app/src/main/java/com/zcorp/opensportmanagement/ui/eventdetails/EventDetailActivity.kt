@@ -3,9 +3,11 @@ package com.zcorp.opensportmanagement.ui.eventdetails
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import kotlinx.android.synthetic.main.activity_event_detail.*
+
 
 class EventDetailActivity : AppCompatActivity(), IEventDetailView {
 
@@ -19,5 +21,11 @@ class EventDetailActivity : AppCompatActivity(), IEventDetailView {
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_event_detail, menu)
+        return true
     }
 }
