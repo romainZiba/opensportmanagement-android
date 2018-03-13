@@ -6,9 +6,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
@@ -68,17 +66,13 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
         val dividerItemDecoration = DividerItemDecoration(recyclerView.context,
                 (recyclerView.layoutManager as LinearLayoutManager).orientation)
         recyclerView.addItemDecoration(dividerItemDecoration)
+        view.conversations_swipeRefreshLayout.setOnRefreshListener(this)
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        conversations_swipeRefreshLayout.setOnRefreshListener(this)
         presenter.getConversationsFromModel()
     }
 
@@ -88,5 +82,20 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
 
     companion object {
         val CONVERSATION_ID_KEY = "conversationId"
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater!!.inflate(R.menu.messages_menu_toolbar, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.refresh_conversations -> {
+                presenter.getConversationsFromModel()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

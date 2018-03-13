@@ -17,15 +17,7 @@ import kotlinx.android.synthetic.main.fragment_event_list.view.*
 import javax.inject.Inject
 
 /**
- * A fragment representing a list of Items.
- *
- *
- * Activities containing this fragment MUST implement the [OnListFragmentInteractionListener]
- * interface.
- */
-/**
- * Mandatory empty constructor for the fragment manager to instantiate the
- * fragment (e.g. upon screen orientation changes).
+ * A fragment representing a list of Events.
  */
 class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -89,32 +81,28 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
         view.menu.setOnMenuButtonClickListener({
             presenter.onFloatingMenuClicked()
         })
+        view.event_swipeRefreshLayout.setOnRefreshListener(this)
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        event_swipeRefreshLayout.setOnRefreshListener(this)
         presenter.getEventsFromModel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater!!.inflate(R.menu.events_toolbar, menu)
+        inflater!!.inflate(R.menu.events_menu_toolbar, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+        return when (item?.itemId) {
             R.id.refresh_events -> {
                 presenter.getEventsFromModel()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

@@ -65,6 +65,7 @@ class MessagesActivity : BaseActivity(), IMessagesView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messages)
         setSupportActionBar(messages_toolbar as Toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         super.mActivityComponent.inject(this)
         val conversationId = intent.getStringExtra(CONVERSATION_ID_KEY)
         presenter.setConversationId(conversationId)

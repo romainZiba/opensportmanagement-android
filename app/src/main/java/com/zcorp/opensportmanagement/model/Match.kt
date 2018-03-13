@@ -5,14 +5,14 @@ import org.threeten.bp.LocalDateTime
 class Match : Event {
 
     val opponent: String
-    val presentPlayers: MutableSet<String>
-    val notPresentPlayers: MutableSet<String>
+    val presentPlayers: MutableSet<Player>
+    val absentPlayers: MutableSet<Player>
 
     constructor(id: Int, name: String, description: String, fromDate: LocalDateTime, toDate: LocalDateTime, place: String,
-                opponent: String) :
+                opponent: String, presentPlayers: MutableSet<Player>, absentPlayers: MutableSet<Player>) :
             super(id, name, description, fromDate, toDate, place) {
         this.opponent = opponent
-        this.presentPlayers = mutableSetOf()
-        this.notPresentPlayers = mutableSetOf()
+        this.presentPlayers = presentPlayers
+        this.absentPlayers = absentPlayers
     }
 }

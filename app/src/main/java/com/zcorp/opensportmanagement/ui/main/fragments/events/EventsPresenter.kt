@@ -11,6 +11,7 @@ import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.MatchViewH
 import com.zcorp.opensportmanagement.utils.datetime.DateTimeFormatter
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import java.io.IOException
+import java.io.Serializable
 import javax.inject.Inject
 
 /**
@@ -90,7 +91,7 @@ class EventsPresenter @Inject constructor(val dataManager: IDataManager, val sch
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onAttach(view: IEventsView) {
+    override fun onAttach(view: IEventsView, vararg args: Serializable) {
         mView = view
     }
 

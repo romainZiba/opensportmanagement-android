@@ -7,6 +7,7 @@ import com.zcorp.opensportmanagement.dto.LoginResponseDto
 import com.zcorp.opensportmanagement.model.LoginRequest
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.io.Serializable
 import javax.inject.Inject
 
 class LoginPresenter @Inject constructor(val dataManager: IDataManager, val objectMapper: ObjectMapper) : ILoginPresenter {
@@ -46,7 +47,7 @@ class LoginPresenter @Inject constructor(val dataManager: IDataManager, val obje
                 })
     }
 
-    override fun onAttach(view: ILoginView) {
+    override fun onAttach(view: ILoginView, vararg args: Serializable) {
         loginView = view
     }
 

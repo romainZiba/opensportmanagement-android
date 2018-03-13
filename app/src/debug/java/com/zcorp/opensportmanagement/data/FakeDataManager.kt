@@ -24,28 +24,41 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
             Conversation("AAAA-KOFOOFF-CCC", "Entraînement annulé")
     )
 
-    private var mTeamMembers: MutableList<User> = mutableListOf(
-            User("rza", "AAA", IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER, "rza@gmail.com", "",
-                    mutableSetOf()),
-            User("pol", "ABC", IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER, "pol@gmail.com", "",
-                    mutableSetOf()),
-            User("cdy", "AAA", IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER, "cdy@gmail.com", "",
-                    mutableSetOf())
+    private var mPresentTeamMembers: MutableSet<Player> = mutableSetOf(
+            Player("rza", "Romain", "Ziba"),
+            Player("pol", "Paul", "Ollo"),
+            Player("cdy", "Christophe", "Dyeri")
+    )
+
+    private var mAbsentTeamMembers: MutableSet<Player> = mutableSetOf(
+            Player("abc", "Albert", "Bechouli"),
+            Player("plu", "Pierre", "Lusti"),
+            Player("sge", "Serge", "Gerlo")
+    )
+
+    private var mWaitingTeamMembers: MutableSet<Player> = mutableSetOf(
+            Player("gbi", "Gabrielle", "Billentete")
     )
 
     private var mMessages: MutableList<InAppMessage> = mutableListOf()
     private var mCurrentTeamId: Int = 0
+    private val mUsername = "Romain"
 
-
-    override fun getTeamMembers(): Single<List<User>> {
+    override fun getMatch(id: Int): Single<Match> {
         return Single.create {
-            it.onSuccess(mTeamMembers)
+            it.onSuccess(Match(1, "Match de championnat", "Match contre une équipe",
+                    LocalDateTime.of(2018, 3, 17, 20, 0, 0),
+                    LocalDateTime.of(2018, 3, 17, 22, 0, 0),
+                    "Stade Valmy",
+                    "TCMS2",
+                    mPresentTeamMembers,
+                    mAbsentTeamMembers))
         }
     }
 
     override fun getConversations(): Single<List<Conversation>> {
         return Single.create {
-            it.onSuccess(mConversations)
+            it.onSuccess(getConversationFromNetwork())
         }
     }
 
@@ -59,7 +72,7 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
 
     override fun getMessagesOrderedByDate(conversationId: String): Single<List<InAppMessage>> {
         return Single.create {
-            val messagesFromRomain = IntRange(1, 21).filter { it % 2 == 0 }.map { createDummyMessage(it, "Romain") }.toList()
+            val messagesFromRomain = IntRange(1, 21).filter { it % 2 == 0 }.map { createDummyMessage(it, mUsername) }.toList()
             val messagesFromFriend = IntRange(1, 21).filter { (it + 1) % 2 == 0 }.map { createDummyMessage(it, "Ami") }.toList()
             mMessages = listOf(messagesFromRomain, messagesFromFriend).flatMap { it.toList() }.sortedBy { it.time }.toMutableList()
             it.onSuccess(mMessages.toList())
@@ -75,12 +88,13 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
     }
 
     private fun createDummyMessage(position: Int, username: String) =
-            InAppMessage("AAA", "Hello World", "Message $position", username, OffsetDateTime.now().minusMonths(1).plusHours(position.toLong()))
+            InAppMessage("AAA", "Hello World", username,"Message $position",
+                    OffsetDateTime.now().minusMonths(1).plusHours(position.toLong()))
 
     override fun login(loginRequest: LoginRequest): Single<Response<ResponseBody>> {
         return Single.create({
             loginFromNetwork(loginRequest.username)
-            val responseBody = ResponseBody.create(MediaType.parse("application/json"), "{\"username\": \"Romain\"}")
+            val responseBody = ResponseBody.create(MediaType.parse("application/json"), "{\"username\": \"$mUsername\"}")
             val headers = Headers.of("Authorization", "Bearer kjfkkf.kdjdjd.kkff")
             it.onSuccess(Response.success(responseBody, headers))
         })
@@ -94,7 +108,7 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
 
     override fun getEvents(teamId: Int): Single<List<Event>> {
         val rand = Math.random()
-        if (rand > 0.9) {
+        if (rand > 0.95) {
             return Single.create {
                 it.onError(IOException())
             }
@@ -136,13 +150,22 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
 
     private fun getEventsFromNetwork(): List<Event> {
         try {
-            Thread.sleep(1000)
+            Thread.sleep(2000)
         } catch (e: InterruptedException) {
             // error
         }
         var events: MutableList<Event> = IntRange(1, 10).map { createDummyEvent(it) }.toMutableList()
         events.addAll(IntRange(10, 21).map { createDummyMatch(it) }.toList())
         return events.toList()
+    }
+
+    private fun getConversationFromNetwork(): List<Conversation> {
+        try {
+            Thread.sleep(1500)
+        } catch (e: InterruptedException) {
+            // error
+        }
+        return mConversations
     }
 
     private fun createDummyEvent(position: Int): Event {
@@ -161,7 +184,9 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
                 LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
                 LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),
                 "ici",
-                "TCMS2")
+                "TCMS2",
+                mPresentTeamMembers,
+                mAbsentTeamMembers)
     }
 
 

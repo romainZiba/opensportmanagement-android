@@ -8,5 +8,5 @@ import com.zcorp.opensportmanagement.ui.base.IBasePresenter
 interface IMainPresenter: IBasePresenter<IMainView> {
     fun onDisplayEvents()
     fun onDisplayGoogle()
-    fun onDisplayThirdFragment()
+    fun onDisplayConversations()
 }

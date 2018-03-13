@@ -6,6 +6,7 @@ import com.zcorp.opensportmanagement.model.Conversation
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.adapter.IConversationViewHolder
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import java.io.IOException
+import java.io.Serializable
 import javax.inject.Inject
 
 /**
@@ -53,7 +54,7 @@ class ConversationsPresenter @Inject constructor(val dataManager: IDataManager, 
         mView.showConversationDetails(mConversations[adapterPosition].conversationId)
     }
 
-    override fun onAttach(view: IConversationsView) {
+    override fun onAttach(view: IConversationsView, vararg args: Serializable) {
         mView = view
     }
 

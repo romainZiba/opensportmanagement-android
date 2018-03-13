@@ -17,6 +17,8 @@ class MainActivity : BaseActivity(), IMainView {
     @Inject
     lateinit var mainPresenter: IMainPresenter
 
+    private var mVisibleFragment = EVENTS
+
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_events -> {
@@ -28,7 +30,7 @@ class MainActivity : BaseActivity(), IMainView {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                mainPresenter.onDisplayThirdFragment()
+                mainPresenter.onDisplayConversations()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -47,6 +49,7 @@ class MainActivity : BaseActivity(), IMainView {
             transaction.show(eventsFragment)
         }
         transaction.commit()
+        mVisibleFragment = EVENTS
     }
 
     override fun displayGoogle() {
@@ -61,6 +64,7 @@ class MainActivity : BaseActivity(), IMainView {
             transaction.show(plusOneFragment)
         }
         transaction.commit()
+        mVisibleFragment = PLUS_ONE
     }
 
     override fun displayConversations() {
@@ -75,16 +79,7 @@ class MainActivity : BaseActivity(), IMainView {
             transaction.show(conversationsFragment)
         }
         transaction.commit()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        super.mActivityComponent.inject(this)
-
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(main_toolbar as Toolbar)
-        mainPresenter.onAttach(this)
-        navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+        mVisibleFragment = CONVERSATIONS
     }
 
     private fun hideFragmentWithTag(transaction: FragmentTransaction, tag: String) {
@@ -94,9 +89,25 @@ class MainActivity : BaseActivity(), IMainView {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        super.mActivityComponent.inject(this)
+        mVisibleFragment = savedInstanceState?.getString(FRAGMENT_KEY) ?: EVENTS
+        setContentView(R.layout.activity_main)
+        setSupportActionBar(main_toolbar as Toolbar)
+        mainPresenter.onAttach(this, mVisibleFragment)
+        navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putString(FRAGMENT_KEY, mVisibleFragment)
+        super.onSaveInstanceState(outState)
+    }
+
     companion object {
         const val EVENTS = "EVENTS"
         const val PLUS_ONE = "PLUS_ONE"
         const val CONVERSATIONS = "CONVERSATIONS"
+        const val FRAGMENT_KEY = "VISIBLE_FRAGMENT"
     }
 }

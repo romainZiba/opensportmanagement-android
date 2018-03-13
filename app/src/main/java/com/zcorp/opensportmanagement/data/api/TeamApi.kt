@@ -15,6 +15,4 @@ interface TeamApi {
 
     @GET("/teams/{teamId}")
     fun getTeam(@Path("teamId") teamId: Int): Single<Team>
-
-    fun getTeamMembers(): Single<List<User>>
 }

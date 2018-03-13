@@ -2,9 +2,9 @@ package com.zcorp.opensportmanagement.ui.eventdetails
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.view.Menu
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.IDataManager
+import com.zcorp.opensportmanagement.model.Player
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_event_detail.*
@@ -29,14 +29,11 @@ class EventDetailActivity : BaseActivity(), IEventDetailView {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        dataManager.getTeamMembers().subscribe { teamMembers ->
-            rv_event_participant_list.adapter = ParticipantRecyclerAdapter(teamMembers)
+        dataManager.getMatch(1).subscribe { match ->
+            val allPlayers = mutableListOf<Player>()
+            allPlayers.addAll(match.presentPlayers)
+            allPlayers.addAll(match.absentPlayers)
+            rv_event_participant_list.adapter = ParticipantRecyclerAdapter(allPlayers)
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_event_detail, menu)
-        return true
     }
 }

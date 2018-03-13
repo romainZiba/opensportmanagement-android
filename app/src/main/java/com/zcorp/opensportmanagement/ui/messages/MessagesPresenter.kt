@@ -16,6 +16,7 @@ import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
 import ua.naiksoftware.stomp.LifecycleEvent
 import ua.naiksoftware.stomp.client.StompClient
+import java.io.Serializable
 import javax.inject.Inject
 
 
@@ -38,7 +39,7 @@ class MessagesPresenter @Inject constructor(
         this.mConversationId = conversationId
     }
 
-    override fun onAttach(view: IMessagesView) {
+    override fun onAttach(view: IMessagesView, vararg args: Serializable) {
         this.getMessagesFromApi()
         mMessagesView = view
         configureWebsocketConnection()
