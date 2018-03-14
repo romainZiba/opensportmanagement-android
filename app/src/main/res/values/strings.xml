@@ -44,5 +44,5 @@
     <string name="tv_absent_number">5</string>
     <string name="tv_waiting_number">3</string>
     <string name="username_example">Romain Ziba</string>
-
+    <string name="presence">Presence</string>
 </resources>

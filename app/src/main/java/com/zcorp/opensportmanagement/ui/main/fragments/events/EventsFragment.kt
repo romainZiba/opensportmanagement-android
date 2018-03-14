@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.*
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity
@@ -37,8 +38,10 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
         event_swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun showEventDetails(eventId: Int) {
-        startActivity(Intent(activity, EventDetailActivity::class.java))
+    override fun showEventDetails(event: Event) {
+        val intent = Intent(activity, EventDetailActivity::class.java)
+        intent.putExtra("event", event)
+        startActivity(intent)
     }
 
     override fun isFloatingMenuOpened(): Boolean {

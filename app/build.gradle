@@ -69,6 +69,8 @@ dependencies {
     // UI
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation project(':androidtoggleswitch')
+
     //  Dependency injection
     implementation 'com.google.dagger:dagger:2.14.1'
     implementation 'com.google.dagger:dagger-android:2.14.1'

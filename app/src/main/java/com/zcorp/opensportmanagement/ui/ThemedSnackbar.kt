@@ -14,7 +14,7 @@ class ThemedSnackbar {
     companion object {
         fun make(view: View, text: CharSequence, duration: Int): Snackbar {
             val snackbar = Snackbar.make(view, text, duration)
-            snackbar.setActionTextColor(ContextCompat.getColor(view.context, R.color.light_green))
+            snackbar.setActionTextColor(ContextCompat.getColor(view.context, R.color.light_green_500))
             snackbar.view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
                     .setTextColor(ContextCompat.getColor(view.context, R.color.white))
             return snackbar

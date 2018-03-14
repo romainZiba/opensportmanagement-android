@@ -67,7 +67,7 @@ class EventsPresenter @Inject constructor(val dataManager: IDataManager, val sch
         if (mView.isFloatingMenuOpened()) {
             // Do nothing
         } else {
-            mView.showEventDetails(mEvents[adapterPosition]._id)
+            mView.showEventDetails(mEvents[adapterPosition])
         }
     }
 

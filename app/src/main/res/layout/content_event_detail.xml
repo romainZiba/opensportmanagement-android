@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity"
     tools:showIn="@layout/activity_event_detail">
@@ -58,8 +59,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardview_date_description_event"
+        app:layout_constraintTop_toBottomOf="@+id/switch_presence_event_detail"
         tools:listitem="@layout/rv_item_participant" />
+
+
+    <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
+        android:id="@+id/switch_presence_event_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/rv_event_participant_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardview_date_description_event"
+        custom:checkedBackgroundColor="@color/light_blue_200"
+        custom:textToggleLeft="@string/present"
+        custom:textToggleRight="@string/absent" />
 
 
 </android.support.constraint.ConstraintLayout>

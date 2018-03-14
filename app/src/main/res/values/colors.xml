@@ -19,20 +19,27 @@
     <color name="transparent_black">#4D000000</color>
 
     <!--Design colors-->
-    <color name="red_dark">#F06423</color>
-    <color name="red_dark2">#D85A1B</color>
-    <color name="cyan_light">#c9ebee</color>
-    <color name="cyan">#b5e3e7</color>
-    <color name="cyan_dark">#70BDC6</color>
-    <color name="navy_blue">#214258</color>
-    <color name="navy_blue_dark">#1c3a4e</color>
-    <color name="light_green">#78DC96</color>
-    <color name="light_blue">#55C8F0</color>
-    <color name="blue_black_dark">#13171d</color>
-    <color name="blue_black_light">#031a3c</color>
-    <color name="blue_grey_light">#A5B4C8</color>
-    <color name="orange">#FFA500</color>
-    <color name="yellow">#fff44f</color>
-    <color name="colorBluePrimary">#07304b</color>
+    <color name="red_A700">#D50000</color>
+    <color name="red_900">#B71C1C</color>
+
+    <color name="cyan_50">#E0F7FA</color>
+    <color name="cyan_100">#B2EBF2</color>
+    <color name="cyan_300">#4DD0E1</color>
+
+    <color name="blue_300">#4FC3F7</color>
+    <color name="blue_600">#039BE5</color>
+    <color name="blue_800">#1565C0</color>
+    <color name="blue_900">#0D47A1</color>
+
+    <color name="green_500">#4CAF50</color>
+    <color name="light_green_500">#8BC34A</color>
+
+    <color name="light_blue_200">#81D4FA</color>
+
+    <color name="grey_400">#BDBDBD</color>
+
+    <color name="yellow_500">#FFEB3B</color>
+
+    <color name="colorBluePrimary">@color/blue_900</color>
 </resources>
 

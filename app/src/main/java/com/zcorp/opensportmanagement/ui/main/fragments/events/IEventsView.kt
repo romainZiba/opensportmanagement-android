@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
+import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.ui.base.IBaseView
 
 /**
@@ -8,7 +9,7 @@ import com.zcorp.opensportmanagement.ui.base.IBaseView
 interface IEventsView : IBaseView {
     fun showNetworkError()
     fun onDataAvailable()
-    fun showEventDetails(eventId: Int)
+    fun showEventDetails(event: Event)
     fun isFloatingMenuOpened(): Boolean
     fun closeFloatingMenu()
     fun openFloatingMenu()

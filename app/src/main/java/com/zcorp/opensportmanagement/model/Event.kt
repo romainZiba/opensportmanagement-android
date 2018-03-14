@@ -2,6 +2,7 @@ package com.zcorp.opensportmanagement.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.threeten.bp.LocalDateTime
+import java.io.Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 open class Event(var _id: Int,
@@ -9,7 +10,7 @@ open class Event(var _id: Int,
                  var description: String,
                  var fromDate: LocalDateTime,
                  var toDate: LocalDateTime,
-                 var place: String) {
+                 var place: String) : Serializable {
     enum class EventType(val type: String) {
         CHAMPIONSHIP(championship),
         FRIENDLY(friendly),
