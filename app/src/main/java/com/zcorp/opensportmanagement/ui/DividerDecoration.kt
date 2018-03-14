@@ -6,8 +6,10 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.eventdetails.ParticipantRecyclerAdapter.Companion.ABSENT_PLAYERS_HEADER_VIEW_TYPE
 import com.zcorp.opensportmanagement.ui.eventdetails.ParticipantRecyclerAdapter.Companion.PRESENT_PLAYERS_HEADER_VIEW_TYPE
@@ -16,13 +18,14 @@ import com.zcorp.opensportmanagement.ui.eventdetails.ParticipantRecyclerAdapter.
 /**
  * Created by romainz on 14/03/18.
  */
-class DividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
+class DividerDecoration(private val context: Context) : RecyclerView.ItemDecoration() {
 
     private val mPaint: Paint = Paint()
     private val mDivider: Drawable
     private val TAG = "DividerDecoration"
     private val ATTRS = intArrayOf(android.R.attr.listDivider)
     private val mBounds = Rect()
+    private var mDensity: Float = 1F
 
     init {
         mPaint.style = Paint.Style.FILL
@@ -32,6 +35,12 @@ class DividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
         if (mDivider == null) {
             Log.w(TAG, "@android:attr/listDivider was not set in the theme used for this " + "DividerItemDecoration. Please set that attribute all call setDrawable()")
         }
+        val dm = DisplayMetrics()
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager.defaultDisplay.getMetrics(dm)
+        mDensity = dm.density
+
+
         a.recycle()
     }
 
@@ -44,7 +53,7 @@ class DividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
           */
         var nextViewType = parent.adapter.getItemViewType(position + 1)
         if (nextViewType == PRESENT_PLAYERS_HEADER_VIEW_TYPE || nextViewType == ABSENT_PLAYERS_HEADER_VIEW_TYPE) {
-            outRect.set(0, 0, 0, mDivider.intrinsicHeight)
+            outRect.set(0, 0, 0, mDivider.intrinsicHeight + Math.round(20 * mDensity))
         } else {
             outRect.setEmpty()
         }
@@ -70,11 +79,15 @@ class DividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
             val position = parent.getChildAdapterPosition(view)
             var nextViewType = parent.adapter.getItemViewType(position + 1)
             if (nextViewType == PRESENT_PLAYERS_HEADER_VIEW_TYPE || nextViewType == ABSENT_PLAYERS_HEADER_VIEW_TYPE) {
+
+
+                val paddingLeft = Math.round(60 * mDensity)
+
                 val child = parent.getChildAt(i)
                 parent.getDecoratedBoundsWithMargins(child, mBounds)
                 val bottom = mBounds.bottom + Math.round(child.translationY)
                 val top = bottom - mDivider.intrinsicHeight
-                mDivider.setBounds(left, top, right, bottom)
+                mDivider.setBounds(left + paddingLeft, top, right, bottom)
                 mDivider.draw(canvas)
             }
         }
