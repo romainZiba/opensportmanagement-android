@@ -24,11 +24,6 @@ class FragmentModule(private val mFragment: Fragment) : BaseContextModule() {
     }
 
     @Provides
-    internal fun provideFragment(): Fragment {
-        return mFragment
-    }
-
-    @Provides
     @PerActivity
     internal fun provideEventsPresenter(dataManager: IDataManager, schedulerProvider: SchedulerProvider): IEventsPresenter {
         return EventsPresenter(dataManager, schedulerProvider)

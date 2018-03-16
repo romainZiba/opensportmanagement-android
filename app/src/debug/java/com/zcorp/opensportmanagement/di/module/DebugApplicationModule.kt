@@ -11,7 +11,8 @@ import javax.inject.Singleton
  * Created by romainz on 09/03/18.
  */
 @Module
-class DebugApplicationModule(private val context: Context) : ApplicationModule(context) {
+class DebugApplicationModule(context: Context) : ApplicationModule(context) {
+
     @Provides
     @Singleton
     internal fun provideDataManager(dataManager: FakeDataManager): IDataManager {

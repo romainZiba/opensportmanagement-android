@@ -23,12 +23,6 @@ abstract class ApplicationModule(private val context: Context) {
     }
 
     @Provides
-    @PreferenceInfo
-    internal fun providePreferenceName(): String {
-        return MyApplication.PREF_NAME
-    }
-
-    @Provides
     @Singleton
     internal fun providePreferencesHelper(fakePreferencesHelper: FakePreferencesHelper): IPreferencesHelper {
         return fakePreferencesHelper
