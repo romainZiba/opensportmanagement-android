@@ -45,4 +45,6 @@
     <string name="tv_waiting_number">3</string>
     <string name="username_example">Romain Ziba</string>
     <string name="presence">Presence</string>
+    <string name="information">Information</string>
+    <string name="players">Players</string>
 </resources>

@@ -38,7 +38,23 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_event_detail" />
+    <FrameLayout
+        android:id="@+id/fragment_event_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/event_detail_navigation"
+        android:layout_below="@+id/app_bar_event_details"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/event_detail_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/event_details_navigation" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/event_detail_subscription_fab"

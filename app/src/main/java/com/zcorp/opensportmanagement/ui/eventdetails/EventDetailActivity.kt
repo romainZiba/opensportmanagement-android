@@ -1,28 +1,39 @@
 package com.zcorp.opensportmanagement.ui.eventdetails
 
 import android.os.Bundle
+import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.llollox.androidtoggleswitch.widgets.ToggleSwitch
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.Match
-import com.zcorp.opensportmanagement.ui.DividerDecoration
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
+import com.zcorp.opensportmanagement.ui.eventdetails.fragments.EventInformationFragment
+import com.zcorp.opensportmanagement.ui.eventdetails.fragments.EventPlayersFragment
+import com.zcorp.opensportmanagement.ui.eventdetails.fragments.IEventDetailView
 import kotlinx.android.synthetic.main.activity_event_detail.*
-import kotlinx.android.synthetic.main.content_event_detail.*
-import javax.inject.Inject
 
 
 class EventDetailActivity : BaseActivity(), IEventDetailView {
 
-    @Inject
-    lateinit var dataManager: IDataManager
+
+    private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        val transaction = supportFragmentManager.beginTransaction()
+        when (item.itemId) {
+            R.id.navigation_event_details_info -> {
+                transaction.replace(R.id.fragment_event_details_container, EventInformationFragment())
+                transaction.commit()
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_event_details_players -> {
+                transaction.replace(R.id.fragment_event_details_container, EventPlayersFragment())
+                transaction.commit()
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,31 +53,10 @@ class EventDetailActivity : BaseActivity(), IEventDetailView {
             layout_match_description.visibility = View.GONE
             supportActionBar?.title = event.name
         }
+        event_detail_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
 
-        dataManager.getMatch(1).subscribe { match ->
-            rv_event_participant_list.adapter = ParticipantRecyclerAdapter(
-                    this, match.presentPlayers.toMutableList(), match.absentPlayers.toMutableList())
-        }
-
-        val dividerItemDecoration = DividerDecoration(rv_event_participant_list.context)
-        rv_event_participant_list.addItemDecoration(dividerItemDecoration)
-
-        switch_presence_event_detail.onChangeListener = object : ToggleSwitch.OnChangeListener {
-            override fun onToggleSwitchChanged(position: Int) {
-                when (position) {
-                    0 -> {
-                        switch_presence_event_detail.checkedBackgroundColor = ContextCompat.getColor(
-                                this@EventDetailActivity, R.color.green_500)
-                        switch_presence_event_detail.reDraw()
-                    }
-                    1 -> {
-                        switch_presence_event_detail.checkedBackgroundColor = ContextCompat.getColor(
-                                this@EventDetailActivity, R.color.red_900)
-                        switch_presence_event_detail.reDraw()
-                    }
-                }
-            }
-
-        }
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.fragment_event_details_container, EventInformationFragment())
+        transaction.commit()
     }
 }

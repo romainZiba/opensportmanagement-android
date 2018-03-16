@@ -5,12 +5,15 @@ import org.threeten.bp.LocalDateTime
 import java.io.Serializable
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-open class Event(var _id: Int,
-                 var name: String,
-                 var description: String,
-                 var fromDate: LocalDateTime,
-                 var toDate: LocalDateTime,
-                 var place: String) : Serializable {
+open class Event(val _id: Int,
+                 val name: String,
+                 val description: String,
+                 val fromDate: LocalDateTime,
+                 val toDate: LocalDateTime,
+                 val place: String,
+                 val presentTeamMembers: MutableSet<TeamMember>,
+                 val absentTeamMembers: MutableSet<TeamMember>) : Serializable {
+
     enum class EventType(val type: String) {
         CHAMPIONSHIP(championship),
         FRIENDLY(friendly),

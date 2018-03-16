@@ -96,7 +96,7 @@ class MainActivity : BaseActivity(), IMainView {
         setContentView(R.layout.activity_main)
         setSupportActionBar(main_toolbar as Toolbar)
         mainPresenter.onAttach(this, mVisibleFragment)
-        navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+        main_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

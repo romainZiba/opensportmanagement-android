@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity"
-    tools:showIn="@layout/activity_event_detail">
+    tools:context="com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -64,19 +63,8 @@
         custom:textToggleLeft="@string/present"
         custom:textToggleRight="@string/absent" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_event_participant_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch_presence_event_detail"
-        tools:listitem="@layout/rv_item_participant" />
+
+
+
 
 </android.support.constraint.ConstraintLayout>

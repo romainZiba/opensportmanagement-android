@@ -11,8 +11,8 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.ui.eventdetails.ParticipantRecyclerAdapter.Companion.ABSENT_PLAYERS_HEADER_VIEW_TYPE
-import com.zcorp.opensportmanagement.ui.eventdetails.ParticipantRecyclerAdapter.Companion.PRESENT_PLAYERS_HEADER_VIEW_TYPE
+import com.zcorp.opensportmanagement.ui.eventdetails.fragments.TeamMemberRecyclerAdapter.Companion.ABSENT_PLAYERS_HEADER_VIEW_TYPE
+import com.zcorp.opensportmanagement.ui.eventdetails.fragments.TeamMemberRecyclerAdapter.Companion.PRESENT_PLAYERS_HEADER_VIEW_TYPE
 
 
 /**

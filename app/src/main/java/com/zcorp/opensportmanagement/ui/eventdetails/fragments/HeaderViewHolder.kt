@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.eventdetails
+package com.zcorp.opensportmanagement.ui.eventdetails.fragments
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
