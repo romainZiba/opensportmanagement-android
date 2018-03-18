@@ -9,26 +9,37 @@ import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.Match
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
-import com.zcorp.opensportmanagement.ui.eventdetails.fragments.EventInformationFragment
-import com.zcorp.opensportmanagement.ui.eventdetails.fragments.EventPlayersFragment
-import com.zcorp.opensportmanagement.ui.eventdetails.fragments.IEventDetailView
-import kotlinx.android.synthetic.main.activity_event_detail.*
+import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.EventInformationFragment
+import com.zcorp.opensportmanagement.ui.eventdetails.fragments.members.EventMembersFragment
+import kotlinx.android.synthetic.main.activity_event_details.*
+import javax.inject.Inject
 
 
-class EventDetailActivity : BaseActivity(), IEventDetailView {
+class EventDetailsActivity : BaseActivity(), IEventDetailsView {
 
+    @Inject
+    lateinit var mPresenter: IEventDetailsPresenter
+
+    override fun displayInformation() {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_event_details_container, EventInformationFragment())
+        transaction.commit()
+    }
+
+    override fun displayTeamMembers() {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_event_details_container, EventMembersFragment())
+        transaction.commit()
+    }
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        val transaction = supportFragmentManager.beginTransaction()
         when (item.itemId) {
             R.id.navigation_event_details_info -> {
-                transaction.replace(R.id.fragment_event_details_container, EventInformationFragment())
-                transaction.commit()
+                mPresenter.onDisplayInformation()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_event_details_players -> {
-                transaction.replace(R.id.fragment_event_details_container, EventPlayersFragment())
-                transaction.commit()
+                mPresenter.onDisplayTeamMembers()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -37,7 +48,7 @@ class EventDetailActivity : BaseActivity(), IEventDetailView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_event_detail)
+        setContentView(R.layout.activity_event_details)
         super.mActivityComponent.inject(this)
         val event = intent.getSerializableExtra("event") as Event
         setSupportActionBar(toolbar_event_details)
@@ -49,14 +60,15 @@ class EventDetailActivity : BaseActivity(), IEventDetailView {
 
         if (event is Match) {
             supportActionBar?.setDisplayShowTitleEnabled(false)
+            mPresenter.getMatchDetails(event._id)
         } else {
             layout_match_description.visibility = View.GONE
             supportActionBar?.title = event.name
+            mPresenter.getEventDetails(event._id)
         }
-        event_detail_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+        event_details_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+        displayInformation()
+        mPresenter.onAttach(this)
 
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragment_event_details_container, EventInformationFragment())
-        transaction.commit()
     }
 }

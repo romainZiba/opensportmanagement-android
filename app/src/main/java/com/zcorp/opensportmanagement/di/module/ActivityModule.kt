@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.ActivityContext
 import com.zcorp.opensportmanagement.di.PerActivity
+import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsPresenter
+import com.zcorp.opensportmanagement.ui.eventdetails.IEventDetailsPresenter
 import com.zcorp.opensportmanagement.ui.login.ILoginPresenter
 import com.zcorp.opensportmanagement.ui.login.LoginPresenter
 import com.zcorp.opensportmanagement.ui.main.IMainPresenter
@@ -48,6 +50,12 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
     @PerActivity
     internal fun provideEventsFragment(): ConversationsFragment {
         return ConversationsFragment()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideEventDetailsPresenter(dataManager: IDataManager, schedulerProvider: SchedulerProvider): IEventDetailsPresenter {
+        return EventDetailsPresenter(dataManager, schedulerProvider)
     }
 
     @Provides

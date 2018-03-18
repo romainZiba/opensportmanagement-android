@@ -29,29 +29,61 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
             "Brown", "Nguyen", "Marchand", "Blanchard", "Leroux", "Renard", "Rolland", "Lacroix", "Davis",
             "Harden", "Carpentier", "Deschamps")
 
-    private var mConversations: MutableList<Conversation> = mutableListOf(
-            Conversation("AAAA-BBBB-CCC", "Bonjour à tous"),
-            Conversation("ABCD-KKKF-JKFKKF", "Match programmé"),
-            Conversation("AAAA-KOFOOFF-CCC", "Entraînement annulé")
+    private val mConversationId1 = "AAAA-BBBB-CCC"
+    private val mConversationId2 = "ABAA-BBBB-CCC"
+    private val mConversationId3 = "ACAA-BBBB-CCC"
+
+    private val mConversations: MutableList<Conversation> = mutableListOf(
+            Conversation(mConversationId1, "Bonjour à tous"),
+            Conversation(mConversationId2, "Match programmé"),
+            Conversation(mConversationId3, "Entraînement annulé")
     )
 
-    private var mMessages: MutableList<InAppMessage> = mutableListOf()
+    private val mMessagesConversation1: MutableList<InAppMessage> = mutableListOf()
+    private val mMessagesConversation2: MutableList<InAppMessage> = mutableListOf()
+    private val mMessagesConversation3: MutableList<InAppMessage> = mutableListOf()
+
     private var mCurrentTeamId: Int = 0
     private val mUsername = "Romain"
 
-    override fun getMatch(id: Int): Single<Match> {
-        val teamMembers = createDummyTeamMembers(20)
-        val presentPlayers = teamMembers.filter { teamMember -> teamMember.firstName.contains("a") }.toMutableSet()
-        val absentPlayers = teamMembers.filter { teamMember -> !teamMember.firstName.contains("a") }.toMutableSet()
+    private val mPresentPlayers: MutableSet<TeamMember> = mutableSetOf()
+    private val mAbsentPlayers: MutableSet<TeamMember> = mutableSetOf()
 
+
+    init {
+        val messagesFromUserConversation1 = IntRange(1, 6)
+                .filter { it % 2 == 0 }
+                .map { createDummyMessage(mConversationId1, it, mUsername) }
+                .toList()
+        val messagesFromFriendConversation1 = IntRange(1, 6)
+                .filter { (it + 1) % 2 == 0 }
+                .map { createDummyMessage(mConversationId1, it, "Ami") }
+                .toList()
+        mMessagesConversation1.addAll(messagesFromUserConversation1)
+        mMessagesConversation1.addAll(messagesFromFriendConversation1)
+        val messagesFromUserConversation2 = IntRange(1, 6)
+                .map { createDummyMessage(mConversationId2, it, mUsername) }
+                .toList()
+        mMessagesConversation2.addAll(messagesFromUserConversation2)
+        val messagesFromFriendConversation3 = IntRange(1, 6)
+                .map { createDummyMessage(mConversationId3, it, "un autre") }
+                .toList()
+        mMessagesConversation3.addAll(messagesFromFriendConversation3)
+
+        val teamMembers = createDummyTeamMembers(30)
+        mPresentPlayers.addAll(teamMembers.filter { it.firstName.contains("a") })
+        mAbsentPlayers.addAll(teamMembers.filter { !it.firstName.contains("a") })
+    }
+
+    override fun getEvent(id: Int): Single<Event> {
         return Single.create {
-            it.onSuccess(Match(1, "Match de championnat", "Match contre une équipe",
-                    LocalDateTime.of(2018, 3, 17, 20, 0, 0),
-                    LocalDateTime.of(2018, 3, 17, 22, 0, 0),
-                    "Stade Valmy",
-                    "TCMS2",
-                    presentPlayers,
-                    absentPlayers))
+            it.onSuccess(createDummyEvent(id))
+        }
+    }
+
+    override fun getMatch(id: Int): Single<Match> {
+        return Single.create {
+            it.onSuccess(createDummyMatch(id))
         }
     }
 
@@ -71,23 +103,29 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
 
     override fun getMessagesOrderedByDate(conversationId: String): Single<List<InAppMessage>> {
         return Single.create {
-            val messagesFromRomain = IntRange(1, 21).filter { it % 2 == 0 }.map { createDummyMessage(it, mUsername) }.toList()
-            val messagesFromFriend = IntRange(1, 21).filter { (it + 1) % 2 == 0 }.map { createDummyMessage(it, "Ami") }.toList()
-            mMessages = listOf(messagesFromRomain, messagesFromFriend).flatMap { it.toList() }.sortedBy { it.time }.toMutableList()
-            it.onSuccess(mMessages.toList())
+            when (conversationId) {
+                mConversationId1 -> it.onSuccess(mMessagesConversation1.sortedBy { it.time }.toList())
+                mConversationId2 -> it.onSuccess(mMessagesConversation2.sortedBy { it.time }.toList())
+                mConversationId3 -> it.onSuccess(mMessagesConversation3.sortedBy { it.time }.toList())
+                else -> it.onError(Exception("Conversation does not exist"))
+            }
         }
     }
 
     override fun createMessage(conversationId: String, messageDto: MessageDto): Single<InAppMessage> {
-        val message = InAppMessage("", "", "", messageDto.message, OffsetDateTime.now())
-        mMessages.add(message)
         return Single.create {
+            val message = InAppMessage(conversationId, "", mUsername, messageDto.message, OffsetDateTime.now())
+            when (conversationId) {
+                mConversationId1 -> mMessagesConversation1.add(message)
+                mConversationId2 -> mMessagesConversation2.add(message)
+                mConversationId3 -> mMessagesConversation3.add(message)
+            }
             it.onSuccess(message)
         }
     }
 
-    private fun createDummyMessage(position: Int, username: String) =
-            InAppMessage("AAA", "Hello World", username,"Message $position",
+    private fun createDummyMessage(conversationId: String, position: Int, username: String) =
+            InAppMessage(conversationId, "", username, "Message $position",
                     OffsetDateTime.now().minusMonths(1).plusHours(position.toLong()))
 
     override fun login(loginRequest: LoginRequest): Single<Response<ResponseBody>> {
@@ -168,24 +206,17 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
     }
 
     private fun createDummyEvent(position: Int): Event {
-        val teamMembers = createDummyTeamMembers(20)
-        val presentPlayers = teamMembers.filter { teamMember -> teamMember.firstName.contains("a") }.toMutableSet()
-        val absentPlayers = teamMembers.filter { teamMember -> !teamMember.firstName.contains("a") }.toMutableSet()
-
         return Event(position,
                 "Apéro " + (position).toString(),
                 "Une soirée " + position,
                 LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
                 LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),
                 "Ici",
-                presentPlayers,
-                absentPlayers)
+                mPresentPlayers,
+                mAbsentPlayers)
     }
 
-    private fun createDummyMatch(position: Int): Event {
-        val teamMembers = createDummyTeamMembers(20)
-        val presentPlayers = teamMembers.filter { teamMember -> teamMember.firstName.contains("a") }.toMutableSet()
-        val absentPlayers = teamMembers.filter { teamMember -> !teamMember.firstName.contains("a") }.toMutableSet()
+    private fun createDummyMatch(position: Int): Match {
         return Match(position,
                 "Match de championnat",
                 "",
@@ -193,8 +224,8 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
                 LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),
                 "ici",
                 "TCMS2",
-                presentPlayers,
-                absentPlayers)
+                mPresentPlayers,
+                mAbsentPlayers)
     }
 
     private fun createDummyTeamMembers(number: Int): MutableSet<TeamMember> {
@@ -210,9 +241,7 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
         val lastName = mLastNames[Random().nextInt(this.mLastNames.size)]
         val username = StringBuilder().append(firstName[0]).append(lastName[0]).append(lastName[1]).toString()
         return TeamMember(username, firstName, lastName)
-
     }
-
 
     override fun getCurrentUserLoggedInMode(): Int {
         return mPreferencesHelper.getCurrentUserLoggedInMode()

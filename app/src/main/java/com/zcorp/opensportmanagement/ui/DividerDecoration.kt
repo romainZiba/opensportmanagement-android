@@ -11,14 +11,15 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.ui.eventdetails.fragments.TeamMemberRecyclerAdapter.Companion.ABSENT_PLAYERS_HEADER_VIEW_TYPE
-import com.zcorp.opensportmanagement.ui.eventdetails.fragments.TeamMemberRecyclerAdapter.Companion.PRESENT_PLAYERS_HEADER_VIEW_TYPE
+import com.zcorp.opensportmanagement.ui.eventdetails.fragments.members.adapter.TeamMemberRecyclerAdapter.Companion.ABSENT_PLAYERS_HEADER_VIEW_TYPE
+import com.zcorp.opensportmanagement.ui.eventdetails.fragments.members.adapter.TeamMemberRecyclerAdapter.Companion.PRESENT_PLAYERS_HEADER_VIEW_TYPE
 
 
 /**
- * Created by romainz on 14/03/18.
+ * Application of the material specification
+ * https://material.io/guidelines/components/dividers.html#dividers-types-of-dividers
  */
-class DividerDecoration(private val context: Context) : RecyclerView.ItemDecoration() {
+class DividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     private val mPaint: Paint = Paint()
     private val mDivider: Drawable
@@ -39,18 +40,11 @@ class DividerDecoration(private val context: Context) : RecyclerView.ItemDecorat
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         windowManager.defaultDisplay.getMetrics(dm)
         mDensity = dm.density
-
-
         a.recycle()
     }
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val position = parent.getChildAdapterPosition(view)
-
-        /* https://material.io/guidelines/components/dividers.html#dividers-types-of-dividers
-        When using a divider with a subheader, place the divider above the subheader to reinforce
-         the relationship between the subheader and the content.
-          */
         var nextViewType = parent.adapter.getItemViewType(position + 1)
         if (nextViewType == PRESENT_PLAYERS_HEADER_VIEW_TYPE || nextViewType == ABSENT_PLAYERS_HEADER_VIEW_TYPE) {
             outRect.set(0, 0, 0, mDivider.intrinsicHeight + Math.round(20 * mDensity))
@@ -79,10 +73,7 @@ class DividerDecoration(private val context: Context) : RecyclerView.ItemDecorat
             val position = parent.getChildAdapterPosition(view)
             var nextViewType = parent.adapter.getItemViewType(position + 1)
             if (nextViewType == PRESENT_PLAYERS_HEADER_VIEW_TYPE || nextViewType == ABSENT_PLAYERS_HEADER_VIEW_TYPE) {
-
-
                 val paddingLeft = Math.round(60 * mDensity)
-
                 val child = parent.getChildAt(i)
                 parent.getDecoratedBoundsWithMargins(child, mBounds)
                 val bottom = mBounds.bottom + Math.round(child.translationY)

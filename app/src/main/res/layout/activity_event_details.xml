@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity">
+    tools:context="com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_event_details"
@@ -42,12 +42,12 @@
         android:id="@+id/fragment_event_details_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/event_detail_navigation"
+        android:layout_above="@id/event_details_navigation"
         android:layout_below="@+id/app_bar_event_details"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/event_detail_navigation"
+        android:id="@+id/event_details_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

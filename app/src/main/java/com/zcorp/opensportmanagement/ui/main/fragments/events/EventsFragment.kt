@@ -11,7 +11,7 @@ import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
-import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity
+import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventRecyclerAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import kotlinx.android.synthetic.main.fragment_event_list.view.*
@@ -39,7 +39,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     }
 
     override fun showEventDetails(event: Event) {
-        val intent = Intent(activity, EventDetailActivity::class.java)
+        val intent = Intent(activity, EventDetailsActivity::class.java)
         intent.putExtra("event", event)
         startActivity(intent)
     }

@@ -19,5 +19,7 @@ interface EventApi {
 
     fun createEvent(event: Event): Single<Event>
 
+    fun getEvent(id: Int): Single<Event>
+
     fun getMatch(id: Int): Single<Match>
 }

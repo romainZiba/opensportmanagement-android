@@ -10,6 +10,5 @@
     android:layout_marginTop="8dp"
     app:layoutManager="LinearLayoutManager"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.zcorp.opensportmanagement.ui.eventdetails.EventDetailActivity"
-    tools:listitem="@layout/rv_item_participant"
-    tools:showIn="@layout/activity_event_detail" />
+    tools:context="com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsActivity"
+    tools:listitem="@layout/rv_item_participant" />
