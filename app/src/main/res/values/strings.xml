@@ -47,4 +47,5 @@
     <string name="presence">Presence</string>
     <string name="information">Information</string>
     <string name="players">Players</string>
+    <string name="transition_match_description">transition_match_description</string>
 </resources>

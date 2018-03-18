@@ -1,9 +1,12 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.*
@@ -28,6 +31,9 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     @Inject
     lateinit var fragmentContext: Context
 
+    @Inject
+    lateinit var mActivity: Activity
+
     override fun showNetworkError() {
         ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
         event_swipeRefreshLayout.isRefreshing = false
@@ -38,10 +44,21 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
         event_swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun showEventDetails(event: Event) {
+    override fun showEventDetails(event: Event, adapterPosition: Int) {
+        // get the common element for the transition in this activity
+        val viewToAnimate = rv_events_list.layoutManager.findViewByPosition(adapterPosition)
         val intent = Intent(activity, EventDetailsActivity::class.java)
         intent.putExtra("event", event)
-        startActivity(intent)
+        if (viewToAnimate != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity
+//                    viewToAnimate,
+//                    context!!.getString(R.string.transition_match_description)
+            )
+                    .toBundle()
+            startActivity(intent, bundle)
+        } else {
+            startActivity(intent)
+        }
     }
 
     override fun isFloatingMenuOpened(): Boolean {

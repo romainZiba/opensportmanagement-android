@@ -24,8 +24,8 @@
             app:toolbarId="@+id/toolbar_event_details">
 
             <!--TODO find a workaround for api < 23 -->
-            <include layout="@layout/match_description_layout"
-                android:id="@+id/layout_match_description"
+            <include
+                layout="@layout/match_description_layout"
                 android:theme="@style/WhiteColoredText"/>
 
             <android.support.v7.widget.Toolbar

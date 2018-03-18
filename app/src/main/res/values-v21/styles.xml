@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppThemeV21" parent="AppTheme">
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
+
+    </style>
+
+    <style name="AppTheme.List" parent="AppThemeV21">
+        <item name="android:windowExitTransition">@transition/events_exit</item>
+    </style>
+
+    <style name="AppTheme.Detail" parent="AppThemeV21">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowEnterTransition">@transition/events_details</item>
+    </style>
+
+</resources>

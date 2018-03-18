@@ -30,12 +30,14 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:label="@string/title_activity_main"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.List" />
 
         <activity
             android:name=".ui.eventdetails.EventDetailsActivity"
             android:label="@string/title_activity_event_detail"
-            android:parentActivityName=".ui.main.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity"
+            android:theme="@style/AppTheme.Detail">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.zcorp.opensportmanagement.ui.main.MainActivity" />

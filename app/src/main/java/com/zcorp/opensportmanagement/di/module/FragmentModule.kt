@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.di.module
 
+import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
 import com.zcorp.opensportmanagement.data.IDataManager
@@ -22,6 +23,11 @@ class FragmentModule(private val mFragment: Fragment) : BaseContextModule() {
 
     @Provides
     internal fun provideContext(): Context {
+        return mFragment.activity!!
+    }
+
+    @Provides
+    internal fun provideActivity(): Activity {
         return mFragment.activity!!
     }
 

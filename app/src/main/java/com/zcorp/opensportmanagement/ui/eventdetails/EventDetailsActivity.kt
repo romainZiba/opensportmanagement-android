@@ -12,6 +12,7 @@ import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.EventInformationFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.members.EventMembersFragment
 import kotlinx.android.synthetic.main.activity_event_details.*
+import kotlinx.android.synthetic.main.match_description_layout.*
 import javax.inject.Inject
 
 
