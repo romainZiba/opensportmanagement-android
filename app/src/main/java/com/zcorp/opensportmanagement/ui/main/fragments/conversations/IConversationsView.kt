@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.conversations
 
+import com.zcorp.opensportmanagement.model.Conversation
 import com.zcorp.opensportmanagement.ui.base.IBaseView
 
 /**
@@ -7,7 +8,7 @@ import com.zcorp.opensportmanagement.ui.base.IBaseView
  */
 interface IConversationsView : IBaseView {
     fun showNetworkError()
-    fun onDataAvailable()
+    fun onDataAvailable(conversations: List<Conversation>)
     fun showConversationDetails(conversationId: String)
     fun showProgress()
 }

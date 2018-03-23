@@ -9,11 +9,9 @@ import com.zcorp.opensportmanagement.di.module.NetModule.Companion.PORT
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.WSSCHEME
 import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.InAppMessage
-import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter.Companion.CURRENT_USER
-import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter.Companion.FRIEND
-import com.zcorp.opensportmanagement.ui.messages.adapter.IMessageViewHolder
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
+import io.reactivex.disposables.CompositeDisposable
 import ua.naiksoftware.stomp.LifecycleEvent
 import ua.naiksoftware.stomp.client.StompClient
 import java.io.Serializable
@@ -24,14 +22,17 @@ import javax.inject.Inject
  * Created by romainz on 17/02/18.
  */
 class MessagesPresenter @Inject constructor(
-        private val dataManager: IDataManager,
-        private val schedulerProvider: SchedulerProvider,
-        private val stompClientProvider: IStompClientProvider,
-        private val objectMapper: ObjectMapper) : IMessagesPresenter {
+        private val mDataManager: IDataManager,
+        private val mSchedulerProvider: SchedulerProvider,
+        private val mDisposables: CompositeDisposable,
+        private val mStompClientProvider: IStompClientProvider,
+        private val mObjectMapper: ObjectMapper) : IMessagesPresenter {
 
-    val TAG = MessagesPresenter::class.java.name
-    private var mMessages: MutableList<InAppMessage> = mutableListOf()
-    private lateinit var mMessagesView: IMessagesView
+    companion object {
+        val TAG = MessagesPresenter::class.java.name
+    }
+
+    private var mMessagesView: IMessagesView? = null
     private lateinit var mStompClient: StompClient
     private lateinit var mConversationId: String
 
@@ -40,91 +41,72 @@ class MessagesPresenter @Inject constructor(
     }
 
     override fun onAttach(view: IMessagesView, vararg args: Serializable) {
-        this.getMessagesFromApi()
+        this.getMessages()
         mMessagesView = view
         configureWebsocketConnection()
     }
 
     private fun configureWebsocketConnection() {
-        mStompClient = stompClientProvider.client("$WSSCHEME://${BuildConfig.HOST}:$PORT/messagesWS/websocket")
+        mStompClient = mStompClientProvider.client("$WSSCHEME://${BuildConfig.HOST}:$PORT/messagesWS/websocket")
         mStompClient.connect()
-        mStompClient.topic("/topic/$mConversationId")
-                .subscribeOn(schedulerProvider.newThread())
-                .observeOn(schedulerProvider.ui())
+        mDisposables.add(mStompClient.topic("/topic/$mConversationId")
+                .subscribeOn(mSchedulerProvider.newThread())
+                .observeOn(mSchedulerProvider.ui())
                 .subscribe(
                         { topicMessage ->
                             run {
-                                addSortedMessage(objectMapper.readValue(topicMessage.payload))
-                                mMessagesView.onMessagesAvailable()
-                                mMessagesView.scrollToPosition(mMessages.size - 1)
-                                mMessagesView.showNewMessageIndicator()
+                                val message = mObjectMapper.readValue<InAppMessage>(topicMessage.payload)
+                                mMessagesView?.displayNewMessage(message)
+                                mMessagesView?.moveToEnd()
+                                mMessagesView?.showNewMessageIndicator()
                             }
                         },
                         { error ->
                             Log.d("From websocket", error.toString())
                         })
-        mStompClient.lifecycle().subscribe { lifecycleEvent ->
+        )
+        mDisposables.add(mStompClient.lifecycle().subscribe { lifecycleEvent ->
             when (lifecycleEvent.type) {
                 LifecycleEvent.Type.OPENED -> Log.d(TAG, "Stomp connection opened")
                 LifecycleEvent.Type.ERROR -> Log.e(TAG, "Error", lifecycleEvent.exception)
                 LifecycleEvent.Type.CLOSED -> Log.d(TAG, "Stomp connection closed")
             }
-        }
+        })
     }
 
     override fun onDetach() {
+        mDisposables.clear()
+        mMessagesView = null
         mStompClient.disconnect()
     }
 
-    override fun onBindMessageRowViewAtPosition(position: Int, holder: IMessageViewHolder) {
-        val message = mMessages[position]
-        holder.setMessage(message.message)
-        holder.setMessageUserAndDate(message.from, message.time)
-    }
-
-    override fun getMessagesFromApi() {
-        dataManager.getMessagesOrderedByDate(mConversationId)
-                .subscribeOn(schedulerProvider.newThread())
-                .observeOn(schedulerProvider.ui())
+    override fun getMessages() {
+        mDisposables.add(mDataManager.getMessagesOrderedByDate(mConversationId)
+                .subscribeOn(mSchedulerProvider.newThread())
+                .observeOn(mSchedulerProvider.ui())
                 .subscribe({
-                    mMessages = it.toMutableList()
-                    mMessagesView.onMessagesAvailable()
+                    mMessagesView?.onMessagesAvailable(it)
                 }, {
-                    mMessagesView.showNetworkError()
+                    mMessagesView?.showNetworkError()
                 })
+        )
     }
 
-    override fun getMessagesCount(): Int {
-        return mMessages.size
-    }
-
-    override fun onPostMessage(stringMessage: String) {
-        dataManager.createMessage(mConversationId, MessageDto(stringMessage))
-                .subscribeOn(schedulerProvider.newThread())
-                .observeOn(schedulerProvider.ui())
+    override fun postMessage(stringMessage: String) {
+        mDisposables.add(mDataManager.createMessage(mConversationId, MessageDto(stringMessage))
+                .subscribeOn(mSchedulerProvider.newThread())
+                .observeOn(mSchedulerProvider.ui())
                 .subscribe({
                     // Do nothing
                 }, {
                     Log.d(TAG, it.localizedMessage)
-                    mMessagesView.showNetworkError()
+                    mMessagesView?.showNetworkError()
                 })
-        mMessagesView.closeKeyboardAndClear()
-    }
-
-    override fun getMessageType(position: Int): Int {
-        val message = mMessages[position]
-        return when (message.from) {
-            dataManager.getCurrentUserName() -> CURRENT_USER
-            else -> FRIEND
-        }
+        )
+        mMessagesView?.closeKeyboardAndClear()
     }
 
     override fun getCurrentUserName(): String {
-        return dataManager.getCurrentUserName()
-    }
-
-    private fun addSortedMessage(message: InAppMessage) {
-        mMessages.add(message)
-        mMessages.sortBy { it.time }
+        return mDataManager.getCurrentUserName()
     }
 }

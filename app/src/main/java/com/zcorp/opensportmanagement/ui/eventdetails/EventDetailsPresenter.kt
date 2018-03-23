@@ -1,11 +1,12 @@
 package com.zcorp.opensportmanagement.ui.eventdetails
 
-import android.util.Log
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.TeamMember
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsPresenter
+import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
+import io.reactivex.disposables.CompositeDisposable
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -13,32 +14,31 @@ import javax.inject.Inject
  * Created by romainz on 16/03/18.
  */
 class EventDetailsPresenter @Inject constructor(
-        val dataManager: IDataManager,
-        val schedulerProvider: SchedulerProvider) : IEventDetailsPresenter {
+        private val mDataManager: IDataManager,
+        private val mSchedulerProvider: SchedulerProvider,
+        private val mDisposables: CompositeDisposable,
+        private val mLogger: ILogger) : IEventDetailsPresenter {
 
-    private lateinit var mView: IEventDetailsView
-
+    private var mView: IEventDetailsView? = null
     private lateinit var mEventDetails: Event
 
     override fun getEventDetails(id: Int) {
-        dataManager.getEvent(id).subscribe(
-                {
-                    mEventDetails = it
-                },
-                {
-                    Log.d(EventsPresenter.TAG, "Error while retrieving events $it")
-                }
+        mDisposables.add(mDataManager.getEvent(id)
+                .subscribeOn(mSchedulerProvider.newThread())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe({ mEventDetails = it },
+                        { mLogger.d(EventsPresenter.TAG, "Error while retrieving events $it") }
+                )
         )
     }
 
     override fun getMatchDetails(id: Int) {
-        dataManager.getMatch(id).subscribe(
-                {
-                    mEventDetails = it
-                },
-                {
-                    Log.d(EventsPresenter.TAG, "Error while retrieving events $it")
-                }
+        mDisposables.add(mDataManager.getMatch(id)
+                .subscribeOn(mSchedulerProvider.newThread())
+                .observeOn(mSchedulerProvider.ui())
+                .subscribe({ mEventDetails = it },
+                        { mLogger.d(EventsPresenter.TAG, "Error while retrieving events $it") }
+                )
         )
     }
 
@@ -58,11 +58,11 @@ class EventDetailsPresenter @Inject constructor(
     }
 
     override fun onDisplayInformation() {
-        mView.displayInformation()
+        mView?.displayInformation()
     }
 
     override fun onDisplayTeamMembers() {
-        mView.displayTeamMembers()
+        mView?.displayTeamMembers()
     }
 
     override fun onAttach(view: IEventDetailsView, vararg args: Serializable) {
@@ -70,6 +70,8 @@ class EventDetailsPresenter @Inject constructor(
     }
 
     override fun onDetach() {
+        mDisposables.clear()
+        mView = null
     }
 
 

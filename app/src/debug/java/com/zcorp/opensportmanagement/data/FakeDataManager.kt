@@ -48,6 +48,7 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
 
     private val mPresentPlayers: MutableSet<TeamMember> = mutableSetOf()
     private val mAbsentPlayers: MutableSet<TeamMember> = mutableSetOf()
+    private var mEvents: List<Event> = listOf()
 
 
     init {
@@ -89,7 +90,12 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
 
     override fun getConversations(): Single<List<Conversation>> {
         return Single.create {
-            it.onSuccess(getConversationFromNetwork())
+            val rand = Math.random()
+            if (rand > 0.5) {
+                it.onSuccess(getConversationFromNetwork())
+            } else {
+                it.onSuccess(mConversations)
+            }
         }
     }
 
@@ -143,16 +149,27 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
         }
     }
 
+    /**
+     * This function simulates a cache system
+     */
     override fun getEvents(teamId: Int): Single<List<Event>> {
         val rand = Math.random()
-        if (rand > 0.95) {
-            return Single.create {
+        return if (rand > 0.95) {
+            mEvents = mutableListOf()
+            Single.create {
                 it.onError(IOException())
             }
+        } else if (mEvents.isNotEmpty() && rand <= 0.95 && rand > 0.2) {
+            Single.create {
+                it.onSuccess(mEvents)
+            }
+        } else {
+            mEvents = mutableListOf()
+            Single.create {
+                it.onSuccess(getEventsFromNetwork())
+            }
         }
-        return Single.create {
-            it.onSuccess(getEventsFromNetwork())
-        }
+
     }
 
     override fun getTeam(teamId: Int): Single<Team> {
@@ -193,7 +210,8 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
         }
         var events: MutableList<Event> = IntRange(1, 10).map { createDummyEvent(it) }.toMutableList()
         events.addAll(IntRange(10, 21).map { createDummyMatch(it) }.toList())
-        return events.toList()
+        mEvents = events.toList()
+        return mEvents
     }
 
     private fun getConversationFromNetwork(): List<Conversation> {

@@ -21,15 +21,21 @@ class EventDetailsActivity : BaseActivity(), IEventDetailsView {
     @Inject
     lateinit var mPresenter: IEventDetailsPresenter
 
+    @Inject
+    lateinit var mEventInformationFragment: EventInformationFragment
+
+    @Inject
+    lateinit var mEventMembersFragment: EventMembersFragment
+
     override fun displayInformation() {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_event_details_container, EventInformationFragment())
+        transaction.replace(R.id.fragment_event_details_container, mEventInformationFragment)
         transaction.commit()
     }
 
     override fun displayTeamMembers() {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_event_details_container, EventMembersFragment())
+        transaction.replace(R.id.fragment_event_details_container, mEventMembersFragment)
         transaction.commit()
     }
 
@@ -68,8 +74,12 @@ class EventDetailsActivity : BaseActivity(), IEventDetailsView {
             mPresenter.getEventDetails(event._id)
         }
         event_details_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
-        displayInformation()
         mPresenter.onAttach(this)
+        displayInformation()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.onDetach()
     }
 }

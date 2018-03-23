@@ -25,7 +25,7 @@ class EventsFragmentTest {
     fun shouldShowNetworkError() {
 
         val presenter: IConversationsPresenter = mock()
-        whenever(presenter.getConversationsFromModel()).then {}
+        whenever(presenter.getConversations()).then {}
         whenever(presenter.getConversationsCount()).doReturn(3)
 
         val fragment = EventsFragment.newInstance(1)

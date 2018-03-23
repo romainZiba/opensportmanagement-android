@@ -6,13 +6,13 @@ import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.di.ApplicationContext
+import com.zcorp.opensportmanagement.utils.log.ILogger
 import retrofit2.Retrofit
 
 /**
  * Created by romainz on 02/02/18.
  */
 interface AppComponent {
-
     @ApplicationContext
     fun appContext(): Context
     fun getUserApi(): UserApi
@@ -20,4 +20,5 @@ interface AppComponent {
     fun getDataManager(): IDataManager
     fun getRetrofit(): Retrofit
     fun getMapper(): ObjectMapper
+    fun getLogger(): ILogger
 }

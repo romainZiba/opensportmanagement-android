@@ -8,9 +8,10 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.model.Conversation
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.conversations.adapter.ConversationsRecyclerAdapter
+import com.zcorp.opensportmanagement.ui.main.fragments.conversations.adapter.ConversationsAdapter
 import com.zcorp.opensportmanagement.ui.messages.MessagesActivity
 import kotlinx.android.synthetic.main.fragment_conversation_list.*
 import kotlinx.android.synthetic.main.fragment_conversation_list.view.*
@@ -31,15 +32,18 @@ import javax.inject.Inject
 class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLayout.OnRefreshListener {
 
     @Inject
-    lateinit var presenter: IConversationsPresenter
+    lateinit var mPresenter: IConversationsPresenter
+
+    @Inject
+    lateinit var mAdapter: ConversationsAdapter
 
     override fun showNetworkError() {
         ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
         conversations_swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun onDataAvailable() {
-        rv_conversations_list.adapter.notifyDataSetChanged()
+    override fun onDataAvailable(conversations: List<Conversation>) {
+        mAdapter.updateConversations(conversations)
         conversations_swipeRefreshLayout.isRefreshing = false
     }
 
@@ -56,13 +60,13 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         super.mFragmentComponent.inject(this)
-        presenter.onAttach(this)
+        mPresenter.onAttach(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_conversation_list, container, false)
         val recyclerView = view.rv_conversations_list
-        recyclerView.adapter = ConversationsRecyclerAdapter(presenter)
+        recyclerView.adapter = mAdapter
         val dividerItemDecoration = DividerItemDecoration(recyclerView.context,
                 (recyclerView.layoutManager as LinearLayoutManager).orientation)
         recyclerView.addItemDecoration(dividerItemDecoration)
@@ -73,11 +77,11 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-        presenter.getConversationsFromModel()
+        mPresenter.getConversations()
     }
 
     override fun onRefresh() {
-        presenter.getConversationsFromModel()
+        mPresenter.getConversations()
     }
 
     companion object {
@@ -92,10 +96,15 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.refresh_conversations -> {
-                presenter.getConversationsFromModel()
+                mPresenter.getConversations()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.onDetach()
     }
 }

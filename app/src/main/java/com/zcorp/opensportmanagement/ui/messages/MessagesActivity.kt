@@ -9,10 +9,11 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.model.InAppMessage
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment.Companion.CONVERSATION_ID_KEY
-import com.zcorp.opensportmanagement.ui.messages.adapter.MessageRecyclerAdapter
+import com.zcorp.opensportmanagement.ui.messages.adapter.MessagesAdapter
 import kotlinx.android.synthetic.main.activity_messages.*
 import javax.inject.Inject
 
@@ -24,18 +25,25 @@ class MessagesActivity : BaseActivity(), IMessagesView {
     @Inject
     lateinit var presenter: IMessagesPresenter
 
+    @Inject
+    lateinit var mAdapter: MessagesAdapter
+
     var mSnackbar: Snackbar? = null
 
     override fun showNetworkError() {
         Log.d("", "we should show a network error")
     }
 
-    override fun onMessagesAvailable() {
-        rv_messages_list.adapter.notifyDataSetChanged()
+    override fun onMessagesAvailable(messages: List<InAppMessage>) {
+        mAdapter.updateMessages(messages)
     }
 
-    override fun scrollToPosition(position: Int) {
-        rv_messages_list.scrollToPosition(position)
+    override fun displayNewMessage(message: InAppMessage) {
+        mAdapter.addMessage(message)
+    }
+
+    override fun moveToEnd() {
+        rv_messages_list.scrollToPosition(mAdapter.itemCount - 1)
     }
 
     override fun closeKeyboardAndClear() {
@@ -49,7 +57,7 @@ class MessagesActivity : BaseActivity(), IMessagesView {
 
     override fun showNewMessageIndicator() {
         mSnackbar = ThemedSnackbar.make(findViewById<View>(android.R.id.content).rootView,
-                "New message available", Snackbar.LENGTH_LONG)
+                "New body available", Snackbar.LENGTH_LONG)
                 .setAction("OK", {
                     mSnackbar!!.dismiss()
                     mSnackbar = null
@@ -69,19 +77,15 @@ class MessagesActivity : BaseActivity(), IMessagesView {
         super.mActivityComponent.inject(this)
         val conversationId = intent.getStringExtra(CONVERSATION_ID_KEY)
         presenter.setConversationId(conversationId)
-        rv_messages_list.adapter = MessageRecyclerAdapter(presenter)
-        btn_send_message.setOnClickListener { presenter.onPostMessage(et_message.text.toString()) }
+        rv_messages_list.adapter = mAdapter
+        btn_send_message.setOnClickListener { presenter.postMessage(et_message.text.toString()) }
         val layoutManager = rv_messages_list.layoutManager as LinearLayoutManager
         layoutManager.stackFromEnd = true
-    }
-
-    override fun onResume() {
-        super.onResume()
         presenter.onAttach(this)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         presenter.onDetach()
     }
 }

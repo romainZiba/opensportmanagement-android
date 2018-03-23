@@ -12,14 +12,14 @@ class EventInformationPresenter @Inject constructor(
         val dataManager: IDataManager,
         val schedulerProvider: SchedulerProvider) : IEventInformationPresenter {
 
-    private lateinit var mView: IEventInformationView
+    private var mView: IEventInformationView? = null
 
     override fun onPresentSelected() {
-        mView.markAsPresent()
+        mView?.markAsPresent()
     }
 
     override fun onAbsentSelected() {
-        mView.markAsAbsent()
+        mView?.markAsAbsent()
     }
 
     override fun onAttach(view: IEventInformationView, vararg args: Serializable) {
@@ -27,6 +27,7 @@ class EventInformationPresenter @Inject constructor(
     }
 
     override fun onDetach() {
+        mView = null
     }
 
 }

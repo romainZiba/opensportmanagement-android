@@ -15,7 +15,7 @@ import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsActivity
-import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventRecyclerAdapter
+import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import kotlinx.android.synthetic.main.fragment_event_list.view.*
 import javax.inject.Inject
@@ -34,13 +34,16 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     @Inject
     lateinit var mActivity: Activity
 
+    @Inject
+    lateinit var mEventsAdapter: EventsAdapter
+
     override fun showNetworkError() {
         ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
         event_swipeRefreshLayout.isRefreshing = false
     }
 
-    override fun onDataAvailable() {
-        rv_events_list.adapter.notifyDataSetChanged()
+    override fun onDataAvailable(events: List<Event>) {
+        mEventsAdapter.updateEvents(events)
         event_swipeRefreshLayout.isRefreshing = false
     }
 
@@ -97,7 +100,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_event_list, container, false)
-        view.rv_events_list.adapter = EventRecyclerAdapter(presenter)
+        view.rv_events_list.adapter = mEventsAdapter
         view.menu.setOnMenuButtonClickListener({
             presenter.onFloatingMenuClicked()
         })
@@ -108,7 +111,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-        presenter.getEventsFromModel()
+        presenter.getEvents()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -119,7 +122,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.refresh_events -> {
-                presenter.getEventsFromModel()
+                presenter.getEvents()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -127,6 +130,11 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     }
 
     override fun onRefresh() {
-        presenter.getEventsFromModel()
+        presenter.getEvents()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.onDetach()
     }
 }

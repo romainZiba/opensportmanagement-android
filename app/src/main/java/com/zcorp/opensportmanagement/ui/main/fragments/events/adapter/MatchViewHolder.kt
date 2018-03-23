@@ -2,15 +2,12 @@ package com.zcorp.opensportmanagement.ui.main.fragments.events.adapter
 
 import android.graphics.drawable.Drawable
 import android.view.View
-import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
 import kotlinx.android.synthetic.main.match_description_layout.view.*
 
 /**
  * Created by romainz on 03/02/18.
  */
-class MatchViewHolder(
-        private val mView: View,
-        presenter: IEventsPresenter) : BaseViewHolder(mView, presenter), IMatchViewHolder {
+class MatchViewHolder(private val mView: View) : BaseViewHolder(mView), IMatchViewHolder {
 
     override fun setDescription(description: String) {
 

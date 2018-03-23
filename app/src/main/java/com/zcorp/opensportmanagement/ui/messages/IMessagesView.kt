@@ -1,13 +1,16 @@
 package com.zcorp.opensportmanagement.ui.messages
 
+import com.zcorp.opensportmanagement.model.InAppMessage
+
 /**
  * Created by romainz on 16/02/18.
  */
 interface IMessagesView {
     fun showNetworkError()
-    fun onMessagesAvailable()
+    fun onMessagesAvailable(messages: List<InAppMessage>)
     fun showNewMessageIndicator()
-    fun scrollToPosition(position: Int)
+    fun moveToEnd()
     fun closeKeyboardAndClear()
     fun showProgress()
+    fun displayNewMessage(message: InAppMessage)
 }

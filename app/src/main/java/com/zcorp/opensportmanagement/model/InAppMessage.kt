@@ -7,4 +7,9 @@ import org.threeten.bp.OffsetDateTime
  * Created by romainz on 16/02/18.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class InAppMessage(val conversationId: String, val conversationTopic: String, val from: String, val message: String, val time: OffsetDateTime)
+data class InAppMessage(
+        val conversationId: String,
+        val conversationTopic: String,
+        val from: String,
+        val body: String,
+        val time: OffsetDateTime)

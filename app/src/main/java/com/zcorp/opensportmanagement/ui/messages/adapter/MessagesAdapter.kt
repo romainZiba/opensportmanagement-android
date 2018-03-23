@@ -4,12 +4,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.model.InAppMessage
 import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter
 
 /**
  * [RecyclerView.Adapter] that can display a [Event]
  */
-class MessageRecyclerAdapter(private val presenter: IMessagesPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessagesAdapter(
+        private var mMessages: MutableList<InAppMessage>,
+        private val presenter: IMessagesPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -28,14 +31,29 @@ class MessageRecyclerAdapter(private val presenter: IMessagesPresenter) : Recycl
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        presenter.onBindMessageRowViewAtPosition(position, holder as IMessageViewHolder)
+        val inAppMessage = mMessages[position]
+        (holder as IMessageViewHolder).setMessage(inAppMessage.body)
+        holder.setMessageUserAndDate(inAppMessage.from, inAppMessage.time)
     }
 
     override fun getItemCount(): Int {
-        return presenter.getMessagesCount()
+        return mMessages.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        return presenter.getMessageType(position)
+        return when (mMessages[position].from) {
+            presenter.getCurrentUserName() -> IMessagesPresenter.CURRENT_USER
+            else -> IMessagesPresenter.FRIEND
+        }
+    }
+
+    fun updateMessages(messages: List<InAppMessage>) {
+        mMessages = messages.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun addMessage(message: InAppMessage) {
+        mMessages.add(message)
+        notifyDataSetChanged()
     }
 }

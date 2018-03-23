@@ -72,11 +72,11 @@ dependencies {
     implementation project(':androidtoggleswitch')
 
     //  Dependency injection
-    implementation 'com.google.dagger:dagger:2.14.1'
-    implementation 'com.google.dagger:dagger-android:2.14.1'
     implementation 'com.google.dagger:dagger-android-support:2.14.1'
     kapt "com.google.dagger:dagger-compiler:2.14.1"
     kapt "com.google.dagger:dagger-android-processor:2.11"
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+
     //    JSR-310 implementation
     implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     //    HTTP requests

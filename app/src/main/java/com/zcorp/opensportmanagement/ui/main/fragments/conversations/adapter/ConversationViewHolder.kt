@@ -13,10 +13,4 @@ class ConversationViewHolder(private val mView: View,
     override fun setTopic(topic: String) {
         mView.tv_conversation_topic.text = topic
     }
-
-    override fun setListener() {
-        mView.setOnClickListener({
-            presenter.onItemClicked(adapterPosition)
-        })
-    }
 }

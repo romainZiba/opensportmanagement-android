@@ -2,11 +2,10 @@ package com.zcorp.opensportmanagement.ui.main
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.FragmentTransaction
+import android.support.v4.app.Fragment
 import android.support.v7.widget.Toolbar
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
-import com.zcorp.opensportmanagement.ui.main.fragments.button.PlusOneFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,6 +15,12 @@ class MainActivity : BaseActivity(), IMainView {
 
     @Inject
     lateinit var mainPresenter: IMainPresenter
+
+    @Inject
+    lateinit var eventsFragment: EventsFragment
+
+    @Inject
+    lateinit var conversationsFragment: ConversationsFragment
 
     private var mVisibleFragment = EVENTS
 
@@ -37,56 +42,25 @@ class MainActivity : BaseActivity(), IMainView {
         false
     }
 
-    override fun displayEvents() {
+    private fun displayFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        hideFragmentWithTag(transaction, PLUS_ONE)
-        hideFragmentWithTag(transaction, CONVERSATIONS)
-        var eventsFragment = supportFragmentManager.findFragmentByTag(EVENTS)
-        if (eventsFragment == null) {
-            eventsFragment = EventsFragment()
-            transaction.add(R.id.fragment_container, eventsFragment, EVENTS)
-        } else {
-            transaction.show(eventsFragment)
-        }
+        transaction.replace(R.id.fragment_container, fragment, "")
         transaction.commit()
+    }
+
+    override fun displayEvents() {
+        displayFragment(eventsFragment)
         mVisibleFragment = EVENTS
     }
 
     override fun displayGoogle() {
-        val transaction = supportFragmentManager.beginTransaction()
-        hideFragmentWithTag(transaction, EVENTS)
-        hideFragmentWithTag(transaction, CONVERSATIONS)
-        var plusOneFragment = supportFragmentManager.findFragmentByTag(PLUS_ONE)
-        if (plusOneFragment == null) {
-            plusOneFragment = PlusOneFragment()
-            transaction.add(R.id.fragment_container, plusOneFragment, PLUS_ONE)
-        } else {
-            transaction.show(plusOneFragment)
-        }
-        transaction.commit()
+        displayFragment(eventsFragment)
         mVisibleFragment = PLUS_ONE
     }
 
     override fun displayConversations() {
-        val transaction = supportFragmentManager.beginTransaction()
-        hideFragmentWithTag(transaction, EVENTS)
-        hideFragmentWithTag(transaction, PLUS_ONE)
-        var conversationsFragment = supportFragmentManager.findFragmentByTag(CONVERSATIONS)
-        if (conversationsFragment == null) {
-            conversationsFragment = ConversationsFragment()
-            transaction.add(R.id.fragment_container, conversationsFragment, CONVERSATIONS)
-        } else {
-            transaction.show(conversationsFragment)
-        }
-        transaction.commit()
+        displayFragment(conversationsFragment)
         mVisibleFragment = CONVERSATIONS
-    }
-
-    private fun hideFragmentWithTag(transaction: FragmentTransaction, tag: String) {
-        val fragment = supportFragmentManager.findFragmentByTag(tag)
-        if (fragment != null) {
-            transaction.hide(fragment)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +76,11 @@ class MainActivity : BaseActivity(), IMainView {
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putString(FRAGMENT_KEY, mVisibleFragment)
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainPresenter.onDetach()
     }
 
     companion object {

@@ -5,26 +5,30 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.dto.LoginResponseDto
 import com.zcorp.opensportmanagement.model.LoginRequest
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
+import io.reactivex.disposables.CompositeDisposable
 import java.io.Serializable
 import javax.inject.Inject
 
-class LoginPresenter @Inject constructor(val dataManager: IDataManager, val objectMapper: ObjectMapper) : ILoginPresenter {
+class LoginPresenter @Inject constructor(
+        private val dataManager: IDataManager,
+        private val schedulerProvider: SchedulerProvider,
+        private val disposables: CompositeDisposable,
+        private val objectMapper: ObjectMapper) : ILoginPresenter {
 
-    private lateinit var loginView: ILoginView
+    private var loginView: ILoginView? = null
 
     override fun validateCredentials(username: String, password: String) {
-        loginView.showProgress()
+        loginView?.showProgress()
         val loginRequest = LoginRequest(username, password)
-        val observable = dataManager.login(loginRequest)
-        observable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
+        disposables.add(dataManager.login(loginRequest)
+                .subscribeOn(schedulerProvider.newThread())
+                .observeOn(schedulerProvider.ui())
                 .subscribe({ loginResponse ->
                     run {
                         if (loginResponse == null || loginResponse.headers().get("Authorization") == null) {
-                            loginView.hideProgress()
-                            loginView.setPasswordError()
+                            loginView?.hideProgress()
+                            loginView?.setPasswordError()
                         } else {
                             if (loginResponse.body() != null) {
                                 val content = loginResponse.body()!!.string()
@@ -34,17 +38,18 @@ class LoginPresenter @Inject constructor(val dataManager: IDataManager, val obje
                                         responseDto.username,
                                         "",
                                         "")
-                                loginView.navigateToHome()
+                                loginView?.navigateToHome()
                             } else {
-                                loginView.hideProgress()
-                                loginView.setPasswordError()
+                                loginView?.hideProgress()
+                                loginView?.setPasswordError()
                             }
                         }
                     }
                 }, {
-                    loginView.hideProgress()
-                    loginView.setPasswordError()
+                    loginView?.hideProgress()
+                    loginView?.setPasswordError()
                 })
+        )
     }
 
     override fun onAttach(view: ILoginView, vararg args: Serializable) {
@@ -52,5 +57,7 @@ class LoginPresenter @Inject constructor(val dataManager: IDataManager, val obje
     }
 
     override fun onDetach() {
+        disposables.clear()
+        loginView = null
     }
 }

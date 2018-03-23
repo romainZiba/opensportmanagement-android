@@ -3,14 +3,13 @@ package com.zcorp.opensportmanagement.data.pref
 import android.content.Context
 import android.content.SharedPreferences
 import com.zcorp.opensportmanagement.data.IDataManager
-import com.zcorp.opensportmanagement.di.ApplicationContext
 import com.zcorp.opensportmanagement.di.PreferenceInfo
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class PreferencesHelper @Inject
-constructor(@ApplicationContext context: Context,
+constructor(context: Context,
             @PreferenceInfo prefFileName: String) : IPreferencesHelper {
 
     private val mPrefs: SharedPreferences = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE)

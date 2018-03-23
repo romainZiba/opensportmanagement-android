@@ -7,13 +7,14 @@ import java.io.Serializable
  */
 class EventMembersPresenter : IEventMembersPresenter {
 
-    private lateinit var mView: IEventMembersView
+    private var mView: IEventMembersView? = null
 
     override fun onAttach(view: IEventMembersView, vararg args: Serializable) {
         mView = view
     }
 
     override fun onDetach() {
+        mView = null
     }
 
 }
