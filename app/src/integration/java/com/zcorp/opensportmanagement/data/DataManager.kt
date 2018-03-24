@@ -22,6 +22,13 @@ import javax.inject.Inject
 class DataManager @Inject constructor(private val mPreferencesHelper: IPreferencesHelper,
                                       private val retrofit: Retrofit,
                                       private val objectMapper: ObjectMapper) : IDataManager {
+    override fun getEvent(id: Int): Single<Event> {
+        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
+    }
+
+    override fun getMatch(id: Int): Single<Match> {
+        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
+    }
 
     override fun getCurrentTeamId(): Int {
         return mPreferencesHelper.getCurrentTeamId()
@@ -75,7 +82,7 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
     }
 
     override fun createEvent(event: Event): Single<Event> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
     }
 
     override fun getCurrentUserLoggedInMode(): Int {

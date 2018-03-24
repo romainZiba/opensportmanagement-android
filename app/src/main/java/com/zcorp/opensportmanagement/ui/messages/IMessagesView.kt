@@ -13,4 +13,5 @@ interface IMessagesView {
     fun closeKeyboardAndClear()
     fun showProgress()
     fun displayNewMessage(message: InAppMessage)
+    fun isAtBottom(): Boolean
 }

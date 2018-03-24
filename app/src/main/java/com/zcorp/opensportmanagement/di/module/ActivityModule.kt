@@ -25,6 +25,7 @@ import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
+import kotlin.math.log
 
 @Module
 class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModule() {
@@ -78,8 +79,9 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
                                           schedulerProvider: SchedulerProvider,
                                           disposables: CompositeDisposable,
                                           stompClientProvider: IStompClientProvider,
-                                          objectMapper: ObjectMapper): IMessagesPresenter {
-        return MessagesPresenter(dataManager, schedulerProvider, disposables, stompClientProvider, objectMapper)
+                                          objectMapper: ObjectMapper,
+                                          logger: ILogger): IMessagesPresenter {
+        return MessagesPresenter(dataManager, schedulerProvider, disposables, stompClientProvider, objectMapper, logger)
     }
 
     @Provides

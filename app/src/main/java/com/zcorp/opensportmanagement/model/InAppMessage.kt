@@ -11,5 +11,5 @@ data class InAppMessage(
         val conversationId: String,
         val conversationTopic: String,
         val from: String,
-        val body: String,
+        val message: String,
         val time: OffsetDateTime)

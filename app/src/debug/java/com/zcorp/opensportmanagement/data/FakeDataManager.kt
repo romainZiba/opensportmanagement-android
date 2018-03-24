@@ -173,7 +173,7 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
     }
 
     override fun getTeam(teamId: Int): Single<Team> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
     }
 
     override fun getEventsCount(): Single<Int> {
@@ -190,7 +190,7 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
     }
 
     override fun createEvent(event: Event): Single<Event> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
     }
 
     private fun loginFromNetwork(username: String): LoginResponse {

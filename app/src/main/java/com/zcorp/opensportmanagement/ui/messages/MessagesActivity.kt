@@ -42,6 +42,10 @@ class MessagesActivity : BaseActivity(), IMessagesView {
         mAdapter.addMessage(message)
     }
 
+    override fun isAtBottom(): Boolean {
+        return !rv_messages_list.canScrollVertically(DIRECTION_SCROLL_DOWN)
+    }
+
     override fun moveToEnd() {
         rv_messages_list.scrollToPosition(mAdapter.itemCount - 1)
     }
@@ -57,7 +61,7 @@ class MessagesActivity : BaseActivity(), IMessagesView {
 
     override fun showNewMessageIndicator() {
         mSnackbar = ThemedSnackbar.make(findViewById<View>(android.R.id.content).rootView,
-                "New body available", Snackbar.LENGTH_LONG)
+                "New message available", Snackbar.LENGTH_LONG)
                 .setAction("OK", {
                     mSnackbar!!.dismiss()
                     mSnackbar = null
@@ -66,7 +70,7 @@ class MessagesActivity : BaseActivity(), IMessagesView {
     }
 
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

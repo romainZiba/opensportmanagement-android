@@ -67,11 +67,11 @@ class EventsPresenter @Inject constructor(
     }
 
     override fun onAddMatchClicked() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
     }
 
     override fun onAddEventClicked() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
     }
 
     override fun onAttach(view: IEventsView, vararg args: Serializable) {

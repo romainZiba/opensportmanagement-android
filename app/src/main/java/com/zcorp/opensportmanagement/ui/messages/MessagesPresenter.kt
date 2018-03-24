@@ -1,6 +1,5 @@
 package com.zcorp.opensportmanagement.ui.messages
 
-import android.util.Log
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.zcorp.opensportmanagement.BuildConfig
@@ -9,6 +8,7 @@ import com.zcorp.opensportmanagement.di.module.NetModule.Companion.PORT
 import com.zcorp.opensportmanagement.di.module.NetModule.Companion.WSSCHEME
 import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.InAppMessage
+import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
 import io.reactivex.disposables.CompositeDisposable
@@ -26,7 +26,8 @@ class MessagesPresenter @Inject constructor(
         private val mSchedulerProvider: SchedulerProvider,
         private val mDisposables: CompositeDisposable,
         private val mStompClientProvider: IStompClientProvider,
-        private val mObjectMapper: ObjectMapper) : IMessagesPresenter {
+        private val mObjectMapper: ObjectMapper,
+        private val mLogger: ILogger) : IMessagesPresenter {
 
     companion object {
         val TAG = MessagesPresenter::class.java.name
@@ -57,19 +58,26 @@ class MessagesPresenter @Inject constructor(
                             run {
                                 val message = mObjectMapper.readValue<InAppMessage>(topicMessage.payload)
                                 mMessagesView?.displayNewMessage(message)
-                                mMessagesView?.moveToEnd()
-                                mMessagesView?.showNewMessageIndicator()
+                                val viewAtBottom = mMessagesView?.isAtBottom()
+                                when (viewAtBottom) {
+                                    true -> mMessagesView?.moveToEnd()
+                                    false -> mMessagesView?.showNewMessageIndicator()
+                                    else -> {
+                                        mLogger.d(TAG, "View is not present anymore")
+                                    }
+                                }
                             }
                         },
                         { error ->
-                            Log.d("From websocket", error.toString())
+                            mLogger.d("From websocket", error.toString())
                         })
         )
         mDisposables.add(mStompClient.lifecycle().subscribe { lifecycleEvent ->
             when (lifecycleEvent.type) {
-                LifecycleEvent.Type.OPENED -> Log.d(TAG, "Stomp connection opened")
-                LifecycleEvent.Type.ERROR -> Log.e(TAG, "Error", lifecycleEvent.exception)
-                LifecycleEvent.Type.CLOSED -> Log.d(TAG, "Stomp connection closed")
+                LifecycleEvent.Type.OPENED -> mLogger.d(TAG, "Stomp connection opened")
+                LifecycleEvent.Type.ERROR -> mLogger.e(TAG, "Error", lifecycleEvent.exception)
+                LifecycleEvent.Type.CLOSED -> mLogger.d(TAG, "Stomp connection closed")
+                else -> mLogger.d(TAG, "Unexpected lifecycle event '$lifecycleEvent'")
             }
         })
     }
@@ -99,7 +107,7 @@ class MessagesPresenter @Inject constructor(
                 .subscribe({
                     // Do nothing
                 }, {
-                    Log.d(TAG, it.localizedMessage)
+                    mLogger.d(TAG, it.localizedMessage)
                     mMessagesView?.showNetworkError()
                 })
         )

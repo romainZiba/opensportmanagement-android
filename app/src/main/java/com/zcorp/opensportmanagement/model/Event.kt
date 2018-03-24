@@ -11,8 +11,8 @@ open class Event(val _id: Int,
                  val fromDate: LocalDateTime,
                  val toDate: LocalDateTime,
                  val place: String,
-                 val presentTeamMembers: MutableSet<TeamMember>,
-                 val absentTeamMembers: MutableSet<TeamMember>) : Serializable {
+                 var presentTeamMembers: Set<TeamMember> = setOf(),
+                 var absentTeamMembers: Set<TeamMember> = setOf()) : Serializable {
 
     enum class EventType(val type: String) {
         CHAMPIONSHIP(championship),

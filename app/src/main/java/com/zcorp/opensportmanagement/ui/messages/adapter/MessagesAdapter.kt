@@ -32,7 +32,7 @@ class MessagesAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val inAppMessage = mMessages[position]
-        (holder as IMessageViewHolder).setMessage(inAppMessage.body)
+        (holder as IMessageViewHolder).setMessage(inAppMessage.message)
         holder.setMessageUserAndDate(inAppMessage.from, inAppMessage.time)
     }
 

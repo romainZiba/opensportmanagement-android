@@ -12,6 +12,11 @@ import com.zcorp.opensportmanagement.di.module.ActivityModule
  */
 abstract class BaseActivity : AppCompatActivity() {
 
+    companion object {
+        const val DIRECTION_SCROLL_DOWN = 1
+        const val DIRECTION_SCROLL_UP = -1
+    }
+
     protected lateinit var mActivityComponent: ActivityComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
