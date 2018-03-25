@@ -96,6 +96,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
         super.onCreate(savedInstanceState)
         super.mFragmentComponent.inject(this)
         presenter.onAttach(this)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -110,13 +111,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
         presenter.getEvents()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater!!.inflate(R.menu.events_menu_toolbar, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

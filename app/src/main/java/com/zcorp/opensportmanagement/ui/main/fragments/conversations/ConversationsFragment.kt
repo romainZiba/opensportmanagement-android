@@ -6,7 +6,10 @@ import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.Conversation
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
@@ -61,6 +64,7 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
         super.onCreate(savedInstanceState)
         super.mFragmentComponent.inject(this)
         mPresenter.onAttach(this)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -76,7 +80,6 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
         mPresenter.getConversations()
     }
 
@@ -85,17 +88,12 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
     }
 
     companion object {
-        val CONVERSATION_ID_KEY = "conversationId"
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater!!.inflate(R.menu.messages_menu_toolbar, menu)
+        const val CONVERSATION_ID_KEY = "conversationId"
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
-            R.id.refresh_conversations -> {
+            R.id.refresh_events -> {
                 mPresenter.getConversations()
                 true
             }
