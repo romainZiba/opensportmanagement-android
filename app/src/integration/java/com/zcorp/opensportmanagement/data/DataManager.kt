@@ -9,8 +9,6 @@ import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Single
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -62,23 +60,24 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
         return retrofit.create(TeamApi::class.java).getTeam(teamId)
     }
 
-    override fun getEventsCount(): Single<Int> {
-//        return retrofit.create(EventApi::class.java).getConversationsCount()
-        //TODO: remove this by a real API call
-        return Single.just(20)
-    }
-
     override fun getEvents(teamId: Int): Single<List<Event>> {
         return retrofit.create(EventApi::class.java).getEvents(teamId)
     }
 
-    override fun updateUserInfo(accessToken: String, loggedInMode: IDataManager.LoggedInMode,
-                                userName: String, email: String, profilePicPath: String) {
+    override fun whoAmI(): Single<User> {
+        return retrofit.create(UserApi::class.java).whoAmI()
+    }
+
+    override fun updateUserInfo(loggedInMode: IDataManager.LoggedInMode,
+                                userName: String,
+                                email: String,
+                                profilePicPath: String,
+                                availableTeams: List<Team>) {
         mPreferencesHelper.setCurrentUserName(userName)
-        mPreferencesHelper.setAccessToken(accessToken)
         mPreferencesHelper.setCurrentUserLoggedInMode(loggedInMode)
         mPreferencesHelper.setCurrentUserEmail(email)
         mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicPath)
+        mPreferencesHelper.setAvailableTeams(availableTeams)
     }
 
     override fun createEvent(event: Event): Single<Event> {
@@ -123,5 +122,9 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
 
     override fun setCurrentUserName(username: String) {
         mPreferencesHelper.setCurrentUserName(username)
+    }
+
+    override fun setAvailableTeams(availableTeams: List<Team>) {
+        mPreferencesHelper.setAvailableTeams(availableTeams)
     }
 }

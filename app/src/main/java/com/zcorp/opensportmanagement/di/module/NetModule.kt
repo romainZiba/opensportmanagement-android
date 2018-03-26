@@ -21,6 +21,7 @@ import javax.inject.Singleton
 class NetModule {
 
     @Provides
+    @Singleton
     fun getJacksonMapper(): ObjectMapper {
         val mapper = jacksonObjectMapper()
         mapper.findAndRegisterModules()

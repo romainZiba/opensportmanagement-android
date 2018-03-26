@@ -2,6 +2,7 @@ package com.zcorp.opensportmanagement.di.component
 
 import android.content.Context
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.UserApi
@@ -13,6 +14,7 @@ import retrofit2.Retrofit
  * Created by romainz on 02/02/18.
  */
 interface AppComponent {
+    fun inject(app: MyApplication)
     @ApplicationContext
     fun appContext(): Context
     fun getUserApi(): UserApi

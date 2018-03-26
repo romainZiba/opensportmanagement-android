@@ -11,5 +11,5 @@ interface ILoginView : IBaseView {
 
     fun setPasswordError()
 
-    fun navigateToHome()
+    fun navigateToHome(availableTeams: List<String>)
 }

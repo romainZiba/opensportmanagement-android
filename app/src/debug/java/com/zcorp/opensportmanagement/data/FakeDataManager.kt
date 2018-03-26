@@ -17,7 +17,7 @@ import javax.inject.Inject
 /**
  * Created by romainz on 10/02/18.
  */
-class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHelper) : IDataManager {
+class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPreferencesHelper) : IDataManager {
 
     private val mFirstNames = listOf(
             "Albert", "Jean", "Paul", "William", "Richard", "René", "Benjamin", "Camille",
@@ -49,6 +49,7 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
     private val mPresentPlayers: MutableSet<TeamMember> = mutableSetOf()
     private val mAbsentPlayers: MutableSet<TeamMember> = mutableSetOf()
     private var mEvents: List<Event> = listOf()
+    private var mAvailableTeams = listOf<String>()
 
 
     init {
@@ -74,6 +75,17 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
         val teamMembers = createDummyTeamMembers(30)
         mPresentPlayers.addAll(teamMembers.filter { it.firstName.contains("a") })
         mAbsentPlayers.addAll(teamMembers.filter { !it.firstName.contains("a") })
+    }
+
+    override fun whoAmI(): Single<User> {
+        return Single.create {
+            it.onSuccess(User(mUsername,
+                    "",
+                    IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
+                    "myemail@email.com",
+                    "http://mypicture.com",
+                    mutableSetOf()))
+        }
     }
 
     override fun getEvent(id: Int): Single<Event> {
@@ -137,7 +149,9 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
     override fun login(loginRequest: LoginRequest): Single<Response<ResponseBody>> {
         return Single.create({
             loginFromNetwork(loginRequest.username)
-            val responseBody = ResponseBody.create(MediaType.parse("application/json"), "{\"username\": \"$mUsername\"}")
+            val responseBody = ResponseBody.create(
+                    MediaType.parse("application/json"),
+                    "{\"username\": \"$mUsername\", \"availableTeams\": [\"Nets\", \"Knicks\"]}")
             val headers = Headers.of("Authorization", "Bearer kjfkkf.kdjdjd.kkff")
             it.onSuccess(Response.success(responseBody, headers))
         })
@@ -180,13 +194,14 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
         return Single.just(40)
     }
 
-    override fun updateUserInfo(accessToken: String, loggedInMode: IDataManager.LoggedInMode,
-                                userName: String, email: String, profilePicPath: String) {
+    override fun updateUserInfo(loggedInMode: IDataManager.LoggedInMode,
+                                userName: String, email: String, profilePicPath: String,
+                                availableTeams: List<Team>) {
         mPreferencesHelper.setCurrentUserName(userName)
-        mPreferencesHelper.setAccessToken(accessToken)
         mPreferencesHelper.setCurrentUserLoggedInMode(loggedInMode)
         mPreferencesHelper.setCurrentUserEmail(email)
         mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicPath)
+        mPreferencesHelper.setAvailableTeams(availableTeams)
     }
 
     override fun createEvent(event: Event): Single<Event> {
@@ -299,5 +314,9 @@ class FakeDataManager @Inject constructor(val mPreferencesHelper: IPreferencesHe
 
     override fun setCurrentUserName(username: String) {
         mPreferencesHelper.setCurrentUserName(username)
+    }
+
+    override fun setAvailableTeams(availableTeams: List<Team>) {
+        mPreferencesHelper.setAvailableTeams(availableTeams)
     }
 }

@@ -6,18 +6,28 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.Window
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
+import com.zcorp.opensportmanagement.ui.login.LoginActivity.Companion.TEAMS_KEY
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
+import com.zcorp.opensportmanagement.utils.log.ILogger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), IMainView {
+class MainActivity : BaseActivity(), IMainView, AdapterView.OnItemSelectedListener {
+
+    companion object {
+        val TAG = MainActivity.javaClass.simpleName
+        const val EVENTS = "EVENTS"
+        const val PLUS_ONE = "PLUS_ONE"
+        const val CONVERSATIONS = "CONVERSATIONS"
+        const val FRAGMENT_KEY = "VISIBLE_FRAGMENT"
+    }
 
     @Inject
     lateinit var mainPresenter: IMainPresenter
@@ -25,8 +35,9 @@ class MainActivity : BaseActivity(), IMainView {
     lateinit var eventsFragment: EventsFragment
     @Inject
     lateinit var conversationsFragment: ConversationsFragment
+    @Inject
+    lateinit var mLogger: ILogger
     private var mVisibleFragment = EVENTS
-
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -69,6 +80,9 @@ class MainActivity : BaseActivity(), IMainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val teams = intent.extras[TEAMS_KEY] as Array<String>
+
         super.mActivityComponent.inject(this)
         mVisibleFragment = savedInstanceState?.getString(FRAGMENT_KEY) ?: EVENTS
         setContentView(R.layout.activity_main)
@@ -79,9 +93,10 @@ class MainActivity : BaseActivity(), IMainView {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowCustomEnabled(true)
         val spinnerArrayAdapter = ArrayAdapter<String>(this, R.layout.simple_spinner_item,
-                arrayOf("Terre", "Mer", "Feu"))
+                teams)
         spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         main_spinner.adapter = spinnerArrayAdapter
+        main_spinner.onItemSelectedListener = this
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -103,10 +118,11 @@ class MainActivity : BaseActivity(), IMainView {
         return false
     }
 
-    companion object {
-        const val EVENTS = "EVENTS"
-        const val PLUS_ONE = "PLUS_ONE"
-        const val CONVERSATIONS = "CONVERSATIONS"
-        const val FRAGMENT_KEY = "VISIBLE_FRAGMENT"
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        mLogger.d(TAG, "No team selected")
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        mLogger.d(TAG, "team selected")
     }
 }

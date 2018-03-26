@@ -47,12 +47,17 @@ class LoginActivity : BaseActivity(), ILoginView, View.OnClickListener {
         et_password.error = getString(R.string.password_error)
     }
 
-    override fun navigateToHome() {
-        startActivity(Intent(this, MainActivity::class.java))
+    override fun navigateToHome(availableTeams: List<String>) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra(TEAMS_KEY, availableTeams.toTypedArray())
+        startActivity(intent)
         finish()
     }
 
     override fun onClick(v: View) {
         presenter.validateCredentials(et_username.text.toString(), et_password.text.toString())
+    }
+    companion object {
+        const val TEAMS_KEY = "availableTeamsKey"
     }
 }

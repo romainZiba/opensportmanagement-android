@@ -4,8 +4,6 @@ import android.content.Context
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.UserApi
-import com.zcorp.opensportmanagement.data.pref.FakePreferencesHelper
-import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.di.ApplicationContext
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.log.Logger
@@ -20,12 +18,6 @@ abstract class ApplicationModule(private val context: Context) {
     @ApplicationContext
     internal fun provideAppContext(): Context {
         return context
-    }
-
-    @Provides
-    @Singleton
-    internal fun providePreferencesHelper(fakePreferencesHelper: FakePreferencesHelper): IPreferencesHelper {
-        return fakePreferencesHelper
     }
 
     @Provides

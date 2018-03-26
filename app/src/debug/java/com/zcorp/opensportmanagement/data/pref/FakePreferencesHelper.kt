@@ -1,6 +1,7 @@
 package com.zcorp.opensportmanagement.data.pref
 
 import com.zcorp.opensportmanagement.data.IDataManager
+import com.zcorp.opensportmanagement.model.Team
 import com.zcorp.opensportmanagement.model.User
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,6 +12,7 @@ class FakePreferencesHelper @Inject constructor() : IPreferencesHelper {
     var currentUser: User = User("FakePerson", "", IDataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT,
             "", "", mutableSetOf())
     var teamId: Int = 0
+    private var availableTeams: List<Team> = listOf()
 
     override fun getCurrentUserName(): String {
         return currentUser.username
@@ -58,5 +60,9 @@ class FakePreferencesHelper @Inject constructor() : IPreferencesHelper {
 
     override fun setCurrentTeamId(teamId: Int) {
         this.teamId = teamId
+    }
+
+    override fun setAvailableTeams(availableTeams: List<Team>) {
+        this.availableTeams = availableTeams
     }
 }

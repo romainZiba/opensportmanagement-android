@@ -3,14 +3,14 @@ package com.zcorp.opensportmanagement.data.pref
 import android.content.Context
 import android.content.SharedPreferences
 import com.zcorp.opensportmanagement.data.IDataManager
+import com.zcorp.opensportmanagement.di.ApplicationContext
 import com.zcorp.opensportmanagement.di.PreferenceInfo
+import com.zcorp.opensportmanagement.model.Team
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PreferencesHelper @Inject
-constructor(context: Context,
-            @PreferenceInfo prefFileName: String) : IPreferencesHelper {
+class PreferencesHelper @Inject constructor(@ApplicationContext context: Context, @PreferenceInfo prefFileName: String) : IPreferencesHelper {
 
     private val mPrefs: SharedPreferences = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE)
 
@@ -63,6 +63,10 @@ constructor(context: Context,
         mPrefs.edit().putInt(PREF_KEY_CURRENT_TEAM, teamId).apply()
     }
 
+    override fun setAvailableTeams(availableTeams: List<Team>) {
+        mPrefs.edit().putStringSet(PREF_KEY_AVAILABLE_TEAMS, availableTeams.map { it._id.toString() }.toSet()).apply()
+    }
+
     companion object {
         private const val PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE"
         private const val PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME"
@@ -70,5 +74,6 @@ constructor(context: Context,
         private const val PREF_KEY_CURRENT_USER_PROFILE_PIC_URL = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL"
         private const val PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN"
         private const val PREF_KEY_CURRENT_TEAM = "PREF_KEY_CURRENT_TEAM"
+        private const val PREF_KEY_AVAILABLE_TEAMS = "PREF_KEY_AVAILABLE_TEAMS"
     }
 }

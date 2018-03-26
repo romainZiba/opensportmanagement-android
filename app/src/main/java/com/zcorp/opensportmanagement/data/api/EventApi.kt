@@ -14,9 +14,6 @@ interface EventApi {
     @GET("/teams/{teamId}/events")
     fun getEvents(@Path("teamId") teamId: Int): Single<List<Event>>
 
-    @GET("/teams/{teamId}/events/count")
-    fun getEventsCount(): Single<Int>
-
     fun createEvent(event: Event): Single<Event>
 
     fun getEvent(id: Int): Single<Event>
