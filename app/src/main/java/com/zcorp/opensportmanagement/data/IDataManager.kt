@@ -15,8 +15,7 @@ interface IDataManager : IPreferencesHelper, EventApi, TeamApi, UserApi, Message
             loggedInMode: LoggedInMode,
             userName: String,
             email: String,
-            profilePicPath: String,
-            availableTeams: List<Team>)
+            profilePicPath: String)
 
     enum class LoggedInMode(val type: Int) {
         LOGGED_IN_MODE_LOGGED_OUT(0),

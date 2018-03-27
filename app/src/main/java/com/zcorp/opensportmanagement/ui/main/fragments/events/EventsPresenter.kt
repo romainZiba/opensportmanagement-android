@@ -58,11 +58,9 @@ class EventsPresenter @Inject constructor(
         if (mView!!.isFloatingMenuOpened()) {
             mView!!.closeFloatingMenu()
             mView!!.setBackgroundAlpha(1F)
-            mView!!.setBackground(R.drawable.background_blue_design)
         } else {
             mView!!.openFloatingMenu()
             mView!!.setBackgroundAlpha(0.2F)
-            mView!!.setBackground(R.drawable.background_light_design)
         }
     }
 

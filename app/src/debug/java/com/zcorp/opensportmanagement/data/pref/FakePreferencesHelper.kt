@@ -9,8 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class FakePreferencesHelper @Inject constructor() : IPreferencesHelper {
 
-    var currentUser: User = User("FakePerson", "", IDataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT,
-            "", "", mutableSetOf())
+    var currentUser: User = User("FakePerson", "", "FK", "", "")
     var teamId: Int = 0
     private var availableTeams: List<Team> = listOf()
 
@@ -23,35 +22,32 @@ class FakePreferencesHelper @Inject constructor() : IPreferencesHelper {
     }
 
     override fun setCurrentUserEmail(email: String) {
-        currentUser.email = email
+        currentUser = User(currentUser.firstName, currentUser.lastName, currentUser.username, email, currentUser.phoneNumber)
     }
 
     override fun getCurrentUserProfilePicUrl(): String {
-        return currentUser.profilePictureUrl
+        return ""
     }
 
     override fun setCurrentUserProfilePicUrl(profilePicUrl: String) {
-        currentUser.profilePictureUrl = profilePicUrl
     }
 
     override fun getCurrentUserLoggedInMode(): Int {
-        return currentUser.loggedInMode.ordinal
+        return 0
     }
 
     override fun setCurrentUserLoggedInMode(mode: IDataManager.LoggedInMode) {
-        currentUser.loggedInMode = mode
     }
 
     override fun getAccessToken(): String {
-        return currentUser.accessToken
+        return ""
     }
 
     override fun setAccessToken(accessToken: String) {
-        currentUser.accessToken = accessToken
     }
 
     override fun setCurrentUserName(username: String) {
-        currentUser.username = username
+        currentUser = User(currentUser.firstName, currentUser.lastName, username, currentUser.email, currentUser.phoneNumber)
     }
 
     override fun getCurrentTeamId(): Int {

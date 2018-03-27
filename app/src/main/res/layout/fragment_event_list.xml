@@ -13,8 +13,7 @@
         android:id="@+id/events_background_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/background_blue_design">
+        android:orientation="vertical">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/event_swipeRefreshLayout"

@@ -71,13 +71,11 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
     override fun updateUserInfo(loggedInMode: IDataManager.LoggedInMode,
                                 userName: String,
                                 email: String,
-                                profilePicPath: String,
-                                availableTeams: List<Team>) {
+                                profilePicPath: String) {
         mPreferencesHelper.setCurrentUserName(userName)
         mPreferencesHelper.setCurrentUserLoggedInMode(loggedInMode)
         mPreferencesHelper.setCurrentUserEmail(email)
         mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicPath)
-        mPreferencesHelper.setAvailableTeams(availableTeams)
     }
 
     override fun createEvent(event: Event): Single<Event> {

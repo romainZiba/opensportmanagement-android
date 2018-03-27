@@ -18,7 +18,7 @@ class LoginPresenter @Inject constructor(
         private val mLogger: ILogger) : ILoginPresenter {
 
     companion object {
-        private val TAG = LoginPresenter.javaClass.simpleName
+        private val TAG = LoginPresenter::class.java.simpleName
     }
 
     private var loginView: ILoginView? = null
@@ -28,23 +28,24 @@ class LoginPresenter @Inject constructor(
         val loginRequest = LoginRequest(username, password)
 
         val disposable = dataManager.login(loginRequest)
+                .toSingleDefault(true)
                 .flatMap { dataManager.whoAmI() }
                 .flatMap { user: User ->
                     dataManager.updateUserInfo(
                             IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
                             user.username,
                             user.email,
-                            "",
-                            mutableListOf())
+                            "")
                     dataManager.getTeams()
                 }
                 .subscribeOn(schedulerProvider.newThread())
                 .observeOn(schedulerProvider.ui())
                 .subscribe({ teams ->
+                    dataManager.setAvailableTeams(teams)
                     loginView?.hideProgress()
                     loginView?.navigateToHome(teams.map { it.name })
                 }, {
-                    mLogger.d(TAG, "Error occured $it")
+                    mLogger.d(TAG, "Error occurred $it")
                     loginView?.hideProgress()
                     loginView?.setPasswordError()
                 })

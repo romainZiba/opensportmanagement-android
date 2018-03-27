@@ -3,6 +3,7 @@ package com.zcorp.opensportmanagement.data
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.*
+import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.Headers
 import okhttp3.MediaType
@@ -50,6 +51,7 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
     private val mAbsentPlayers: MutableSet<TeamMember> = mutableSetOf()
     private var mEvents: List<Event> = listOf()
     private var mAvailableTeams = listOf<String>()
+    private var mCurrentUser = User("Romain", "Ziba", mUsername, "rza@caram.com", "")
 
 
     init {
@@ -75,16 +77,13 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         val teamMembers = createDummyTeamMembers(30)
         mPresentPlayers.addAll(teamMembers.filter { it.firstName.contains("a") })
         mAbsentPlayers.addAll(teamMembers.filter { !it.firstName.contains("a") })
+
+
     }
 
     override fun whoAmI(): Single<User> {
         return Single.create {
-            it.onSuccess(User(mUsername,
-                    "",
-                    IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER,
-                    "myemail@email.com",
-                    "http://mypicture.com",
-                    mutableSetOf()))
+            it.onSuccess(mCurrentUser)
         }
     }
 
@@ -146,20 +145,19 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
             InAppMessage(conversationId, "", username, "Message $position",
                     OffsetDateTime.now().minusMonths(1).plusHours(position.toLong()))
 
-    override fun login(loginRequest: LoginRequest): Single<Response<ResponseBody>> {
-        return Single.create({
-            loginFromNetwork(loginRequest.username)
-            val responseBody = ResponseBody.create(
-                    MediaType.parse("application/json"),
-                    "{\"username\": \"$mUsername\", \"availableTeams\": [\"Nets\", \"Knicks\"]}")
-            val headers = Headers.of("Authorization", "Bearer kjfkkf.kdjdjd.kkff")
-            it.onSuccess(Response.success(responseBody, headers))
+    override fun login(loginRequest: LoginRequest): Completable {
+        return Completable.create({
+            loginFromNetwork()
+            it.onComplete()
         })
     }
 
     override fun getTeams(): Single<List<Team>> {
         return Single.create {
-            it.onSuccess(listOf(Team(1, "Astropico", Team.Sport.BASKETBALL, Team.Gender.BOTH, Team.AgeGroup.ADULTS)))
+            it.onSuccess(listOf(
+                    Team(1, "Brooklyn Nets", Team.Sport.BASKETBALL, Team.Gender.MALE, Team.AgeGroup.ADULTS),
+                    Team(2, "New York Knicks", Team.Sport.BASKETBALL, Team.Gender.MALE, Team.AgeGroup.ADULTS)
+            ))
         }
     }
 
@@ -190,25 +188,21 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
     }
 
-    override fun getEventsCount(): Single<Int> {
-        return Single.just(40)
-    }
-
     override fun updateUserInfo(loggedInMode: IDataManager.LoggedInMode,
-                                userName: String, email: String, profilePicPath: String,
-                                availableTeams: List<Team>) {
+                                userName: String,
+                                email: String,
+                                profilePicPath: String) {
         mPreferencesHelper.setCurrentUserName(userName)
         mPreferencesHelper.setCurrentUserLoggedInMode(loggedInMode)
         mPreferencesHelper.setCurrentUserEmail(email)
         mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicPath)
-        mPreferencesHelper.setAvailableTeams(availableTeams)
     }
 
     override fun createEvent(event: Event): Single<Event> {
         TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
     }
 
-    private fun loginFromNetwork(username: String): LoginResponse {
+    private fun loginFromNetwork(): LoginResponse {
         try {
             Thread.sleep(800)
         } catch (e: InterruptedException) {
@@ -241,7 +235,7 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
     private fun createDummyEvent(position: Int): Event {
         return Event(position,
                 "Apéro " + (position).toString(),
-                "Une soirée " + position,
+                "Une soirée $position",
                 LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
                 LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),
                 "Ici",
