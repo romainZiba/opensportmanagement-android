@@ -22,7 +22,7 @@
     <string name="visitor_example">Visitor</string>
     <string name="local_team_example">Local</string>
     <string name="title_events">Events</string>
-    <string name="description">description</string>
+    <string name="description">Description</string>
     <string name="participants_example">1</string>
     <string name="local_team_description">Local team</string>
     <string name="visitor_team_description">Visitor team</string>
@@ -48,4 +48,10 @@
     <string name="information">Information</string>
     <string name="players">Players</string>
     <string name="transition_match_description">transition_match_description</string>
+    <string name="event_name">Name of the event</string>
+    <string name="punctual">Punctual</string>
+    <string name="recurrent">Recurrent</string>
+    <string name="event_date">Date of the event</string>
+    <string name="place">Place</string>
+    <string name="ok">OK</string>
 </resources>

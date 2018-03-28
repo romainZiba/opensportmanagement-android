@@ -1,5 +1,8 @@
 package com.zcorp.opensportmanagement.di.module
 
+import com.zcorp.opensportmanagement.di.PerActivity
+import com.zcorp.opensportmanagement.ui.utils.DatePickerFragment
+import com.zcorp.opensportmanagement.ui.utils.TimePickerFragment
 import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
@@ -14,17 +17,32 @@ import io.reactivex.disposables.CompositeDisposable
 @Module
 abstract class BaseContextModule {
     @Provides
+    @PerActivity
     internal fun provideCompositeDisposable(): CompositeDisposable {
         return CompositeDisposable()
     }
 
     @Provides
+    @PerActivity
     internal fun provideSchedulerProvider(): SchedulerProvider {
         return AppSchedulerProvider()
     }
 
     @Provides
+    @PerActivity
     internal fun provideStompClientProvider(): IStompClientProvider {
         return StompClientProvider()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideDatePicker(): DatePickerFragment {
+        return DatePickerFragment()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideTimePicker(): TimePickerFragment {
+        return TimePickerFragment()
     }
 }

@@ -88,8 +88,12 @@
         <item name="android:background">@drawable/button_secondary_bg</item>
     </style>
 
+    <style name="TextInputLayout">
+        <item name="android:textColorHint">@color/blue_300</item>
+    </style>
+
     <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColor">@color/blue_300</item>
     </style>
 
     <style name="Button.Action.Positive" parent="Button">

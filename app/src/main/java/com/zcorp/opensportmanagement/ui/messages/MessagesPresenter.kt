@@ -111,7 +111,8 @@ class MessagesPresenter @Inject constructor(
                     mMessagesView?.showNetworkError()
                 })
         )
-        mMessagesView?.closeKeyboardAndClear()
+        mMessagesView?.closeSoftKeyboard()
+        mMessagesView?.clearInputMessage()
     }
 
     override fun getCurrentUserName(): String {

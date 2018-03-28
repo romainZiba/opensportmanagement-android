@@ -1,15 +1,12 @@
 package com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information
 
-import android.content.Context
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.llollox.androidtoggleswitch.widgets.ToggleSwitch
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_event_details_information.*
 import kotlinx.android.synthetic.main.fragment_event_details_information.view.*
 import javax.inject.Inject
 
@@ -20,9 +17,6 @@ class EventInformationFragment : BaseFragment(), IEventInformationView {
 
     @Inject
     lateinit var mPresenter: IEventInformationPresenter
-
-    @Inject
-    lateinit var mContext: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

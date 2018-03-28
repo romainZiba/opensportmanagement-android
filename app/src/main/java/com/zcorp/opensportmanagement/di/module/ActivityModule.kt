@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.ActivityContext
 import com.zcorp.opensportmanagement.di.PerActivity
+import com.zcorp.opensportmanagement.ui.eventcreation.EventCreationPresenter
+import com.zcorp.opensportmanagement.ui.eventcreation.IEventCreationPresenter
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.PunctualEventFragment
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.RecurentEventFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsPresenter
 import com.zcorp.opensportmanagement.ui.eventdetails.IEventDetailsPresenter
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.EventInformationFragment
@@ -106,5 +110,23 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
     @PerActivity
     internal fun provideEventMembersFragment(): EventMembersFragment {
         return EventMembersFragment()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun providePunctualEventFragment(): PunctualEventFragment {
+        return PunctualEventFragment()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideRecurentEventFragment(): RecurentEventFragment {
+        return RecurentEventFragment()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideEventCreationPresenter(): IEventCreationPresenter {
+        return EventCreationPresenter()
     }
 }

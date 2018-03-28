@@ -51,7 +51,7 @@ class ConversationsFragment : BaseFragment(), IConversationsView, SwipeRefreshLa
     }
 
     override fun showConversationDetails(conversationId: String) {
-        val intent = Intent(activity, MessagesActivity::class.java)
+        val intent = Intent(mActivity, MessagesActivity::class.java)
         intent.putExtra(CONVERSATION_ID_KEY, conversationId)
         startActivity(intent)
     }

@@ -34,7 +34,7 @@ class ClickFloatingButtonTest {
     @Test
     fun clickButton() {
         // Type text and then press the button.
-        onView(withId(R.id.menu))
+        onView(withId(R.id.menu_events))
                 .perform(click())
                 .check(matches(isChecked()))
         // Type text and then press the button.

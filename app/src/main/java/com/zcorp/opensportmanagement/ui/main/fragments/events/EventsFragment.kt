@@ -1,6 +1,5 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -9,7 +8,10 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
@@ -32,9 +34,6 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     lateinit var fragmentContext: Context
 
     @Inject
-    lateinit var mActivity: Activity
-
-    @Inject
     lateinit var mEventsAdapter: EventsAdapter
 
     override fun showNetworkError() {
@@ -50,10 +49,10 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     override fun showEventDetails(event: Event, adapterPosition: Int) {
         // get the common element for the transition in this activity
         val viewToAnimate = rv_events_list.layoutManager.findViewByPosition(adapterPosition)
-        val intent = Intent(activity, EventDetailsActivity::class.java)
+        val intent = Intent(mActivity, EventDetailsActivity::class.java)
         intent.putExtra("event", event)
         if (viewToAnimate != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity).toBundle()
+            val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity!!).toBundle()
             startActivity(intent, bundle)
         } else {
             startActivity(intent)
@@ -61,15 +60,15 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     }
 
     override fun isFloatingMenuOpened(): Boolean {
-        return menu.isOpened
+        return menu_events.isOpened
     }
 
     override fun openFloatingMenu() {
-        menu.open(true)
+        menu_events.open(true)
     }
 
     override fun closeFloatingMenu() {
-        menu.close(true)
+        menu_events.close(true)
     }
 
     override fun setBackgroundAlpha(alpha: Float) {
@@ -98,7 +97,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_event_list, container, false)
         view.rv_events_list.adapter = mEventsAdapter
-        view.menu.setOnMenuButtonClickListener({
+        view.menu_events.setOnMenuButtonClickListener({
             presenter.onFloatingMenuClicked()
         })
         view.event_swipeRefreshLayout.setOnRefreshListener(this)

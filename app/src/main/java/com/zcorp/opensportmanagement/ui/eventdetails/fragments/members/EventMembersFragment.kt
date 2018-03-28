@@ -26,17 +26,12 @@ class EventMembersFragment : BaseFragment(), IEventMembersView {
         super.mFragmentComponent.inject(this)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_event_details_players, container, false)
         val recyclerView = view.rv_event_participant_list
         val dividerItemDecoration = DividerDecoration(recyclerView.context)
         recyclerView.addItemDecoration(dividerItemDecoration)
-        recyclerView.adapter = TeamMemberRecyclerAdapter(mContext, (activity as EventDetailsActivity).mPresenter)
+        recyclerView.adapter = TeamMemberRecyclerAdapter(mContext, (mActivity as EventDetailsActivity).mPresenter)
         return view
     }
 }

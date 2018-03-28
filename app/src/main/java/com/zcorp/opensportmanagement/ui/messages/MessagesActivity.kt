@@ -50,12 +50,7 @@ class MessagesActivity : BaseActivity(), IMessagesView {
         rv_messages_list.scrollToPosition(mAdapter.itemCount - 1)
     }
 
-    override fun closeKeyboardAndClear() {
-        val view = this.currentFocus
-        if (view != null) {
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
+    override fun clearInputMessage() {
         et_message.text.clear()
     }
 
