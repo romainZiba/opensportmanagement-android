@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
-    android:transitionOrdering="together">
-    <slide android:slideEdge="bottom" />
-    <fade/>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
+    <slide android:slideEdge="bottom">
+        <targets>
+            <target android:excludeId="@+id/app_bar_event_details" />
+            <target android:excludeId="@+id/event_detail_subscription_fab" />
+        </targets>
+    </slide>
 </transitionSet>

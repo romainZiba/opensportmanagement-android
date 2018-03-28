@@ -53,11 +53,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
         val intent = Intent(activity, EventDetailsActivity::class.java)
         intent.putExtra("event", event)
         if (viewToAnimate != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity
-//                    viewToAnimate,
-//                    context!!.getString(R.string.transition_match_description)
-            )
-                    .toBundle()
+            val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(mActivity).toBundle()
             startActivity(intent, bundle)
         } else {
             startActivity(intent)
