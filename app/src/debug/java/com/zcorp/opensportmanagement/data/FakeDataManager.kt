@@ -1,16 +1,13 @@
 package com.zcorp.opensportmanagement.data
 
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
+import com.zcorp.opensportmanagement.dto.EventDto
 import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.*
 import io.reactivex.Completable
 import io.reactivex.Single
-import okhttp3.Headers
-import okhttp3.MediaType
-import okhttp3.ResponseBody
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
-import retrofit2.Response
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
@@ -49,7 +46,7 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
 
     private val mPresentPlayers: MutableSet<TeamMember> = mutableSetOf()
     private val mAbsentPlayers: MutableSet<TeamMember> = mutableSetOf()
-    private var mEvents: List<Event> = listOf()
+    private var mEvents = mutableListOf<Event>()
     private var mAvailableTeams = listOf<String>()
     private var mCurrentUser = User("Romain", "Ziba", mUsername, "rza@caram.com", "")
 
@@ -198,8 +195,14 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicPath)
     }
 
-    override fun createEvent(event: Event): Single<Event> {
-        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
+    override fun createEvent(eventDto: EventDto): Single<Event> {
+        val event = Event(0, eventDto.name, eventDto.description, eventDto.fromDate, eventDto.toDate,
+                eventDto.place, eventDto.presentTeamMembers, eventDto.absentTeamMembers)
+        return Single.create {
+            Thread.sleep(3000)
+            mEvents.add(event)
+            it.onSuccess(event)
+        }
     }
 
     private fun loginFromNetwork(): LoginResponse {
@@ -217,9 +220,8 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         } catch (e: InterruptedException) {
             // error
         }
-        var events: MutableList<Event> = IntRange(1, 10).map { createDummyEvent(it) }.toMutableList()
-        events.addAll(IntRange(10, 21).map { createDummyMatch(it) }.toList())
-        mEvents = events.toList()
+        mEvents = IntRange(1, 10).map { createDummyEvent(it) }.toMutableList()
+        mEvents.addAll(IntRange(10, 21).map { createDummyMatch(it) }.toList())
         return mEvents
     }
 

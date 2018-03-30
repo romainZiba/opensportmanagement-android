@@ -1,7 +1,7 @@
 package com.zcorp.opensportmanagement
 
-import android.app.Application
 import android.content.res.Configuration
+import android.support.multidex.MultiDexApplication
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.zcorp.opensportmanagement.di.component.AppComponent
 import com.zcorp.opensportmanagement.di.component.ComponentFactory
@@ -10,7 +10,7 @@ import java.util.*
 /**
  * Created by romainz on 02/02/18.
  */
-class MyApplication : Application() {
+class MyApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()

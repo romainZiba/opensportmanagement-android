@@ -2,7 +2,6 @@ package com.zcorp.opensportmanagement.ui.utils
 
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.widget.DatePicker
@@ -13,10 +12,10 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val localDate = LocalDate.now()
-        return DatePickerDialog(activity, this, localDate.year, localDate.monthValue, localDate.dayOfMonth)
+        return DatePickerDialog(activity, this, localDate.year, localDate.monthValue - 1, localDate.dayOfMonth)
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-        EventBus.getDefault().post(LocalDate.of(year, month, day))
+        EventBus.getDefault().post(LocalDate.of(year, month + 1, day))
     }
 }

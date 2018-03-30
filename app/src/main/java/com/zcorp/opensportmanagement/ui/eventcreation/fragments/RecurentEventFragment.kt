@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
+import org.threeten.bp.LocalDateTime
 
 class RecurentEventFragment : BaseFragment(), IRecurentEventView {
 
@@ -25,5 +26,13 @@ class RecurentEventFragment : BaseFragment(), IRecurentEventView {
             showSelectedDay(1)
         }
         return view
+    }
+
+    fun getStartDate(): LocalDateTime? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun getEndDate(): LocalDateTime? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

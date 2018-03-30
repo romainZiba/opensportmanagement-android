@@ -51,7 +51,8 @@
     <string name="event_name">Name of the event</string>
     <string name="punctual">Punctual</string>
     <string name="recurrent">Recurrent</string>
-    <string name="event_date">Date of the event</string>
-    <string name="place">Place</string>
-    <string name="ok">OK</string>
+    <string name="start_event_date">Start date of the event</string>
+    <string name="event_place">Place of the event</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

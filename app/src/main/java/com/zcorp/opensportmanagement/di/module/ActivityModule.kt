@@ -126,7 +126,9 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
 
     @Provides
     @PerActivity
-    internal fun provideEventCreationPresenter(): IEventCreationPresenter {
-        return EventCreationPresenter()
+    internal fun provideEventCreationPresenter(dataManager: IDataManager,
+                                               schedulerProvider: SchedulerProvider,
+                                               logger: ILogger): IEventCreationPresenter {
+        return EventCreationPresenter(dataManager, schedulerProvider, logger)
     }
 }

@@ -56,13 +56,17 @@ dependencies {
     implementation "com.android.support:support-v4:$supportLibraryVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
     implementation "com.android.support:cardview-v7:$supportLibraryVersion"
-    implementation 'com.google.android.gms:play-services-plus:11.8.0'
+    implementation 'com.google.android.gms:play-services-plus:12.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
     implementation "com.android.support:design:$supportLibraryVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation "com.android.support:support-vector-drawable:$supportLibraryVersion"
+
+    //For API < 21
+    compile 'com.android.support:multidex:1.0.3'
+
     //  Architecture
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
@@ -71,6 +75,8 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation project(':androidtoggleswitch')
+    implementation 'com.anthonymandra:ToggleButtons:2.0.0'
+
     //  Dependency injection
     implementation 'com.google.dagger:dagger-android-support:2.14.1'
     kapt "com.google.dagger:dagger-compiler:2.14.1"
@@ -80,7 +86,7 @@ dependencies {
     //    JSR-310 implementation
     implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     //    HTTP requests
-    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     // JSON serialization/deserialization
@@ -93,7 +99,7 @@ dependencies {
     implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.4.4'
     //  Testing
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:3.6.1'
+    testImplementation 'org.robolectric:robolectric:3.8'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     testImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
