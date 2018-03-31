@@ -212,7 +212,7 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
 
     private fun loginFromNetwork(): LoginResponse {
         try {
-            Thread.sleep(5000)
+            Thread.sleep(800)
         } catch (e: InterruptedException) {
         }
         return LoginResponse("")

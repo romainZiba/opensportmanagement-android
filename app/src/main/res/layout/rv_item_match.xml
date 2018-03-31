@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,26 +13,46 @@
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/layout_date_match"
-            layout="@layout/event_date_and_participants"
-            android:layout_width="0dp"
+            layout="@layout/event_participant_number"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/include"
+            app:layout_constraintEnd_toEndOf="@+id/include" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_date_event"
+            style="@style/TextStyle.Heading"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/event_item_date_example"
+            app:layout_constraintStart_toStartOf="@+id/tv_time_event"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include layout="@layout/match_description_layout"
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_time_event"
+            style="@style/TextStyle.Heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/event_item_hour_example"
+            app:layout_constraintStart_toStartOf="@+id/include"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date_event" />
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/match_description_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_date_match"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_time_event" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
