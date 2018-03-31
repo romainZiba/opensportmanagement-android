@@ -104,11 +104,12 @@ class EventCreationActivity : BaseActivity(),
 
         mPresenter.onAttach(this)
         mPresenter.initView()
-        switch_event_recurrence.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId[0]) {
-                R.id.tb_punctual_event -> mPresenter.onPunctualSelected()
-                R.id.tb_recurrent_event -> mPresenter.onRecurrentSelected()
-            }
+
+        tb_punctual_event.setOnClickListener {
+            mPresenter.onPunctualSelected()
+        }
+        tb_recurrent_event.setOnClickListener {
+            mPresenter.onRecurrentSelected()
         }
         button_validation_event_creation.setOnClickListener {
             mPresenter.onCreateEvent()

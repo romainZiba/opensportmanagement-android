@@ -1,6 +1,5 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
-import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.utils.log.ILogger
@@ -65,11 +64,11 @@ class EventsPresenter @Inject constructor(
     }
 
     override fun onAddMatchClicked() {
-        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
+        mView?.showAddMatch()
     }
 
     override fun onAddEventClicked() {
-        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
+        mView?.showAddEvent()
     }
 
     override fun onAttach(view: IEventsView, vararg args: Serializable) {

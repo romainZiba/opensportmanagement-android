@@ -15,11 +15,9 @@ class EventInformationPresenter @Inject constructor(
     private var mView: IEventInformationView? = null
 
     override fun onPresentSelected() {
-        mView?.markAsPresent()
     }
 
     override fun onAbsentSelected() {
-        mView?.markAsAbsent()
     }
 
     override fun onAttach(view: IEventInformationView, vararg args: Serializable) {

@@ -16,6 +16,7 @@ import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
+import com.zcorp.opensportmanagement.ui.eventcreation.EventCreationActivity
 import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.*
@@ -35,6 +36,14 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
 
     @Inject
     lateinit var mEventsAdapter: EventsAdapter
+
+    override fun showAddEvent() {
+        startActivity(Intent(activity, EventCreationActivity::class.java))
+    }
+
+    override fun showAddMatch() {
+        startActivity(Intent(activity, EventCreationActivity::class.java))
+    }
 
     override fun showNetworkError() {
         ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
@@ -100,6 +109,7 @@ class EventsFragment : BaseFragment(), IEventsView, SwipeRefreshLayout.OnRefresh
         view.menu_events.setOnMenuButtonClickListener({
             presenter.onFloatingMenuClicked()
         })
+        view.fab_add_event.setOnClickListener { presenter.onAddEventClicked() }
         view.event_swipeRefreshLayout.setOnRefreshListener(this)
         return view
     }

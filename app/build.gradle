@@ -74,7 +74,6 @@ dependencies {
     // UI
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation project(':androidtoggleswitch')
     implementation 'com.anthonymandra:ToggleButtons:2.0.0'
 
     //  Dependency injection
