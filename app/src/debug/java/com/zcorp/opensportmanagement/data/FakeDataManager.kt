@@ -144,8 +144,13 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
 
     override fun login(loginRequest: LoginRequest): Completable {
         return Completable.create({
-            loginFromNetwork()
-            it.onComplete()
+            val rand = Math.random()
+            if (rand > 0.90) {
+                it.onError(Exception())
+            } else {
+                loginFromNetwork()
+                it.onComplete()
+            }
         })
     }
 
@@ -207,9 +212,8 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
 
     private fun loginFromNetwork(): LoginResponse {
         try {
-            Thread.sleep(800)
+            Thread.sleep(5000)
         } catch (e: InterruptedException) {
-            // error
         }
         return LoginResponse("")
     }

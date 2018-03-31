@@ -14,7 +14,6 @@ class LoginPresenter @Inject constructor(
         private val dataManager: IDataManager,
         private val schedulerProvider: SchedulerProvider,
         private val disposables: CompositeDisposable,
-        private val objectMapper: ObjectMapper,
         private val mLogger: ILogger) : ILoginPresenter {
 
     companion object {
@@ -25,6 +24,7 @@ class LoginPresenter @Inject constructor(
 
     override fun validateCredentials(username: String, password: String) {
         loginView?.showProgress()
+        loginView?.disableLoginButton()
         val loginRequest = LoginRequest(username, password)
 
         val disposable = dataManager.login(loginRequest)
@@ -48,6 +48,7 @@ class LoginPresenter @Inject constructor(
                     mLogger.d(TAG, "Error occurred $it")
                     loginView?.hideProgress()
                     loginView?.setPasswordError()
+                    loginView?.enableLoginButton()
                 })
         disposables.add(disposable)
     }

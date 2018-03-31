@@ -29,14 +29,20 @@ class LoginActivity : BaseActivity(), ILoginView, View.OnClickListener {
         super.onDestroy()
     }
 
+    override fun disableLoginButton() {
+        btn_server_login.isEnabled = false
+    }
+
+    override fun enableLoginButton() {
+        btn_server_login.isEnabled = true
+    }
+
     override fun showProgress() {
         progressBar_login.visibility = View.VISIBLE
-        cardView_login.alpha = 0.3F
     }
 
     override fun hideProgress() {
         progressBar_login.visibility = View.GONE
-        cardView_login.alpha = 1F
     }
 
     override fun setUsernameError() {
@@ -44,7 +50,8 @@ class LoginActivity : BaseActivity(), ILoginView, View.OnClickListener {
     }
 
     override fun setPasswordError() {
-        et_password.error = getString(R.string.password_error)
+        til_password.error = getString(R.string.password_error)
+        et_password.background.clearColorFilter()
     }
 
     override fun navigateToHome(availableTeams: List<String>) {

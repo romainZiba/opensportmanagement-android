@@ -49,9 +49,8 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
     internal fun provideLoginPresenter(dataManager: IDataManager,
                                        schedulerProvider: SchedulerProvider,
                                        disposables: CompositeDisposable,
-                                       objectMapper: ObjectMapper,
                                        logger: ILogger): ILoginPresenter {
-        return LoginPresenter(dataManager, schedulerProvider, disposables, objectMapper, logger)
+        return LoginPresenter(dataManager, schedulerProvider, disposables, logger)
     }
 
     @Provides
