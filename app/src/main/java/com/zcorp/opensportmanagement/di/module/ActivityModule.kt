@@ -8,8 +8,8 @@ import com.zcorp.opensportmanagement.di.ActivityContext
 import com.zcorp.opensportmanagement.di.PerActivity
 import com.zcorp.opensportmanagement.ui.eventcreation.EventCreationPresenter
 import com.zcorp.opensportmanagement.ui.eventcreation.IEventCreationPresenter
-import com.zcorp.opensportmanagement.ui.eventcreation.fragments.PunctualEventFragment
-import com.zcorp.opensportmanagement.ui.eventcreation.fragments.RecurentEventFragment
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.punctual.PunctualEventFragment
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.recurrent.RecurrentEventFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsPresenter
 import com.zcorp.opensportmanagement.ui.eventdetails.IEventDetailsPresenter
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.EventInformationFragment
@@ -119,8 +119,8 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
 
     @Provides
     @PerActivity
-    internal fun provideRecurentEventFragment(): RecurentEventFragment {
-        return RecurentEventFragment()
+    internal fun provideRecurentEventFragment(): RecurrentEventFragment {
+        return RecurrentEventFragment()
     }
 
     @Provides

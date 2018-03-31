@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.eventcreation.fragments
+package com.zcorp.opensportmanagement.ui.eventcreation.fragments.punctual
 
 import com.zcorp.opensportmanagement.ui.base.IBasePresenter
 import org.threeten.bp.LocalDate

@@ -12,8 +12,8 @@ interface IEventCreationView : IBaseView {
     fun getPunctualStartDate(): LocalDateTime?
     fun getPunctualEndDate(): LocalDateTime?
     fun getPlace(): String
-    fun getRecurrentStartDate(): LocalDateTime?
-    fun getRecurrentEndDate(): LocalDateTime?
+    fun getRecurrenFromDate(): LocalDateTime?
+    fun getRecurrentToDate(): LocalDateTime?
     fun showProgress()
     fun hideProgress()
     fun disableValidation()

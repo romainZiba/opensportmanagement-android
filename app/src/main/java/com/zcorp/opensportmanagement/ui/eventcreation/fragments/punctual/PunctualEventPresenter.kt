@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.eventcreation.fragments
+package com.zcorp.opensportmanagement.ui.eventcreation.fragments.punctual
 
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

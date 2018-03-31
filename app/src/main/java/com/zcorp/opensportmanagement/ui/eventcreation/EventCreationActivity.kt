@@ -5,8 +5,8 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
-import com.zcorp.opensportmanagement.ui.eventcreation.fragments.PunctualEventFragment
-import com.zcorp.opensportmanagement.ui.eventcreation.fragments.RecurentEventFragment
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.punctual.PunctualEventFragment
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.recurrent.RecurrentEventFragment
 import kotlinx.android.synthetic.main.activity_event_creation.*
 import org.greenrobot.eventbus.EventBus
 import org.threeten.bp.LocalDateTime
@@ -19,7 +19,7 @@ class EventCreationActivity : BaseActivity(),
     @Inject
     lateinit var mPunctualEventFragment: PunctualEventFragment
     @Inject
-    lateinit var mRecurentEventFragment: RecurentEventFragment
+    lateinit var mRecurentEventFragment: RecurrentEventFragment
     @Inject
     lateinit var mPresenter: IEventCreationPresenter
 
@@ -49,23 +49,23 @@ class EventCreationActivity : BaseActivity(),
     }
 
     override fun getPunctualStartDate(): LocalDateTime? {
-        return mPunctualEventFragment.getStartDate()
+        return mPunctualEventFragment.getStartDateTime()
     }
 
     override fun getPunctualEndDate(): LocalDateTime? {
-        return mPunctualEventFragment.getEndDate()
+        return mPunctualEventFragment.getEndDateTime()
     }
 
     override fun getPlace(): String {
         return et_event_place.text.toString()
     }
 
-    override fun getRecurrentStartDate(): LocalDateTime? {
-        return mRecurentEventFragment.getStartDate()
+    override fun getRecurrenFromDate(): LocalDateTime? {
+        return mRecurentEventFragment.getFromDateTime()
     }
 
-    override fun getRecurrentEndDate(): LocalDateTime? {
-        return mRecurentEventFragment.getEndDate()
+    override fun getRecurrentToDate(): LocalDateTime? {
+        return mRecurentEventFragment.getToDateTime()
     }
 
     override fun showProgress() {

@@ -78,8 +78,8 @@ class EventCreationPresenter @Inject constructor(
                 }
             }
             RECURRENT_SWITCH_POSITION -> {
-                val fromDate = mView!!.getRecurrentStartDate()
-                val toDate = mView!!.getRecurrentEndDate()
+                val fromDate = mView!!.getRecurrenFromDate()
+                val toDate = mView!!.getRecurrentToDate()
                 if (fromDate == null || toDate == null) {
                     //TODO: mView?.showError()
                     mView?.disableValidation()

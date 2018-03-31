@@ -2,8 +2,8 @@ package com.zcorp.opensportmanagement.di.component
 
 import com.zcorp.opensportmanagement.di.PerActivity
 import com.zcorp.opensportmanagement.di.module.FragmentModule
-import com.zcorp.opensportmanagement.ui.eventcreation.fragments.PunctualEventFragment
-import com.zcorp.opensportmanagement.ui.eventcreation.fragments.RecurentEventFragment
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.punctual.PunctualEventFragment
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.recurrent.RecurrentEventFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.EventInformationFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.members.EventMembersFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
@@ -18,5 +18,5 @@ interface FragmentComponent {
     fun inject(fragment: EventMembersFragment)
     fun inject(fragment: EventInformationFragment)
     fun inject(fragment: PunctualEventFragment)
-    fun inject(fragment: RecurentEventFragment)
+    fun inject(fragment: RecurrentEventFragment)
 }

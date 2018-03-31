@@ -5,8 +5,10 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.PerActivity
-import com.zcorp.opensportmanagement.ui.eventcreation.fragments.IPunctualEventPresenter
-import com.zcorp.opensportmanagement.ui.eventcreation.fragments.PunctualEventPresenter
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.punctual.IPunctualEventPresenter
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.punctual.PunctualEventPresenter
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.recurrent.IRecurrentEventPresenter
+import com.zcorp.opensportmanagement.ui.eventcreation.fragments.recurrent.RecurrentEventPresenter
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.EventInformationPresenter
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.IEventInformationPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsPresenter
@@ -76,5 +78,11 @@ class FragmentModule(private val mFragment: Fragment) : BaseContextModule() {
     @PerActivity
     internal fun providePunctualEventPresenter(): IPunctualEventPresenter {
         return PunctualEventPresenter()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideRecurrentEventPresenter(): IRecurrentEventPresenter {
+        return RecurrentEventPresenter()
     }
 }

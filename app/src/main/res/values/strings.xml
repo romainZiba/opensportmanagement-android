@@ -57,4 +57,10 @@
     <string name="cancel">Cancel</string>
     <string name="end_event_date">End date of the event</string>
     <string name="opensportmanagement">OpenSportManagement</string>
+    <string name="days_of_recurrence">Days of recurrence</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="begin_time">Begin time</string>
+    <string name="end_time">End time</string>
+    <string name="select">Select</string>
 </resources>

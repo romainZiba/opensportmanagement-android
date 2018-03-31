@@ -55,19 +55,19 @@ class EventsPresenter @Inject constructor(
     override fun onFloatingMenuClicked() {
         if (mView == null) return
         if (mView!!.isFloatingMenuOpened()) {
-            mView!!.closeFloatingMenu()
-            mView!!.setBackgroundAlpha(1F)
+            closeFloatingMenu()
         } else {
-            mView!!.openFloatingMenu()
-            mView!!.setBackgroundAlpha(0.2F)
+            openFloatingMenu()
         }
     }
 
     override fun onAddMatchClicked() {
+        closeFloatingMenu()
         mView?.showAddMatch()
     }
 
     override fun onAddEventClicked() {
+        closeFloatingMenu()
         mView?.showAddEvent()
     }
 
@@ -78,5 +78,15 @@ class EventsPresenter @Inject constructor(
     override fun onDetach() {
         mDisposables.clear()
         mView = null
+    }
+
+    private fun closeFloatingMenu() {
+        mView?.closeFloatingMenu()
+        mView?.setBackgroundAlpha(1F)
+    }
+
+    private fun openFloatingMenu() {
+        mView?.openFloatingMenu()
+        mView?.setBackgroundAlpha(0.2F)
     }
 }

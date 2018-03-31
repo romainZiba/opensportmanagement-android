@@ -2,14 +2,13 @@ package com.zcorp.opensportmanagement.ui.utils
 
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import android.support.v7.app.AppCompatDialogFragment
 import android.widget.TimePicker
 import org.greenrobot.eventbus.EventBus
 import org.threeten.bp.LocalTime
 
-class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TimePickerFragment : AppCompatDialogFragment(), TimePickerDialog.OnTimeSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val localTime = LocalTime.now()
