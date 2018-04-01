@@ -1,177 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--TODO make the app bar overlay the content-->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.zcorp.opensportmanagement.ui.eventcreation.EventCreationActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <include
+        android:id="@+id/event_creation_toolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/fl_progressbar_event_creation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context="com.zcorp.opensportmanagement.ui.eventcreation.EventCreationActivity">
+        android:layout_height="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/event_creation_toolbar">
 
-        <include
-            android:id="@+id/event_creation_toolbar"
-            layout="@layout/toolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <FrameLayout
+        <ProgressBar
+            android:id="@+id/pb_event_creation"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_creation_toolbar">
-
-            <ProgressBar
-                android:id="@+id/pb_event_creation"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-6dp"
-                android:indeterminate="true"
-                android:theme="@style/AppBarProgress"
-                android:visibility="gone" />
-        </FrameLayout>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_event_name"
-            style="@style/TextInputLayout"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_creation_toolbar">
+            android:layout_marginTop="-6dp"
+            android:indeterminate="true"
+            android:theme="@style/AppBarProgress"
+            android:visibility="gone" />
+    </FrameLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_event_name"
-                style="@style/TextInputLayout.TextInputEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center|start|bottom"
-                android:hint="@string/event_name" />
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fl_progressbar_event_creation">
 
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_event_description"
-            style="@style/TextInputLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="8dp"
-            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_event_name">
+            app:layout_constraintTop_toBottomOf="@+id/fl_progressbar_event_creation">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_event_description"
-                style="@style/TextInputLayout.TextInputEditText"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center|start|bottom"
-                android:hint="@string/description" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.v7.widget.ToggleGroup
-            android:id="@+id/switch_event_recurrence"
-            style="@style/Widget.Material.ToggleGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:backgroundColor="@color/toggle_off"
-            app:exclusive="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_event_description"
-            app:orientation="horizontal">
-
-            <android.support.v7.widget.ToggleButton
-                android:id="@+id/tb_punctual_event"
-                style="@style/Button.Toggle.Blue"
-                android:layout_width="96dp"
-                android:text="@string/punctual" />
-
-            <android.support.v7.widget.ToggleButton
-                android:id="@+id/tb_recurrent_event"
-                style="@style/Button.Toggle.Blue"
-                android:layout_width="96dp"
-                android:text="@string/recurrent" />
-
-        </android.support.v7.widget.ToggleGroup>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_event_place"
-            style="@style/TextInputLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch_event_recurrence">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/et_event_place"
-                style="@style/TextInputLayout.TextInputEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center|start|bottom"
-                android:hint="@string/event_place" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <FrameLayout
-            android:id="@+id/fragment_match_details_selection_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_event_place" />
-
-        <FrameLayout
-            android:id="@+id/fragment_event_datetime_selection_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_match_details_selection_container" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/button_cancel_event_creation"
-            style="@style/Style.Button.Raised"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:text="@string/cancel"
-            android:theme="@style/Theme.Button.Raised.Negative"
-            app:layout_constraintBottom_toBottomOf="@+id/button_validation_event_creation"
-            app:layout_constraintEnd_toStartOf="@+id/button_validation_event_creation" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/button_validation_event_creation"
-            style="@style/Style.Button.Raised"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/save"
-            android:theme="@style/Theme.Button.Raised.Positive"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_event_datetime_selection_container" />
+                android:layout_height="match_parent">
 
 
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_event_name"
+                    style="@style/TextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_event_name"
+                        style="@style/TextInputLayout.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start|bottom"
+                        android:hint="@string/event_name" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_event_description"
+                    style="@style/TextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_event_name">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_event_description"
+                        style="@style/TextInputLayout.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start|bottom"
+                        android:hint="@string/description" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.v7.widget.ToggleGroup
+                    android:id="@+id/switch_event_recurrence"
+                    style="@style/Widget.Material.ToggleGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    app:backgroundColor="@color/toggle_off"
+                    app:exclusive="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_event_description"
+                    app:orientation="horizontal">
+
+                    <android.support.v7.widget.ToggleButton
+                        android:id="@+id/tb_punctual_event"
+                        style="@style/Button.Toggle.Blue"
+                        android:layout_width="96dp"
+                        android:text="@string/punctual" />
+
+                    <android.support.v7.widget.ToggleButton
+                        android:id="@+id/tb_recurrent_event"
+                        style="@style/Button.Toggle.Blue"
+                        android:layout_width="96dp"
+                        android:text="@string/recurrent" />
+
+                </android.support.v7.widget.ToggleGroup>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/til_event_place"
+                    style="@style/TextInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/switch_event_recurrence">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/et_event_place"
+                        style="@style/TextInputLayout.TextInputEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start|bottom"
+                        android:hint="@string/event_place" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <FrameLayout
+                    android:id="@+id/fragment_match_details_selection_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/til_event_place" />
+
+                <FrameLayout
+                    android:id="@+id/fragment_event_datetime_selection_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_match_details_selection_container" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/button_cancel_event_creation"
+                    style="@style/Style.Button.Raised"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/cancel"
+                    android:theme="@style/Theme.Button.Raised.Negative"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_validation_event_creation"
+                    app:layout_constraintEnd_toStartOf="@+id/button_validation_event_creation" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/button_validation_event_creation"
+                    style="@style/Style.Button.Raised"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/save"
+                    android:theme="@style/Theme.Button.Raised.Positive"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_event_datetime_selection_container" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>
