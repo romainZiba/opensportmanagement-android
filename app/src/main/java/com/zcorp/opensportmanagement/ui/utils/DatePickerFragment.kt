@@ -18,20 +18,4 @@ class DatePickerFragment : AppCompatDialogFragment(), DatePickerDialog.OnDateSet
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         EventBus.getDefault().post(LocalDate.of(year, month + 1, day))
     }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
 }

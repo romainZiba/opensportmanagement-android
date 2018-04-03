@@ -33,15 +33,21 @@ class EventCreationPresenter @Inject constructor(
     }
 
     override fun onPunctualSelected() {
-        mSwitchPosition = PUNCTUAL_SWITCH_POSITION
+        if (mSwitchPosition != PUNCTUAL_SWITCH_POSITION) {
+            mSwitchPosition = PUNCTUAL_SWITCH_POSITION
+            enableButtons()
+            mView?.showPunctualEventView()
+        }
         mView?.closeSoftKeyboard()
-        mView?.showPunctualEventView()
     }
 
     override fun onRecurrentSelected() {
-        mSwitchPosition = RECURRENT_SWITCH_POSITION
+        if (mSwitchPosition != RECURRENT_SWITCH_POSITION) {
+            mSwitchPosition = RECURRENT_SWITCH_POSITION
+            enableButtons()
+            mView?.showRecurrentEventView()
+        }
         mView?.closeSoftKeyboard()
-        mView?.showRecurrentEventView()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -64,7 +70,7 @@ class EventCreationPresenter @Inject constructor(
                 val fromDate = mView?.getPunctualStartDate()
                 val toDate = mView?.getPunctualEndDate()
                 if (fromDate == null || toDate == null) {
-                    //TODO: mView?.showError()
+                    mView?.showPunctualDatesNotProvidedError()
                     mView?.hideProgress()
                     mView?.enableCancellation()
                 } else {
@@ -81,7 +87,7 @@ class EventCreationPresenter @Inject constructor(
                 val fromDate = mView!!.getRecurrenFromDate()
                 val toDate = mView!!.getRecurrentToDate()
                 if (fromDate == null || toDate == null) {
-                    //TODO: mView?.showError()
+                    mView?.showRecurrentDatesNotProvidedError()
                     mView?.disableValidation()
                 } else {
                     single = dataManager.createEvent(EventDto(mView!!.getEventName(),
@@ -99,15 +105,19 @@ class EventCreationPresenter @Inject constructor(
                 ?.subscribe({
                     mLogger.d(TAG, "Creation of event '$it' successful")
                     mView?.hideProgress()
-                    mView?.enableValidation()
-                    mView?.enableCancellation()
+                    enableButtons()
+
                 }, {
                     mLogger.d(TAG, "Error occurred while creating event $it")
                     mView?.hideProgress()
-                    mView?.enableValidation()
-                    mView?.enableCancellation()
+                    enableButtons()
                 })
 
+    }
+
+    private fun enableButtons() {
+        mView?.enableValidation()
+        mView?.enableCancellation()
     }
 
     override fun onAttach(view: IEventCreationView, vararg args: Serializable) {

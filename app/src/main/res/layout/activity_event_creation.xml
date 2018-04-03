@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--TODO make the app bar overlay the content-->
-
-
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -47,6 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fl_progressbar_event_creation">
 
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nsv_event_creation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"

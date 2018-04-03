@@ -63,4 +63,6 @@
     <string name="begin_time">Begin time</string>
     <string name="end_time">End time</string>
     <string name="select">Select</string>
+    <string name="start_end_dates_null_error">Start date and end date must be provided</string>
+    <string name="from_to_dates_null_error">From date and to date must be provided</string>
 </resources>

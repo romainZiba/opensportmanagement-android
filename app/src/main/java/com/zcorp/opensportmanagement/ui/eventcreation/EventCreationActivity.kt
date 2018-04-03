@@ -1,9 +1,11 @@
 package com.zcorp.opensportmanagement.ui.eventcreation
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.Toolbar
 import android.view.View
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.eventcreation.fragments.punctual.PunctualEventFragment
 import com.zcorp.opensportmanagement.ui.eventcreation.fragments.recurrent.RecurrentEventFragment
@@ -94,6 +96,14 @@ class EventCreationActivity : BaseActivity(),
 
     override fun setPunctualChecked() {
         tb_punctual_event.isChecked = true
+    }
+
+    override fun showPunctualDatesNotProvidedError() {
+        ThemedSnackbar.make(nsv_event_creation, getString(R.string.start_end_dates_null_error), Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun showRecurrentDatesNotProvidedError() {
+        ThemedSnackbar.make(nsv_event_creation, getString(R.string.from_to_dates_null_error), Snackbar.LENGTH_LONG).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

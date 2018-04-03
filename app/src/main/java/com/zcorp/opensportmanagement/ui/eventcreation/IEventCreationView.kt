@@ -21,5 +21,7 @@ interface IEventCreationView : IBaseView {
     fun disableCancellation()
     fun enableCancellation()
     fun setPunctualChecked()
+    fun showPunctualDatesNotProvidedError()
+    fun showRecurrentDatesNotProvidedError()
 
 }
