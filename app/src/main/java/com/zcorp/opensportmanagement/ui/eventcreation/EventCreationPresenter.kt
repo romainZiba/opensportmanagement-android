@@ -20,12 +20,12 @@ class EventCreationPresenter @Inject constructor(
 
     companion object {
         private val TAG = EventCreationPresenter::class.java.simpleName
-        private const val PUNCTUAL_SWITCH_POSITION = 0
-        private const val RECURRENT_SWITCH_POSITION = 1
+        const val PUNCTUAL_SWITCH_POSITION = 0
+        const val RECURRENT_SWITCH_POSITION = 1
     }
 
     private var mView: IEventCreationView? = null
-    private var mSwitchPosition = 0
+    var mSwitchPosition = 0
 
     override fun initView() {
         mView?.setPunctualChecked()
@@ -115,7 +115,7 @@ class EventCreationPresenter @Inject constructor(
 
     }
 
-    private fun enableButtons() {
+    fun enableButtons() {
         mView?.enableValidation()
         mView?.enableCancellation()
     }
