@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.zcorp.opensportmanagement.BuildConfig
+import com.zcorp.opensportmanagement.data.IDataManager
+import com.zcorp.opensportmanagement.data.api.EventApi
+import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.utils.network.TokenInterceptor
 import dagger.Module
@@ -45,6 +48,18 @@ class NetModule {
                 .baseUrl("$SCHEME://${BuildConfig.HOST}:$PORT")
                 .client(okHttpClient)
                 .build()
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideEventApi(dataManager: IDataManager): EventApi {
+        return dataManager
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideUserApi(dataManager: IDataManager): UserApi {
+        return dataManager
     }
 
     companion object {

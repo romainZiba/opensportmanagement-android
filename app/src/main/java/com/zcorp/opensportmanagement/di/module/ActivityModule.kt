@@ -1,10 +1,8 @@
 package com.zcorp.opensportmanagement.di.module
 
-import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zcorp.opensportmanagement.data.IDataManager
-import com.zcorp.opensportmanagement.di.ActivityContext
 import com.zcorp.opensportmanagement.di.PerActivity
 import com.zcorp.opensportmanagement.ui.eventcreation.EventCreationPresenter
 import com.zcorp.opensportmanagement.ui.eventcreation.IEventCreationPresenter
@@ -16,8 +14,6 @@ import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.Event
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.members.EventMembersFragment
 import com.zcorp.opensportmanagement.ui.login.ILoginPresenter
 import com.zcorp.opensportmanagement.ui.login.LoginPresenter
-import com.zcorp.opensportmanagement.ui.main.IMainPresenter
-import com.zcorp.opensportmanagement.ui.main.MainPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
 import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter
@@ -34,31 +30,12 @@ import io.reactivex.disposables.CompositeDisposable
 class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModule() {
 
     @Provides
-    @ActivityContext
-    internal fun provideContext(): Context {
-        return mActivity
-    }
-
-    @Provides
-    internal fun provideActivity(): AppCompatActivity {
-        return mActivity
-    }
-
-    @Provides
     @PerActivity
     internal fun provideLoginPresenter(dataManager: IDataManager,
                                        schedulerProvider: SchedulerProvider,
                                        disposables: CompositeDisposable,
                                        logger: ILogger): ILoginPresenter {
         return LoginPresenter(dataManager, schedulerProvider, disposables, logger)
-    }
-
-    @Provides
-    @PerActivity
-    internal fun provideMainPresenter(dataManager: IDataManager,
-                                      schedulerProvider: SchedulerProvider,
-                                      disposables: CompositeDisposable): IMainPresenter {
-        return MainPresenter(dataManager, schedulerProvider, disposables)
     }
 
     @Provides

@@ -76,6 +76,7 @@ class EventCreationPresenter @Inject constructor(
                 } else {
                     single = dataManager.createEvent(EventDto(mView!!.getEventName(),
                             mView!!.getEventDescription(),
+                            dataManager.getCurrentTeamId(),
                             fromDate,
                             toDate,
                             mView!!.getPlace(),
@@ -92,6 +93,7 @@ class EventCreationPresenter @Inject constructor(
                 } else {
                     single = dataManager.createEvent(EventDto(mView!!.getEventName(),
                             mView!!.getEventDescription(),
+                            dataManager.getCurrentTeamId(),
                             fromDate,
                             toDate,
                             mView!!.getPlace(),

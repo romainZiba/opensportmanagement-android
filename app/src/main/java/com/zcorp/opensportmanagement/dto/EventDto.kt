@@ -5,6 +5,7 @@ import org.threeten.bp.LocalDateTime
 
 data class EventDto(val name: String,
                     val description: String,
+                    val teamId: Int,
                     val fromDate: LocalDateTime,
                     val toDate: LocalDateTime,
                     val place: String,

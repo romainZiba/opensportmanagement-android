@@ -3,7 +3,7 @@ package com.zcorp.opensportmanagement.ui.eventdetails
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.TeamMember
-import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsPresenter
+import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsViewModel
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
@@ -27,7 +27,7 @@ class EventDetailsPresenter @Inject constructor(
                 .subscribeOn(mSchedulerProvider.newThread())
                 .observeOn(mSchedulerProvider.ui())
                 .subscribe({ mEventDetails = it },
-                        { mLogger.d(EventsPresenter.TAG, "Error while retrieving events $it") }
+                        { mLogger.d(EventsViewModel.TAG, "Error while retrieving events $it") }
                 )
         )
     }
@@ -37,7 +37,7 @@ class EventDetailsPresenter @Inject constructor(
                 .subscribeOn(mSchedulerProvider.newThread())
                 .observeOn(mSchedulerProvider.ui())
                 .subscribe({ mEventDetails = it },
-                        { mLogger.d(EventsPresenter.TAG, "Error while retrieving events $it") }
+                        { mLogger.d(EventsViewModel.TAG, "Error while retrieving events $it") }
                 )
         )
     }

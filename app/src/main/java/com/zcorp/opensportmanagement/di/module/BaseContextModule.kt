@@ -25,12 +25,6 @@ abstract class BaseContextModule {
 
     @Provides
     @PerActivity
-    internal fun provideSchedulerProvider(): SchedulerProvider {
-        return AppSchedulerProvider()
-    }
-
-    @Provides
-    @PerActivity
     internal fun provideStompClientProvider(): IStompClientProvider {
         return StompClientProvider()
     }

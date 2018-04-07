@@ -46,7 +46,6 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
 
     private val mPresentPlayers: MutableSet<TeamMember> = mutableSetOf()
     private val mAbsentPlayers: MutableSet<TeamMember> = mutableSetOf()
-    private var mEvents = mutableListOf<Event>()
     private var mAvailableTeams = listOf<String>()
     private var mCurrentUser = User("Romain", "Ziba", mUsername, "rza@caram.com", "")
 
@@ -90,7 +89,7 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         }
     }
 
-    override fun getMatch(id: Int): Single<Match> {
+    override fun getMatch(id: Int): Single<Event> {
         return Single.create {
             it.onSuccess(createDummyMatch(id))
         }
@@ -163,27 +162,17 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         }
     }
 
-    /**
-     * This function simulates a cache system
-     */
     override fun getEvents(teamId: Int): Single<List<Event>> {
         val rand = Math.random()
         return if (rand > 0.95) {
-            mEvents = mutableListOf()
             Single.create {
                 it.onError(IOException())
             }
-        } else if (mEvents.isNotEmpty() && rand <= 0.95 && rand > 0.2) {
-            Single.create {
-                it.onSuccess(mEvents)
-            }
         } else {
-            mEvents = mutableListOf()
             Single.create {
                 it.onSuccess(getEventsFromNetwork())
             }
         }
-
     }
 
     override fun getTeam(teamId: Int): Single<Team> {
@@ -201,11 +190,11 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
     }
 
     override fun createEvent(eventDto: EventDto): Single<Event> {
-        val event = Event(0, eventDto.name, eventDto.description, eventDto.fromDate, eventDto.toDate,
-                eventDto.place, eventDto.presentTeamMembers, eventDto.absentTeamMembers)
+        val event = Event(0, eventDto.name, eventDto.description, eventDto.teamId,
+                eventDto.fromDate, eventDto.toDate, eventDto.place, eventDto.presentTeamMembers,
+                eventDto.absentTeamMembers, null)
         return Single.create {
             Thread.sleep(3000)
-            mEvents.add(event)
             it.onSuccess(event)
         }
     }
@@ -224,9 +213,9 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         } catch (e: InterruptedException) {
             // error
         }
-        mEvents = IntRange(1, 10).map { createDummyEvent(it) }.toMutableList()
-        mEvents.addAll(IntRange(10, 21).map { createDummyMatch(it) }.toList())
-        return mEvents
+        val events = IntRange(1, 10).map { createDummyEvent(it) }.toMutableList()
+        events.addAll(IntRange(10, 21).map { createDummyMatch(it) }.toList())
+        return events
     }
 
     private fun getConversationFromNetwork(): List<Conversation> {
@@ -242,23 +231,26 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         return Event(position,
                 "Apéro " + (position).toString(),
                 "Une soirée $position",
+                mCurrentTeamId,
                 LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
                 LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),
                 "Ici",
                 mPresentPlayers,
-                mAbsentPlayers)
+                mAbsentPlayers,
+                null)
     }
 
-    private fun createDummyMatch(position: Int): Match {
-        return Match(position,
+    private fun createDummyMatch(position: Int): Event {
+        return Event(position,
                 "Match de championnat",
                 "",
+                mCurrentTeamId,
                 LocalDateTime.of(2018, 1, 1 + position % 28, 20, 30, 0),
                 LocalDateTime.of(2018, 1, 1 + position % 28, 22, 30, 0),
                 "ici",
-                "TCMS2",
                 mPresentPlayers,
-                mAbsentPlayers)
+                mAbsentPlayers,
+                "TCMS2")
     }
 
     private fun createDummyTeamMembers(number: Int): MutableSet<TeamMember> {

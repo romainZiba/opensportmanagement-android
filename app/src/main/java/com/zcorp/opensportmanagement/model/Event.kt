@@ -1,19 +1,24 @@
 package com.zcorp.opensportmanagement.model
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import org.threeten.bp.LocalDateTime
 import java.io.Serializable
 import java.util.*
 
+@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
-open class Event(val _id: Int,
+class Event(@PrimaryKey val _id: Int,
                  val name: String,
                  val description: String,
+                 val teamId: Int,
                  val fromDate: LocalDateTime,
                  val toDate: LocalDateTime,
                  val place: String,
                  var presentTeamMembers: Set<TeamMember> = setOf(),
-                 var absentTeamMembers: Set<TeamMember> = setOf()) : Serializable {
+                 var absentTeamMembers: Set<TeamMember> = setOf(),
+                 val opponent: String?) : Serializable {
 
     companion object {
         const val championship = "CHAMPIONSHIP"
@@ -40,7 +45,7 @@ open class Event(val _id: Int,
         return "Event{" +
                 "_id=" + _id +
                 ", name='" + name + '\''.toString() +
-                ", description='" + description + '\''.toString() +
+                ", teamId='" + teamId + '\''.toString() +
                 ", fromDate=" + fromDate +
                 ", toDate=" + toDate +
                 '}'.toString()
@@ -53,6 +58,10 @@ open class Event(val _id: Int,
         TOURNAMENT(tournament),
         TRAINING(training),
         OTHER(other)
+    }
+
+    fun isMatch(): Boolean {
+        return opponent != null
     }
 }
 

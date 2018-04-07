@@ -6,7 +6,6 @@ import android.support.design.widget.Snackbar
 import android.view.View
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.Event
-import com.zcorp.opensportmanagement.model.Match
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.EventInformationFragment
@@ -65,7 +64,7 @@ class EventDetailsActivity : BaseActivity(), IEventDetailsView {
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        if (event is Match) {
+        if (event.isMatch()) {
             supportActionBar?.setDisplayShowTitleEnabled(false)
             mPresenter.getMatchDetails(event._id)
         } else {

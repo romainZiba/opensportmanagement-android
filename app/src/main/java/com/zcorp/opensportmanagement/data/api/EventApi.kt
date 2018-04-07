@@ -2,7 +2,6 @@ package com.zcorp.opensportmanagement.data.api
 
 import com.zcorp.opensportmanagement.dto.EventDto
 import com.zcorp.opensportmanagement.model.Event
-import com.zcorp.opensportmanagement.model.Match
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,5 +17,5 @@ interface EventApi {
 
     fun getEvent(id: Int): Single<Event>
 
-    fun getMatch(id: Int): Single<Match>
+    fun getMatch(id: Int): Single<Event>
 }

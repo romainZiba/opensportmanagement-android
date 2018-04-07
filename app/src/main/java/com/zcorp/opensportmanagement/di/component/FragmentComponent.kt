@@ -11,7 +11,7 @@ import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
 import dagger.Component
 
 @PerActivity
-@Component(dependencies = [(AppComponent::class)], modules = [(FragmentModule::class)])
+@Component(dependencies = [AppComponent::class], modules = [FragmentModule::class])
 interface FragmentComponent {
     fun inject(fragment: EventsFragment)
     fun inject(fragment: ConversationsFragment)

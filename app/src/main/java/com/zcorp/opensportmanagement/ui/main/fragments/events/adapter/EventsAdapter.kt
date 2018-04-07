@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.Event
-import com.zcorp.opensportmanagement.model.Match
-import com.zcorp.opensportmanagement.ui.main.fragments.events.IEventsPresenter
 import com.zcorp.opensportmanagement.utils.datetime.DateTimeFormatter
 
 /**
  * [RecyclerView.Adapter] that can display a list of [Event]
  */
-class EventsAdapter(private var mEvents: List<Event>, private val mPresenter: IEventsPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EventsAdapter(private val mCallback: OnEventClickListener,
+                    private var mEvents: List<Event>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    interface OnEventClickListener {
+        fun onEventClicked(event: Event, adapterPosition: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -33,13 +36,12 @@ class EventsAdapter(private var mEvents: List<Event>, private val mPresenter: IE
         val event = mEvents[position]
         (holder as BaseViewHolder).setDate(DateTimeFormatter.dateFormatterWithDayOfWeek.format(event.fromDate))
         holder.itemView.setOnClickListener {
-            mPresenter.onEventSelected(event, position)
+            mCallback.onEventClicked(mEvents[position], position)
         }
         when (holder) {
             is MatchViewHolder -> {
-                event as Match
                 holder.setLocalTeamName("Local")
-                holder.setVisitorTeamName(event.opponent)
+                holder.setVisitorTeamName(event.opponent ?: "")
             }
             is EventViewHolder -> {
                 holder.setDescription(event.description)
@@ -53,8 +55,8 @@ class EventsAdapter(private var mEvents: List<Event>, private val mPresenter: IE
 
     override fun getItemViewType(position: Int): Int {
         val event = mEvents[position]
-        return when (event) {
-            is Match -> Event.EventType.CHAMPIONSHIP.ordinal //TODO: distinguish between championship / Tournament /Friendly...
+        return when (event.isMatch()) {
+            true -> Event.EventType.CHAMPIONSHIP.ordinal //TODO: distinguish between championship / Tournament /Friendly...
             else -> Event.EventType.OTHER.ordinal
         }
     }
