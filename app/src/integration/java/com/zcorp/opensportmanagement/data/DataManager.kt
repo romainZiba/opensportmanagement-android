@@ -6,11 +6,11 @@ import com.zcorp.opensportmanagement.data.api.MessagesApi
 import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
+import com.zcorp.opensportmanagement.dto.EventDto
 import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.*
+import io.reactivex.Completable
 import io.reactivex.Single
-import okhttp3.ResponseBody
-import retrofit2.Response
 import retrofit2.Retrofit
 import javax.inject.Inject
 
@@ -48,7 +48,7 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
         return retrofit.create(MessagesApi::class.java).createMessage(conversationId, messageDto)
     }
 
-    override fun login(loginRequest: LoginRequest): Single<Response<ResponseBody>> {
+    override fun login(loginRequest: LoginRequest): Completable {
         return retrofit.create(UserApi::class.java).login(loginRequest)
     }
 
@@ -78,8 +78,8 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
         mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicPath)
     }
 
-    override fun createEvent(event: Event): Single<Event> {
-        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
+    override fun createEvent(eventDto: EventDto): Single<Event> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getCurrentUserLoggedInMode(): Int {

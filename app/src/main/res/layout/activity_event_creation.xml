@@ -151,6 +151,7 @@
 
                 </android.support.design.widget.TextInputLayout>
 
+                <!-- TODO: There should be only one FrameLayout to contain the fragment, we don't want both displayed at the same time -->
                 <FrameLayout
                     android:id="@+id/fragment_match_details_selection_container"
                     android:layout_width="0dp"
