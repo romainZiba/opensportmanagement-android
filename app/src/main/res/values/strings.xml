@@ -65,4 +65,14 @@
     <string name="select">Select</string>
     <string name="start_end_dates_null_error">Start date and end date must be provided</string>
     <string name="from_to_dates_null_error">From date and to date must be provided</string>
+    <string name="user_preferences">User preferences</string>
+    <string name="username_key">username</string>
+    <string name="username_summary">Name of the user</string>
+    <string name="email_key">email</string>
+    <string name="email">email</string>
+    <string name="email_summary">Email of the user</string>
+    <string name="teams">Teams</string>
+    <string name="teams_key">teams</string>
+    <string name="teams_ids">Team identifiers</string>
+    <string name="teams_ids_summary">The identifiers of the teams available for the user</string>
 </resources>

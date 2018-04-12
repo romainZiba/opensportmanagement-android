@@ -19,16 +19,4 @@ class IntegrationApplicationModule(private val context: Context) : ApplicationMo
     internal fun provideDataManager(dataManager: DataManager): IDataManager {
         return dataManager
     }
-
-    @Provides
-    @Singleton
-    internal fun providePreferencesHelper(preferencesHelper: PreferencesHelper): IPreferencesHelper {
-        return preferencesHelper
-    }
-
-    @Provides
-    @Singleton
-    internal fun providePreferenceName(): String {
-        return "integration"
-    }
 }

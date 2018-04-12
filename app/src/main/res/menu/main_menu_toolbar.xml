@@ -9,4 +9,10 @@
         app:showAsAction="always"
         />
 
+    <item
+        android:id="@+id/user_prefs"
+        android:title="@string/user_preferences"
+        app:showAsAction="never"
+        />
+
 </menu>

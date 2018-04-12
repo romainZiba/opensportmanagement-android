@@ -2,7 +2,9 @@ package com.zcorp.opensportmanagement.model
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.TypeConverters
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.zcorp.opensportmanagement.data.db.converter.Converters
 import org.threeten.bp.LocalDateTime
 import java.io.Serializable
 import java.util.*
@@ -10,15 +12,15 @@ import java.util.*
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Event(@PrimaryKey val _id: Int,
-                 val name: String,
-                 val description: String,
-                 val teamId: Int,
-                 val fromDate: LocalDateTime,
-                 val toDate: LocalDateTime,
-                 val place: String,
-                 var presentTeamMembers: Set<TeamMember> = setOf(),
-                 var absentTeamMembers: Set<TeamMember> = setOf(),
-                 val opponent: String?) : Serializable {
+            val name: String,
+            val description: String,
+            val teamId: Int,
+            val fromDate: LocalDateTime,
+            val toDate: LocalDateTime,
+            val place: String,
+            @TypeConverters(Converters::class) var presentTeamMembers: Set<TeamMember> = setOf(),
+            @TypeConverters(Converters::class) var absentTeamMembers: Set<TeamMember> = setOf(),
+            val opponent: String?) : Serializable {
 
     companion object {
         const val championship = "CHAMPIONSHIP"

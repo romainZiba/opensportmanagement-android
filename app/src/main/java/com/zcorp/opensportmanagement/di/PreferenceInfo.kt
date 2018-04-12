@@ -1,7 +1,7 @@
 package com.zcorp.opensportmanagement.di
 
-import javax.inject.Scope
+import javax.inject.Qualifier
 
-@Scope
+@Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class PreferenceInfo

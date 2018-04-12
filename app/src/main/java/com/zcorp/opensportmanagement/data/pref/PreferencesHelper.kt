@@ -63,8 +63,8 @@ class PreferencesHelper @Inject constructor(@ApplicationContext context: Context
         mPrefs.edit().putInt(PREF_KEY_CURRENT_TEAM, teamId).apply()
     }
 
-    override fun setAvailableTeams(availableTeams: List<Team>) {
-        mPrefs.edit().putStringSet(PREF_KEY_AVAILABLE_TEAMS, availableTeams.map { it._id.toString() }.toSet()).apply()
+    override fun setAvailableTeamIds(ids: List<Int>) {
+        mPrefs.edit().putStringSet(PREF_KEY_AVAILABLE_TEAMS, ids.map { it.toString() }.toSet()).apply()
     }
 
     companion object {

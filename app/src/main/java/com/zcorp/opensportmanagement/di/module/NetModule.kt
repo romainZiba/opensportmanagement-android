@@ -6,6 +6,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.zcorp.opensportmanagement.BuildConfig
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
+import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.utils.network.TokenInterceptor
@@ -59,6 +60,12 @@ class NetModule {
     @Provides
     @Singleton
     internal fun provideUserApi(dataManager: IDataManager): UserApi {
+        return dataManager
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideTeamApi(dataManager: IDataManager): TeamApi {
         return dataManager
     }
 

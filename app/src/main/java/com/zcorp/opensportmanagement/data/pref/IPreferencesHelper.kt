@@ -19,5 +19,5 @@ interface IPreferencesHelper {
     fun setAccessToken(accessToken: String)
     fun getCurrentTeamId(): Int
     fun setCurrentTeamId(teamId: Int)
-    fun setAvailableTeams(availableTeams: List<Team>)
+    fun setAvailableTeamIds(availableTeams: List<Int>)
 }

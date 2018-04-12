@@ -12,8 +12,6 @@ import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsPresenter
 import com.zcorp.opensportmanagement.ui.eventdetails.IEventDetailsPresenter
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.Information.EventInformationFragment
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.members.EventMembersFragment
-import com.zcorp.opensportmanagement.ui.login.ILoginPresenter
-import com.zcorp.opensportmanagement.ui.login.LoginPresenter
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
 import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter
@@ -28,15 +26,6 @@ import io.reactivex.disposables.CompositeDisposable
 
 @Module
 class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModule() {
-
-    @Provides
-    @PerActivity
-    internal fun provideLoginPresenter(dataManager: IDataManager,
-                                       schedulerProvider: SchedulerProvider,
-                                       disposables: CompositeDisposable,
-                                       logger: ILogger): ILoginPresenter {
-        return LoginPresenter(dataManager, schedulerProvider, disposables, logger)
-    }
 
     @Provides
     @PerActivity

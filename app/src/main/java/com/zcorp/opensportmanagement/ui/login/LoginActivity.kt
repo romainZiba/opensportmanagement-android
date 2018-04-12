@@ -1,60 +1,77 @@
 package com.zcorp.opensportmanagement.ui.login
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.repository.Resource
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
-class LoginActivity : BaseActivity(), ILoginView, View.OnClickListener {
+class LoginActivity : BaseActivity(), View.OnClickListener {
 
-    val TAG = LoginActivity::class.java.name
+    companion object {
+        const val TEAMS_KEY = "availableTeamsKey"
+        private val TAG = LoginActivity::class.java.name
+    }
 
+    private lateinit var mLoginViewModel: LoginViewModel
     @Inject
-    lateinit var presenter: ILoginPresenter
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         super.mActivityComponent.inject(this)
         setContentView(R.layout.activity_login)
-        presenter.onAttach(this)
         btn_server_login.setOnClickListener(this)
+        mLoginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
+        mLoginViewModel.getLoginStateLiveData().observe(this, Observer {
+            when (it) {
+                is Resource.Failure -> {
+                    setPasswordError()
+                }
+                is Resource.Progress -> {
+                    if (it.loading) showProgress()
+                    else hideProgress()
+                }
+                is Resource.Success -> {
+                    navigateToHome(it.data.teams.map { it.toString() })
+                }
+            }
+        })
     }
 
-    override fun onDestroy() {
-        presenter.onDetach()
-        super.onDestroy()
-    }
-
-    override fun disableLoginButton() {
+    fun disableLoginButton() {
         btn_server_login.isEnabled = false
     }
 
-    override fun enableLoginButton() {
+    fun enableLoginButton() {
         btn_server_login.isEnabled = true
     }
 
-    override fun showProgress() {
+    fun showProgress() {
         progressBar_login.visibility = View.VISIBLE
     }
 
-    override fun hideProgress() {
+    private fun hideProgress() {
         progressBar_login.visibility = View.GONE
     }
 
-    override fun setUsernameError() {
+    fun setUsernameError() {
         et_username.error = getString(R.string.username_error)
     }
 
-    override fun setPasswordError() {
+    private fun setPasswordError() {
         til_password.error = getString(R.string.password_error)
         et_password.background.clearColorFilter()
     }
 
-    override fun navigateToHome(availableTeams: List<String>) {
+    private fun navigateToHome(availableTeams: List<String>) {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra(TEAMS_KEY, availableTeams.toTypedArray())
         startActivity(intent)
@@ -62,9 +79,6 @@ class LoginActivity : BaseActivity(), ILoginView, View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        presenter.validateCredentials(et_username.text.toString(), et_password.text.toString())
-    }
-    companion object {
-        const val TEAMS_KEY = "availableTeamsKey"
+        mLoginViewModel.login(et_username.text.toString(), et_password.text.toString())
     }
 }

@@ -65,7 +65,7 @@ dependencies {
     implementation "com.android.support:support-vector-drawable:$supportLibraryVersion"
 
     //For API < 21
-    compile 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
 
     //  Architecture
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -115,8 +115,4 @@ dependencies {
     testImplementation 'com.willowtreeapps.assertk:assertk:0.9'
     // Test helpers for LiveData
     testImplementation "android.arch.core:core-testing:1.1.1"
-}
-
-kapt {
-    generateStubs = true
 }

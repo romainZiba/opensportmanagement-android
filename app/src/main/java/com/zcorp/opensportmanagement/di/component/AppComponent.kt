@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.zcorp.opensportmanagement.MyApplication
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
+import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.db.EventDao
 import com.zcorp.opensportmanagement.di.ApplicationContext
@@ -22,6 +23,7 @@ interface AppComponent {
     fun appContext(): Context
     fun getUserApi(): UserApi
     fun getEventApi(): EventApi
+    fun getTeamApi(): TeamApi
     fun getDataManager(): IDataManager
     fun getRetrofit(): Retrofit
     fun getMapper(): ObjectMapper

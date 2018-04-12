@@ -1,6 +1,7 @@
 package com.zcorp.opensportmanagement.repository
 
 import android.support.annotation.MainThread
+import android.support.annotation.WorkerThread
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.db.EventDao
 import com.zcorp.opensportmanagement.dto.EventDto
@@ -61,6 +62,7 @@ class EventRepository @Inject constructor(
                 })
     }
 
+    @WorkerThread
     private fun saveEvents(events: List<Event>) {
         Completable.fromAction {
             mEventDao.saveEvents(events)
