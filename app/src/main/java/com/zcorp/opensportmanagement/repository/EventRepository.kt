@@ -1,15 +1,14 @@
 package com.zcorp.opensportmanagement.repository
 
-import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
+import android.util.Log
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.db.EventDao
-import com.zcorp.opensportmanagement.dto.EventDto
+import com.zcorp.opensportmanagement.data.db.EventEntity
 import com.zcorp.opensportmanagement.model.Event
-import com.zcorp.opensportmanagement.utils.log.ILogger
-import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import io.reactivex.Completable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
@@ -19,69 +18,35 @@ import javax.inject.Inject
  */
 class EventRepository @Inject constructor(
         private val mEventApi: EventApi,
-        private val mEventDao: EventDao,
-        private val mSchedulerProvider: SchedulerProvider,
-        private val mLogger: ILogger) {
+        private val mEventDao: EventDao) {
 
-    companion object {
-        private val TAG = EventRepository::class.java.simpleName
-    }
-
-    val eventsResource: PublishSubject<Resource<List<Event>>> = PublishSubject.create<Resource<List<Event>>>()
-
-    fun loadEvents(teamId: Int, forceRefresh: Boolean = false) {
+    fun loadEvents(teamId: Int, forceRefresh: Boolean = false): Flowable<List<Event>> {
         var forceRemoteFetch = forceRefresh
-        eventsResource.onNext(Resource.loading(true))
         // Events will always be provided by the Publisher from the DAO
-        mEventDao.loadEvents(teamId).subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe({
+        return mEventDao.loadEvents(teamId)
+                .map { entities -> entities.map { Event.from(it) } }
+                .flatMap {
                     if (isRemoteFetchRequired(it, forceRemoteFetch)) {
                         forceRemoteFetch = false
-                        refreshEvents(teamId)
-                    } else {
-                        eventsResource.onNext(Resource.loading(false))
+                        return@flatMap refreshEvents(teamId)
                     }
-                    eventsResource.onNext(Resource.success(it))
-                }, {
-                    handleError(it)
-                })
+                    return@flatMap Flowable.just(it)
+                }
     }
 
-    private fun isRemoteFetchRequired(it: List<Event>, remoteFetch: Boolean) =
-            it.isEmpty() || remoteFetch
-
-    private fun refreshEvents(teamId: Int) {
-        eventsResource.onNext(Resource.loading(true))
-        mEventApi.getEvents(teamId).subscribeOn(mSchedulerProvider.io())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe({
-                    saveEvents(it)
-                }, {
-                    handleError(it)
-                })
-    }
+    private fun isRemoteFetchRequired(events: List<Event>, remoteFetch: Boolean) =
+            events.isEmpty() || remoteFetch
 
     @WorkerThread
-    private fun saveEvents(events: List<Event>) {
-        Completable.fromAction {
-            mEventDao.saveEvents(events)
-        }.subscribeOn(mSchedulerProvider.io())
-                .subscribe()
-    }
-
-    @MainThread
-    private fun handleError(error: Throwable) {
-        eventsResource.onNext(Resource.loading(false))
-        eventsResource.onNext(Resource.failure(error))
-    }
-
-    fun createEvent(eventDto: EventDto) {
-        mEventApi.createEvent(eventDto).subscribeOn(mSchedulerProvider.io())
-                .subscribe({
-                    mEventDao.saveEvent(it)
-                }, {
-                    mLogger.d(TAG, "Failed to save event: $it")
-                })
+    private fun refreshEvents(teamId: Int): Flowable<List<Event>> {
+        return mEventApi.getEvents(teamId)
+                .flatMapCompletable { events ->
+                    Completable.fromCallable {
+                        mEventDao.saveEvents(events.map { EventEntity.from(it) })
+                    }
+                }.subscribeOn(Schedulers.io())
+                .toFlowable<List<Event>>()
+                .flatMap { mEventDao.loadEvents(teamId) }
+                .map { entities -> entities.map { Event.from(it) } }
     }
 }

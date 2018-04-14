@@ -7,6 +7,7 @@ import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.db.EventDao
 import com.zcorp.opensportmanagement.data.db.OpenDatabase
+import com.zcorp.opensportmanagement.data.db.TeamDao
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.di.ApplicationContext
@@ -51,21 +52,24 @@ abstract class ApplicationModule(private val context: Context) {
 
     @Provides
     @Singleton
+    internal fun provideTeamDao(db: OpenDatabase): TeamDao {
+        return db.teamDao()
+    }
+
+    @Provides
+    @Singleton
     internal fun provideEventRepository(eventApi: EventApi,
-                                        eventDao: EventDao,
-                                        schedulerProvider: SchedulerProvider,
-                                        logger: ILogger): EventRepository {
-        return EventRepository(eventApi, eventDao, schedulerProvider, logger)
+                                        eventDao: EventDao): EventRepository {
+        return EventRepository(eventApi, eventDao)
     }
 
     @Provides
     @Singleton
     internal fun provideUserRepository(userApi: UserApi,
                                        teamApi: TeamApi,
-                                       preferences: IPreferencesHelper,
-                                       schedulerProvider: SchedulerProvider,
-                                       logger: ILogger): UserRepository {
-        return UserRepository(userApi, teamApi, preferences, schedulerProvider, logger)
+                                       teamDao: TeamDao,
+                                       preferences: IPreferencesHelper): UserRepository {
+        return UserRepository(userApi, teamApi, teamDao, preferences)
     }
 
     @Provides

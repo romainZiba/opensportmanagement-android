@@ -17,10 +17,18 @@ import javax.inject.Inject
 class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPreferencesHelper) : IDataManager {
 
     companion object {
-        private val user1 = User("Romain", "MoiMeme", "RMM", "rmm@caram.com", "") // has access to brooklynNets and nyKnicks teams
-        private val user2 = User("Pierre", "UnInconnu", "PUI", "pui@caram.com", "") // has access to brooklynNets only
-        val DUMMY_CREDENTIALS = mapOf(Pair(user1.username, "password"), Pair(user2.username, "password"))
+        private val user1 = User("Robert", "Albert", "RA", "ra@caram.com", "") // has access to brooklynNets and nyKnicks teams
+        private val user2 = User("Pierre", "Mousquetaire", "PM", "pm@caram.com", "") // has access to brooklynNets only
+        private val user3 = User("Jean", "Lament", "JL", "jl@gg.com", "") // has access to Houston Rockets only
+        private val PASSWORD = "password"
+        val DUMMY_CREDENTIALS = mapOf(Pair(user1.username, PASSWORD), Pair(user2.username, PASSWORD), Pair(user3.username, PASSWORD))
     }
+
+    private lateinit var mLoggedUser: User
+
+    private val brooklynNets = Team(1, "Brooklyn Nets", Team.Sport.BASKETBALL, Team.Gender.MALE, Team.AgeGroup.ADULTS)
+    private val nyKnicks = Team(2, "New York Knicks", Team.Sport.BASKETBALL, Team.Gender.MALE, Team.AgeGroup.ADULTS)
+    private val houstonRockets = Team(3, "Houston Rockets", Team.Sport.BASKETBALL, Team.Gender.MALE, Team.AgeGroup.ADULTS)
 
     private val mFirstNames = listOf(
             "Albert", "Jean", "Paul", "William", "Richard", "René", "Benjamin", "Camille",
@@ -46,14 +54,8 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
     private val mMessagesConversation2: MutableList<InAppMessage> = mutableListOf()
     private val mMessagesConversation3: MutableList<InAppMessage> = mutableListOf()
 
-
     private val mPresentPlayers: MutableSet<TeamMember> = mutableSetOf()
     private val mAbsentPlayers: MutableSet<TeamMember> = mutableSetOf()
-
-    private lateinit var mLoggedUser: User
-
-    private val brooklynNets = Team(1, "Brooklyn Nets", Team.Sport.BASKETBALL, Team.Gender.MALE, Team.AgeGroup.ADULTS)
-    private val nyKnicks = Team(2, "New York Knicks", Team.Sport.BASKETBALL, Team.Gender.MALE, Team.AgeGroup.ADULTS)
 
     init {
         val messagesFromUserConversation1 = IntRange(1, 6)
@@ -107,10 +109,10 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
             val rand = Math.random()
             val username = loginRequest.username
             if (DUMMY_CREDENTIALS.containsKey(username) && DUMMY_CREDENTIALS[username] == loginRequest.password && rand < 0.95) {
-                mLoggedUser = if (username == user1.username) {
-                    user1
-                } else {
-                    user2
+                when (username) {
+                    user1.username -> mLoggedUser = user1
+                    user2.username -> mLoggedUser = user2
+                    user3.username -> mLoggedUser = user3
                 }
                 it.onComplete()
             } else {
@@ -124,53 +126,42 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
             when (mLoggedUser) {
                 user1 -> it.onSuccess(listOf(brooklynNets, nyKnicks))
                 user2 -> it.onSuccess(listOf(brooklynNets))
+                user3 -> it.onSuccess(listOf(houstonRockets))
                 else -> it.onSuccess(emptyList())
             }
         }
     }
 
     override fun getEvents(teamId: Int): Single<List<Event>> {
-        when (mLoggedUser) {
-            user1 -> {
-                return if (teamId == brooklynNets._id || teamId == nyKnicks._id) {
-                    Single.create {
-                        it.onSuccess(getEventsFromNetwork(teamId))
-                    }
-                } else {
-                    Single.create {
-                        it.onError(Exception())
-                    }
+        if ((mLoggedUser.username == user1.username && (teamId == brooklynNets._id || teamId == nyKnicks._id))
+                || (mLoggedUser.username == user2.username && teamId == brooklynNets._id)
+                || (mLoggedUser.username == user3.username && teamId == houstonRockets._id)) {
+            return when (teamId) {
+                brooklynNets._id -> Single.create {
+                    it.onSuccess(getEventsFromNetwork(teamId, 20))
+                }
+                nyKnicks._id -> Single.create {
+                    it.onSuccess(getEventsFromNetwork(teamId, 8))
+                }
+                houstonRockets._id -> Single.create {
+                    it.onSuccess(getEventsFromNetwork(teamId, 2))
+                }
+                else -> Single.create {
+                    it.onError(Exception())
                 }
             }
-            user2 -> {
-                return if (teamId == brooklynNets._id) {
-                    Single.create {
-                        it.onSuccess(getEventsFromNetwork(teamId))
-                    }
-                } else {
-                    Single.create {
-                        it.onError(Exception())
-                    }
-                }
-            }
-            else -> return Single.create {
-                it.onError(Exception())
-            }
+        }
+        return Single.create {
+            it.onError(Exception())
         }
     }
 
     override fun getTeam(teamId: Int): Single<Team> {
-        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
-    }
-
-    override fun updateUserInfo(loggedInMode: IDataManager.LoggedInMode,
-                                userName: String,
-                                email: String,
-                                profilePicPath: String) {
-        mPreferencesHelper.setCurrentUserName(userName)
-        mPreferencesHelper.setCurrentUserLoggedInMode(loggedInMode)
-        mPreferencesHelper.setCurrentUserEmail(email)
-        mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicPath)
+        return when (teamId) {
+            nyKnicks._id -> Single.create { it.onSuccess(nyKnicks) }
+            brooklynNets._id -> Single.create { it.onSuccess(brooklynNets) }
+            else -> Single.create { it.onError(Exception()) }
+        }
     }
 
     override fun createEvent(eventDto: EventDto): Single<Event> {
@@ -183,14 +174,15 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         }
     }
 
-    private fun getEventsFromNetwork(teamId: Int): List<Event> {
+    private fun getEventsFromNetwork(teamId: Int, totalEvents: Int): List<Event> {
+        val numberOfEvents = totalEvents / 2
         try {
             Thread.sleep(2000)
         } catch (e: InterruptedException) {
             // error
         }
-        val events = IntRange(1, 10).map { createDummyEvent(it, teamId) }.toMutableList()
-        events.addAll(IntRange(10, 21).map { createDummyMatch(it, teamId) }.toList())
+        val events = IntRange(1, numberOfEvents).map { createDummyEvent(it, teamId) }.toMutableList()
+        events.addAll(IntRange(numberOfEvents, totalEvents).map { createDummyMatch(it, teamId) }.toList())
         return events
     }
 
@@ -332,5 +324,9 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
 
     override fun setCurrentTeamId(teamId: Int) {
         mPreferencesHelper.setCurrentTeamId(teamId)
+    }
+
+    override fun getAvailableTeamIds(): List<Int> {
+        return mPreferencesHelper.getAvailableTeamIds()
     }
 }

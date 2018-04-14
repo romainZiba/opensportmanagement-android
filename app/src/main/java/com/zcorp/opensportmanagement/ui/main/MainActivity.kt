@@ -13,8 +13,8 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
-import com.zcorp.opensportmanagement.ui.login.LoginActivity.Companion.TEAMS_KEY
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsViewModel
@@ -33,17 +33,20 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     @Inject lateinit var conversationsFragment: ConversationsFragment
     @Inject lateinit var mLogger: ILogger
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var mainViewModel: MainViewModel
+
+
     private lateinit var mEventsViewModel: EventsViewModel
-    private lateinit var mMainViewModel: MainViewModel
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_events -> {
-                mMainViewModel.showEvents()
+                displayEvents()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                mMainViewModel.showConversations()
+                displayConversations()
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -66,7 +69,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val teams = intent.extras[TEAMS_KEY] as Array<String>
         super.mActivityComponent.inject(this)
 
         setContentView(R.layout.activity_main)
@@ -75,23 +77,22 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowCustomEnabled(true)
-
-        mMainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         mEventsViewModel = ViewModelProviders.of(this, viewModelFactory).get(EventsViewModel::class.java)
 
-        mMainViewModel.visibleFragmentLiveData.observe(this, Observer {
-            when (it) {
-                MainViewModel.EVENTS -> displayEvents()
-                MainViewModel.CONVERSATIONS -> displayConversations()
+        mainViewModel.states.observe(this, Observer { state ->
+            when (state) {
+                is State.Success -> {
+                    val spinnerArrayAdapter = ArrayAdapter<String>(
+                            this, R.layout.simple_spinner_item, state.data.map { it.name })
+                    spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+                    main_spinner.adapter = spinnerArrayAdapter
+                    main_spinner.onItemSelectedListener = this
+                    displayEvents()
+                }
             }
         })
-
-        //TODO: replace spinner by a dialog
-        val spinnerArrayAdapter = ArrayAdapter<String>(this, R.layout.simple_spinner_item,
-                teams)
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        main_spinner.adapter = spinnerArrayAdapter
-        main_spinner.onItemSelectedListener = this
+        mainViewModel.getTeams()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

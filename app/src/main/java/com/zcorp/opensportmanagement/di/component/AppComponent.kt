@@ -9,6 +9,7 @@ import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.db.EventDao
+import com.zcorp.opensportmanagement.data.db.TeamDao
 import com.zcorp.opensportmanagement.di.ApplicationContext
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
@@ -29,6 +30,7 @@ interface AppComponent {
     fun getMapper(): ObjectMapper
     fun getLogger(): ILogger
     fun getEventDao(): EventDao
+    fun getTeamDao(): TeamDao
     fun getViewModelFactory(): ViewModelProvider.Factory
     fun getSchedulerProvider(): SchedulerProvider
 }

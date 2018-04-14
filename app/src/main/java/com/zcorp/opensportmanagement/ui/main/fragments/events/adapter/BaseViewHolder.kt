@@ -7,9 +7,11 @@ import kotlinx.android.synthetic.main.event_participant_number.view.*
 /**
  * Created by romainz on 12/02/18.
  */
-abstract class BaseViewHolder(private val mView: View) : RecyclerView.ViewHolder(mView), IEventViewHolder {
+abstract class BaseViewHolder(private val mView: View) : RecyclerView.ViewHolder(mView) {
 
-    override fun setParticipantsNumber(number: Int) {
+    abstract fun setDate(dateAsString: String)
+
+    fun setParticipantsNumber(number: Int) {
         mView.tv_participants_number.text = number.toString()
     }
 }

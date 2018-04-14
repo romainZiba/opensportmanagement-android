@@ -14,7 +14,7 @@ android {
     }
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.zcorp.andropensportmanagement"
+        applicationId "com.zcorp.opensportmanagement"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1

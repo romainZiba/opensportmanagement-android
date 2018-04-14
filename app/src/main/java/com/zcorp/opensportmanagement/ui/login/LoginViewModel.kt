@@ -1,43 +1,30 @@
 package com.zcorp.opensportmanagement.ui.login
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import com.zcorp.opensportmanagement.model.User
-import com.zcorp.opensportmanagement.repository.Resource
-import com.zcorp.opensportmanagement.repository.UserRepository
+import com.zcorp.opensportmanagement.repository.*
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import com.zcorp.opensportmanagement.viewmodel.RxViewModel
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
         private val userRepository: UserRepository,
-        private val mSchedulerProvider: SchedulerProvider) : ViewModel() {
+        private val mSchedulerProvider: SchedulerProvider) : RxViewModel() {
 
-    companion object {
-        private val TAG = LoginViewModel::class.java.simpleName
-    }
+    private val mEvents = MutableLiveData<Event>()
+    val events: LiveData<Event>
+        get() = mEvents
 
-    // TODO: use dagger to inject in viewModel
-    private val mDisposables = CompositeDisposable()
-    private var loginStateLiveData = MutableLiveData<Resource<User>>()
-
-    init {
-        mDisposables.add(
-                userRepository.userResource
-                        .subscribeOn(mSchedulerProvider.io())
-                        .observeOn(mSchedulerProvider.ui())
-                        .subscribe({ loginStateLiveData.value = it }))
-    }
-
-    fun getLoginStateLiveData() = loginStateLiveData
-
-    fun login(username: String, password: String): MutableLiveData<Resource<User>> {
-        userRepository.login(username, password)
-        return loginStateLiveData
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        mDisposables.clear()
+    fun login(username: String, password: String) {
+        mEvents.value = LoadingEvent
+        launch {
+            userRepository.login(username, password).subscribeOn(mSchedulerProvider.io())
+                    .observeOn(mSchedulerProvider.ui())
+                    .subscribe({
+                        mEvents.value = SuccessEvent
+                    }, {
+                        mEvents.value = FailedEvent(it)
+                    })
+        }
     }
 }

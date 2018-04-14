@@ -12,16 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.Event
-import com.zcorp.opensportmanagement.repository.Resource
+import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.eventcreation.EventCreationActivity
 import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventsAdapter
-import com.zcorp.opensportmanagement.utils.log.ILogger
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import kotlinx.android.synthetic.main.fragment_event_list.view.*
-import javax.inject.Inject
 
 
 /**
@@ -32,8 +30,6 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
     companion object {
         private val TAG = EventsFragment::class.java.simpleName
     }
-
-    @Inject lateinit var mLogger: ILogger
 
     lateinit var mEventsAdapter: EventsAdapter
     private lateinit var mEventsViewModel: EventsViewModel
@@ -51,22 +47,21 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         mEventsAdapter = EventsAdapter(this, mutableListOf())
         rv_events_list.adapter = mEventsAdapter
 
-        mEventsViewModel.getEvents().observe(this, Observer {
+        mEventsViewModel.states.observe(this, Observer {
             when (it) {
-                is Resource.Failure -> {
-                    mLogger.d(TAG, "Error occurred ${it.e}")
+                is State.Failure -> {
                     showNetworkError()
                 }
-                is Resource.Progress -> {
+                is State.Progress -> {
                     if (it.loading) showProgress()
                     else hideProgress()
                 }
-                is Resource.Success -> {
-                    mLogger.d(TAG, "Events retrieved ${it.data}")
+                is State.Success -> {
                     mEventsAdapter.updateEvents(it.data)
                 }
             }
         })
+        mEventsViewModel.getEvents()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -138,7 +133,7 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
     }
 
     private fun forceRefreshData() {
-        mEventsViewModel.forceRefreshEvents()
+        mEventsViewModel.getEvents(true)
     }
 
 }

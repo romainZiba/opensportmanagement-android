@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.zcorp.opensportmanagement.di.ViewModelKey
 import com.zcorp.opensportmanagement.ui.login.LoginViewModel
+import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsViewModel
 import com.zcorp.opensportmanagement.viewmodel.ViewModelFactory
 import dagger.Binds
@@ -22,6 +23,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
     internal abstract fun bindLoginViewModel(loginViewModel: LoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    internal abstract fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.di.ApplicationContext
 import com.zcorp.opensportmanagement.di.PreferenceInfo
-import com.zcorp.opensportmanagement.model.Team
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -56,16 +55,21 @@ class PreferencesHelper @Inject constructor(@ApplicationContext context: Context
     }
 
     override fun getCurrentTeamId(): Int {
-        return mPrefs.getInt(PREF_KEY_CURRENT_TEAM, 0)
+        return mPrefs.getInt(PREF_KEY_CURRENT_TEAM, -1)
     }
 
     override fun setCurrentTeamId(teamId: Int) {
         mPrefs.edit().putInt(PREF_KEY_CURRENT_TEAM, teamId).apply()
     }
 
+    override fun getAvailableTeamIds(): List<Int> {
+        return mPrefs.getStringSet(PREF_KEY_AVAILABLE_TEAMS, emptySet()).map { it.toInt() }.toList()
+    }
+
     override fun setAvailableTeamIds(ids: List<Int>) {
         mPrefs.edit().putStringSet(PREF_KEY_AVAILABLE_TEAMS, ids.map { it.toString() }.toSet()).apply()
     }
+
 
     companion object {
         private const val PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE"

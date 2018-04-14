@@ -20,4 +20,5 @@ interface IPreferencesHelper {
     fun getCurrentTeamId(): Int
     fun setCurrentTeamId(teamId: Int)
     fun setAvailableTeamIds(availableTeams: List<Int>)
+    fun getAvailableTeamIds(): List<Int>
 }

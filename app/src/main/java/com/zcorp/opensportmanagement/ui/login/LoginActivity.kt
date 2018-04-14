@@ -7,7 +7,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.repository.Resource
+import com.zcorp.opensportmanagement.repository.FailedEvent
+import com.zcorp.opensportmanagement.repository.LoadingEvent
+import com.zcorp.opensportmanagement.repository.SuccessEvent
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -30,17 +32,18 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_login)
         btn_server_login.setOnClickListener(this)
         mLoginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
-        mLoginViewModel.getLoginStateLiveData().observe(this, Observer {
+        mLoginViewModel.events.observe(this, Observer {
             when (it) {
-                is Resource.Failure -> {
+                is FailedEvent -> {
+                    hideProgress()
                     setPasswordError()
                 }
-                is Resource.Progress -> {
-                    if (it.loading) showProgress()
-                    else hideProgress()
+                is LoadingEvent -> {
+                    showProgress()
                 }
-                is Resource.Success -> {
-                    navigateToHome(it.data.teams.map { it.toString() })
+                is SuccessEvent -> {
+                    hideProgress()
+                    navigateToHome()
                 }
             }
         })
@@ -71,9 +74,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         et_password.background.clearColorFilter()
     }
 
-    private fun navigateToHome(availableTeams: List<String>) {
+    private fun navigateToHome() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(TEAMS_KEY, availableTeams.toTypedArray())
         startActivity(intent)
         finish()
     }
