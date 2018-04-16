@@ -1,6 +1,7 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.*
 import kotlinx.android.synthetic.main.fragment_event_list.view.*
+import javax.inject.Inject
 
 
 /**
@@ -31,6 +33,8 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         private val TAG = EventsFragment::class.java.simpleName
     }
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var mEventsAdapter: EventsAdapter
     private lateinit var mEventsViewModel: EventsViewModel
 
@@ -42,7 +46,8 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mEventsViewModel = ViewModelProviders.of(activity!!).get(EventsViewModel::class.java)
+        mEventsViewModel = ViewModelProviders.of(activity!!, viewModelFactory)
+                .get(EventsViewModel::class.java)
 
         mEventsAdapter = EventsAdapter(this, mutableListOf())
         rv_events_list.adapter = mEventsAdapter

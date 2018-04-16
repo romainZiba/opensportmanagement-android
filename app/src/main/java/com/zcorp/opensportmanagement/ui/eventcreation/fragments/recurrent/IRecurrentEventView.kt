@@ -1,7 +1,6 @@
 package com.zcorp.opensportmanagement.ui.eventcreation.fragments.recurrent
 
 import com.zcorp.opensportmanagement.ui.base.IBaseView
-import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDateTime
 
 interface IRecurrentEventView: IBaseView {

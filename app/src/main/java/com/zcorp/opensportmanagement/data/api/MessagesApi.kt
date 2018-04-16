@@ -4,7 +4,6 @@ import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.Conversation
 import com.zcorp.opensportmanagement.model.InAppMessage
 import io.reactivex.Single
-import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

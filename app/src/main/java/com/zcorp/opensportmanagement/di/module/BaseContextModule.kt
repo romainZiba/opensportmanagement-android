@@ -4,8 +4,6 @@ import com.zcorp.opensportmanagement.di.PerActivity
 import com.zcorp.opensportmanagement.ui.utils.DatePickerFragment
 import com.zcorp.opensportmanagement.ui.utils.DayOfWeekPickerFragment
 import com.zcorp.opensportmanagement.ui.utils.TimePickerFragment
-import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider
-import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
 import com.zcorp.opensportmanagement.utils.stomp.StompClientProvider
 import dagger.Module

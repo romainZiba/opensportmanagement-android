@@ -1,7 +1,6 @@
 package com.zcorp.opensportmanagement.repository
 
 import android.support.annotation.WorkerThread
-import android.util.Log
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.db.EventDao
 import com.zcorp.opensportmanagement.data.db.EventEntity
@@ -13,16 +12,19 @@ import javax.inject.Inject
 
 
 /**
- * EventRepository is responsible for providing a clean API for ViewModel so that viewmodel does not
+ * EventRepositoryImpl is responsible for providing a clean API for ViewModel so that viewmodel does not
  * know where the data come from
  */
-class EventRepository @Inject constructor(
-        private val mEventApi: EventApi,
-        private val mEventDao: EventDao) {
+interface EventRepository {
+    fun loadEvents(teamId: Int, forceRefresh: Boolean = false): Flowable<List<Event>>
+}
 
-    fun loadEvents(teamId: Int, forceRefresh: Boolean = false): Flowable<List<Event>> {
+class EventRepositoryImpl @Inject constructor(
+        private val mEventApi: EventApi,
+        private val mEventDao: EventDao): EventRepository {
+
+    override fun loadEvents(teamId: Int, forceRefresh: Boolean): Flowable<List<Event>> {
         var forceRemoteFetch = forceRefresh
-        // Events will always be provided by the Publisher from the DAO
         return mEventDao.loadEvents(teamId)
                 .map { entities -> entities.map { Event.from(it) } }
                 .flatMap {

@@ -1,10 +1,7 @@
 package com.zcorp.opensportmanagement.ui.eventcreation.fragments.punctual
 
 import com.zcorp.opensportmanagement.ui.base.IBaseView
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.LocalTime
 
 interface IPunctualEventView : IBaseView {
     fun showSelectedStartDate(dateTime: String)

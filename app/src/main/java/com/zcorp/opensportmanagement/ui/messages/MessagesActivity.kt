@@ -1,13 +1,11 @@
 package com.zcorp.opensportmanagement.ui.messages
 
-import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.InAppMessage
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar

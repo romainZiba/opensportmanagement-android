@@ -3,6 +3,7 @@ package com.zcorp.opensportmanagement.di.module
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.zcorp.opensportmanagement.data.api.EventApi
+import com.zcorp.opensportmanagement.data.api.MessagesApi
 import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.db.EventDao
@@ -12,8 +13,7 @@ import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.di.ApplicationContext
 import com.zcorp.opensportmanagement.di.PreferenceInfo
-import com.zcorp.opensportmanagement.repository.EventRepository
-import com.zcorp.opensportmanagement.repository.UserRepository
+import com.zcorp.opensportmanagement.repository.*
 import com.zcorp.opensportmanagement.utils.Constants
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.log.Logger
@@ -60,7 +60,7 @@ abstract class ApplicationModule(private val context: Context) {
     @Singleton
     internal fun provideEventRepository(eventApi: EventApi,
                                         eventDao: EventDao): EventRepository {
-        return EventRepository(eventApi, eventDao)
+        return EventRepositoryImpl(eventApi, eventDao)
     }
 
     @Provides
@@ -69,8 +69,15 @@ abstract class ApplicationModule(private val context: Context) {
                                        teamApi: TeamApi,
                                        teamDao: TeamDao,
                                        preferences: IPreferencesHelper): UserRepository {
-        return UserRepository(userApi, teamApi, teamDao, preferences)
+        return UserRepositoryImpl(userApi, teamApi, teamDao, preferences)
     }
+
+    @Provides
+    @Singleton
+    internal fun provideMessageRepository(messageApi: MessagesApi): MessageRepository {
+        return MessageRepositoryImpl(messageApi)
+    }
+
 
     @Provides
     @Singleton

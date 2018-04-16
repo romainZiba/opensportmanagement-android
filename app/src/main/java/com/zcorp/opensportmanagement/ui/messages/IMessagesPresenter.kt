@@ -1,7 +1,6 @@
 package com.zcorp.opensportmanagement.ui.messages
 
 import com.zcorp.opensportmanagement.ui.base.IBasePresenter
-import com.zcorp.opensportmanagement.ui.messages.adapter.IMessageViewHolder
 
 /**
  * Created by romainz on 17/02/18.

@@ -186,15 +186,6 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
         return events
     }
 
-    private fun getConversationFromNetwork(): List<Conversation> {
-        try {
-            Thread.sleep(1500)
-        } catch (e: InterruptedException) {
-            // error
-        }
-        return mConversations
-    }
-
     private fun createDummyEvent(position: Int, teamId: Int = mPreferencesHelper.getCurrentTeamId()): Event {
         return Event(position,
                 "Apéro " + (position).toString(),
@@ -238,12 +229,12 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
 
     override fun getConversations(): Single<List<Conversation>> {
         return Single.create {
-            val rand = Math.random()
-            if (rand > 0.5) {
-                it.onSuccess(getConversationFromNetwork())
-            } else {
-                it.onSuccess(mConversations)
+            try {
+                Thread.sleep(1500)
+            } catch (e: InterruptedException) {
+                // error
             }
+            it.onSuccess(mConversations)
         }
     }
 

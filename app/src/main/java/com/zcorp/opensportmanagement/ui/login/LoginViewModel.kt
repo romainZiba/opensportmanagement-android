@@ -8,7 +8,7 @@ import com.zcorp.opensportmanagement.viewmodel.RxViewModel
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-        private val userRepository: UserRepository,
+        private val userRepository: UserRepositoryImpl,
         private val mSchedulerProvider: SchedulerProvider) : RxViewModel() {
 
     private val mEvents = MutableLiveData<Event>()

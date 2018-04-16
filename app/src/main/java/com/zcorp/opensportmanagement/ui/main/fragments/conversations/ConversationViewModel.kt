@@ -1,10 +1,9 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.events
+package com.zcorp.opensportmanagement.ui.main.fragments.conversations
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.zcorp.opensportmanagement.data.IDataManager
-import com.zcorp.opensportmanagement.model.Event
-import com.zcorp.opensportmanagement.repository.EventRepositoryImpl
+import com.zcorp.opensportmanagement.model.Conversation
+import com.zcorp.opensportmanagement.repository.MessageRepository
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.viewmodel.RxViewModel
@@ -13,25 +12,18 @@ import javax.inject.Inject
 /**
  * Created by romainz on 03/02/18.
  */
-class EventsViewModel @Inject constructor(
-        private val eventRepository: EventRepositoryImpl,
-        private val dataManager: IDataManager,
+class ConversationViewModel @Inject constructor(
+        private val messageRepository: MessageRepository,
         private val schedulerProvider: SchedulerProvider) : RxViewModel() {
 
-    companion object {
-        val TAG: String = EventsViewModel::class.java.simpleName
-    }
-
-    private val mStates = MutableLiveData<State<List<Event>>>()
-    val states: LiveData<State<List<Event>>>
+    private val mStates = MutableLiveData<State<List<Conversation>>>()
+    val states: LiveData<State<List<Conversation>>>
         get() = mStates
 
-
-    fun getEvents(forceRefresh: Boolean = false) {
+    fun getConversations() {
         mStates.value = State.loading(true)
         launch {
-            eventRepository.loadEvents(dataManager.getCurrentTeamId(), forceRefresh)
-                    .subscribeOn(schedulerProvider.io())
+            messageRepository.loadConversations().subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe({
                         mStates.value = State.loading(false)

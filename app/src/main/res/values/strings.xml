@@ -75,4 +75,6 @@
     <string name="teams_key">teams</string>
     <string name="teams_ids">Team identifiers</string>
     <string name="teams_ids_summary">The identifiers of the teams available for the user</string>
+    <string name="load_teams_error">Failed to load available teams</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -4,7 +4,6 @@ import android.support.annotation.WorkerThread
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.TeamApi
 import com.zcorp.opensportmanagement.data.api.UserApi
-import com.zcorp.opensportmanagement.data.db.EventEntity
 import com.zcorp.opensportmanagement.data.db.TeamDao
 import com.zcorp.opensportmanagement.data.db.TeamEntity
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
@@ -17,16 +16,21 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
- * UserRepository is responsible for providing a clean API for ViewModel so that viewmodel does not
+ * UserRepositoryImpl is responsible for providing a clean API for ViewModel so that viewmodel does not
  * know where the data come from
  */
-class UserRepository @Inject constructor(
+interface UserRepository {
+    fun login(username: String, password: String): Completable
+    fun loadTeams(): Flowable<List<Team>>
+}
+
+class UserRepositoryImpl @Inject constructor(
         private val mUserApi: UserApi,
         private val mTeamApi: TeamApi,
         private val mTeamDao: TeamDao,
-        private val mPreferences: IPreferencesHelper) {
+        private val mPreferences: IPreferencesHelper) : UserRepository {
 
-    fun login(username: String, password: String): Completable {
+    override fun login(username: String, password: String): Completable {
         val loginRequest = LoginRequest(username, password)
         return mUserApi.login(loginRequest)
                 .toSingleDefault(true)
@@ -39,7 +43,7 @@ class UserRepository @Inject constructor(
                 .flatMapCompletable { teams -> saveUserTeams(teams) }
     }
 
-    fun loadTeams(): Flowable<List<Team>> {
+    override fun loadTeams(): Flowable<List<Team>> {
         return mTeamDao.loadTeams(mPreferences.getAvailableTeamIds().toIntArray())
                 .flatMap {
                     if (it.isEmpty()) {

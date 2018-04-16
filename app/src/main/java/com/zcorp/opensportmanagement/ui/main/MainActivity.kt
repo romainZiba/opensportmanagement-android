@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -14,10 +15,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.repository.State
+import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsViewModel
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -35,9 +36,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var mainViewModel: MainViewModel
-
-
-    private lateinit var mEventsViewModel: EventsViewModel
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -78,7 +76,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowCustomEnabled(true)
         mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
-        mEventsViewModel = ViewModelProviders.of(this, viewModelFactory).get(EventsViewModel::class.java)
 
         mainViewModel.states.observe(this, Observer { state ->
             when (state) {
@@ -89,6 +86,11 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
                     main_spinner.adapter = spinnerArrayAdapter
                     main_spinner.onItemSelectedListener = this
                     displayEvents()
+                }
+                is State.Failure -> {
+                    ThemedSnackbar
+                            .make(fragment_container, getString(R.string.load_teams_error), Snackbar.LENGTH_INDEFINITE)
+                            .setAction(getString(R.string.retry), { mainViewModel.getTeams() })
                 }
             }
         })

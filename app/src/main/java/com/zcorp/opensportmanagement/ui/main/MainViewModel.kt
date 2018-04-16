@@ -4,12 +4,12 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.zcorp.opensportmanagement.model.Team
 import com.zcorp.opensportmanagement.repository.State
-import com.zcorp.opensportmanagement.repository.UserRepository
+import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.viewmodel.RxViewModel
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val mUserRepository: UserRepository,
+class MainViewModel @Inject constructor(private val mUserRepository: UserRepositoryImpl,
                                         private val mSchedulerProvider: SchedulerProvider) : RxViewModel() {
 
     private val mStates = MutableLiveData<State<List<Team>>>()
