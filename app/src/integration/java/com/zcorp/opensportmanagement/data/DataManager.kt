@@ -20,20 +20,13 @@ import javax.inject.Inject
 class DataManager @Inject constructor(private val mPreferencesHelper: IPreferencesHelper,
                                       private val retrofit: Retrofit,
                                       private val objectMapper: ObjectMapper) : IDataManager {
+
     override fun getEvent(id: Int): Single<Event> {
-        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
+        return retrofit.create(EventApi::class.java).getEvent(id)
     }
 
-    override fun getMatch(id: Int): Single<Match> {
-        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
-    }
-
-    override fun getCurrentTeamId(): Int {
-        return mPreferencesHelper.getCurrentTeamId()
-    }
-
-    override fun setCurrentTeamId(teamId: Int) {
-        mPreferencesHelper.setCurrentTeamId(teamId)
+    override fun getMatch(id: Int): Single<Event> {
+        return retrofit.create(EventApi::class.java).getMatch(id)
     }
 
     override fun getConversations(): Single<List<Conversation>> {
@@ -66,16 +59,6 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
 
     override fun whoAmI(): Single<User> {
         return retrofit.create(UserApi::class.java).whoAmI()
-    }
-
-    override fun updateUserInfo(loggedInMode: IDataManager.LoggedInMode,
-                                userName: String,
-                                email: String,
-                                profilePicPath: String) {
-        mPreferencesHelper.setCurrentUserName(userName)
-        mPreferencesHelper.setCurrentUserLoggedInMode(loggedInMode)
-        mPreferencesHelper.setCurrentUserEmail(email)
-        mPreferencesHelper.setCurrentUserProfilePicUrl(profilePicPath)
     }
 
     override fun createEvent(eventDto: EventDto): Single<Event> {
@@ -122,7 +105,19 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
         mPreferencesHelper.setCurrentUserName(username)
     }
 
-    override fun setAvailableTeams(availableTeams: List<Team>) {
-        mPreferencesHelper.setAvailableTeams(availableTeams)
+    override fun setAvailableTeamIds(availableTeams: List<Int>) {
+        mPreferencesHelper.setAvailableTeamIds(availableTeams)
+    }
+
+    override fun getAvailableTeamIds(): List<Int> {
+        return mPreferencesHelper.getAvailableTeamIds()
+    }
+
+    override fun getCurrentTeamId(): Int {
+        return mPreferencesHelper.getCurrentTeamId()
+    }
+
+    override fun setCurrentTeamId(teamId: Int) {
+        mPreferencesHelper.setCurrentTeamId(teamId)
     }
 }
