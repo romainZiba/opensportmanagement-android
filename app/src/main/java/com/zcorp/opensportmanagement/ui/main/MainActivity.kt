@@ -1,7 +1,9 @@
 package com.zcorp.opensportmanagement.ui.main
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -11,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.afollestad.materialdialogs.MaterialDialog
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
@@ -23,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_main.main_navigation
 import kotlinx.android.synthetic.main.activity_main.main_toolbar
 import kotlinx.android.synthetic.main.toolbar.main_spinner
 import org.koin.android.architecture.ext.viewModel
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
@@ -34,8 +38,11 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private val eventsFragment = EventsFragment()
     private val conversationsFragment = ConversationsFragment()
     private val mLogger: ILogger by inject()
+    private val mHandler = Handler()
 
-    private val viewModel: MainViewModel by viewModel()
+    private lateinit var loginDialog: MaterialDialog
+
+    private lateinit var viewModel: MainViewModel
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -75,7 +82,15 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowCustomEnabled(true)
 
-        viewModel.states.observe(this, Observer { state ->
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel.apply {
+            // Use the Koin org.koin.android.ext.android.get() function to retrieve dependencies from an Activity
+            mUserRepository = get()
+            mTeamRepository = get()
+            mSchedulerProvider = get()
+        }
+
+        viewModel.teams.observe(this, Observer { state ->
             when (state) {
                 is State.Success -> {
                     val spinnerArrayAdapter = ArrayAdapter<String>(

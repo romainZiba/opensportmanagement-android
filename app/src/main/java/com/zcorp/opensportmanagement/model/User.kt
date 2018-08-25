@@ -8,7 +8,7 @@ data class User(
     val lastName: String,
     val username: String,
     val email: String,
-    val phoneNumber: String
-) {
-    var teams: List<Team> = listOf()
-}
+    val phoneNumber: String,
+    val globalAdmin: Boolean,
+    val teams: List<Team> = listOf()
+)

@@ -2,6 +2,7 @@ package com.zcorp.opensportmanagement.utils.rx
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
@@ -20,4 +21,10 @@ fun <T> Single<T>.with(schedulerProvider: SchedulerProvider): Single<T> =
  * Use SchedulerProvider configuration for Flowable
  */
 fun <T> Flowable<T>.with(schedulerProvider: SchedulerProvider): Flowable<T> =
+        this.observeOn(schedulerProvider.ui()).subscribeOn(schedulerProvider.io())
+
+/**
+ * Use SchedulerProvider configuration for Observable
+ */
+fun <T> Observable<T>.with(schedulerProvider: SchedulerProvider): Observable<T> =
         this.observeOn(schedulerProvider.ui()).subscribeOn(schedulerProvider.io())

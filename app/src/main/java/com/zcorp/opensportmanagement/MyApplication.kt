@@ -3,6 +3,8 @@ package com.zcorp.opensportmanagement
 import android.content.res.Configuration
 import android.support.multidex.MultiDexApplication
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.joanzapata.iconify.Iconify
+import com.joanzapata.iconify.fonts.FontAwesomeModule
 import com.zcorp.opensportmanagement.di.app
 import org.koin.android.ext.android.startKoin
 import java.util.Locale
@@ -17,6 +19,7 @@ class MyApplication : MultiDexApplication() {
         startKoin(app)
         systemLanguage = Locale.getDefault()
         AndroidThreeTen.init(this)
+        Iconify.with(FontAwesomeModule())
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {

@@ -37,7 +37,7 @@ class PreferencesHelper(
 
     override fun getCurrentUserLoggedInMode(): Int {
         return mPrefs.getInt(PREF_KEY_USER_LOGGED_IN_MODE,
-                IDataManager.LoggedInMode.LOGGED_IN_MODE_LOGGED_OUT.type)
+                IDataManager.LoggedInMode.LOGGED_OUT.type)
     }
 
     override fun setCurrentUserLoggedInMode(mode: IDataManager.LoggedInMode) {

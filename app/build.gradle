@@ -80,6 +80,8 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.anthonymandra:ToggleButtons:2.0.0'
+    implementation 'com.afollestad.material-dialogs:core:2.0.0-alpha05'
+    implementation 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.1'
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"
@@ -93,6 +95,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.8.1"
+    implementation "com.github.franmontiel:PersistentCookieJar:v1.0.1"
+
     // JSON serialization/deserialization
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0'
     implementation "com.github.joschi.jackson:jackson-datatype-threetenbp:2.8.4", {

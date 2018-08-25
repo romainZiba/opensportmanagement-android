@@ -4,17 +4,13 @@ import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.MessagesApi
 import com.zcorp.opensportmanagement.data.api.TeamApi
-import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.dto.EventDto
 import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.Conversation
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.InAppMessage
-import com.zcorp.opensportmanagement.model.LoginRequest
 import com.zcorp.opensportmanagement.model.Team
-import com.zcorp.opensportmanagement.model.User
-import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Retrofit
 
@@ -46,10 +42,6 @@ class DataManager(
         return retrofit.create(MessagesApi::class.java).createMessage(conversationId, messageDto)
     }
 
-    override fun login(loginRequest: LoginRequest): Completable {
-        return retrofit.create(UserApi::class.java).login(loginRequest)
-    }
-
     override fun getTeams(): Single<List<Team>> {
         return retrofit.create(TeamApi::class.java).getTeams()
     }
@@ -60,10 +52,6 @@ class DataManager(
 
     override fun getEvents(teamId: Int): Single<List<Event>> {
         return retrofit.create(EventApi::class.java).getEvents(teamId)
-    }
-
-    override fun whoAmI(): Single<User> {
-        return retrofit.create(UserApi::class.java).whoAmI()
     }
 
     override fun createEvent(eventDto: EventDto): Single<Event> {

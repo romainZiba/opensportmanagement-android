@@ -7,11 +7,9 @@ import com.zcorp.opensportmanagement.dto.MessageDto
 import com.zcorp.opensportmanagement.model.Conversation
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.model.InAppMessage
-import com.zcorp.opensportmanagement.model.LoginRequest
 import com.zcorp.opensportmanagement.model.Team
 import com.zcorp.opensportmanagement.model.TeamMember
 import com.zcorp.opensportmanagement.model.User
-import io.reactivex.Completable
 import io.reactivex.Single
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
@@ -23,14 +21,14 @@ import java.util.Random
 class FakeDataManager(private val mPreferencesHelper: IPreferencesHelper) : IDataManager {
 
     companion object {
-        private val user1 = User("Robert", "Albert", "RA", "ra@caram.com", "") // has access to brooklynNets and nyKnicks teams
-        private val user2 = User("Pierre", "Mousquetaire", "PM", "pm@caram.com", "") // has access to brooklynNets only
-        private val user3 = User("Jean", "Lament", "JL", "jl@gg.com", "") // has access to Houston Rockets only
+        private val user1 = User("Robert", "Albert", "RA", "ra@caram.com", "", true) // has access to brooklynNets and nyKnicks teams
+        private val user2 = User("Pierre", "Mousquetaire", "PM", "pm@caram.com", "", false) // has access to brooklynNets only
+        private val user3 = User("Jean", "Lament", "JL", "jl@gg.com", "", false) // has access to Houston Rockets only
         private val PASSWORD = "password"
         val DUMMY_CREDENTIALS = mapOf(Pair(user1.username, PASSWORD), Pair(user2.username, PASSWORD), Pair(user3.username, PASSWORD))
     }
 
-    private lateinit var mLoggedUser: User
+    private var mLoggedUser: User = user1
 
     private val brooklynNets = Team(1, "Brooklyn Nets", Team.Sport.BASKETBALL, Team.Gender.MALE, Team.AgeGroup.ADULTS)
     private val nyKnicks = Team(2, "New York Knicks", Team.Sport.BASKETBALL, Team.Gender.MALE, Team.AgeGroup.ADULTS)
@@ -88,12 +86,6 @@ class FakeDataManager(private val mPreferencesHelper: IPreferencesHelper) : IDat
         mAbsentPlayers.addAll(teamMembers.filter { !it.firstName.contains("a") })
     }
 
-    override fun whoAmI(): Single<User> {
-        return Single.create {
-            it.onSuccess(mLoggedUser)
-        }
-    }
-
     override fun getEvent(id: Int): Single<Event> {
         return Single.create {
             it.onSuccess(createDummyEvent(id))
@@ -103,27 +95,6 @@ class FakeDataManager(private val mPreferencesHelper: IPreferencesHelper) : IDat
     override fun getMatch(id: Int): Single<Event> {
         return Single.create {
             it.onSuccess(createDummyMatch(id))
-        }
-    }
-
-    override fun login(loginRequest: LoginRequest): Completable {
-        return Completable.create {
-            try {
-                Thread.sleep(800)
-            } catch (e: InterruptedException) {
-            }
-            val rand = Math.random()
-            val username = loginRequest.username
-            if (DUMMY_CREDENTIALS.containsKey(username) && DUMMY_CREDENTIALS[username] == loginRequest.password && rand < 0.95) {
-                when (username) {
-                    user1.username -> mLoggedUser = user1
-                    user2.username -> mLoggedUser = user2
-                    user3.username -> mLoggedUser = user3
-                }
-                it.onComplete()
-            } else {
-                it.onError(Exception())
-            }
         }
     }
 
