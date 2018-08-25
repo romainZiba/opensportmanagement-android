@@ -14,7 +14,6 @@ import org.greenrobot.eventbus.EventBus
 import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
-
 class PunctualEventFragment : BaseFragment(), IPunctualEventView {
 
     @Inject
@@ -23,7 +22,6 @@ class PunctualEventFragment : BaseFragment(), IPunctualEventView {
     lateinit var datePickerFragment: DatePickerFragment
     @Inject
     lateinit var timePickerFragment: TimePickerFragment
-
 
     override fun showSelectedStartDate(dateTime: String) {
         et_start_event_date.setText(dateTime)
@@ -35,7 +33,6 @@ class PunctualEventFragment : BaseFragment(), IPunctualEventView {
 
     override fun showDatePicker() {
         datePickerFragment.show(fragmentManager, "datePicker")
-
     }
 
     override fun showTimePicker() {

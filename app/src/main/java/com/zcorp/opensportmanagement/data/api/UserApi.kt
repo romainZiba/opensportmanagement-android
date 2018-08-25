@@ -8,7 +8,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
-
 /**
  * Created by romainz on 01/02/18.
  */

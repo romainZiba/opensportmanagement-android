@@ -5,7 +5,7 @@ import android.support.multidex.MultiDexApplication
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.zcorp.opensportmanagement.di.component.AppComponent
 import com.zcorp.opensportmanagement.di.component.ComponentFactory
-import java.util.*
+import java.util.Locale
 
 /**
  * Created by romainz on 02/02/18.

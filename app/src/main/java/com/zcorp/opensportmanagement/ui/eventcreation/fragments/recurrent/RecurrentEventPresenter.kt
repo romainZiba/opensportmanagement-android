@@ -28,7 +28,6 @@ class RecurrentEventPresenter : IRecurrentEventPresenter {
     private var mToTime: LocalTime? = null
     private var mSelectedDays: List<DayOfWeek> = emptyList()
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     override fun onDateSelected(date: LocalDate) {
         when (mSelectionDateType) {

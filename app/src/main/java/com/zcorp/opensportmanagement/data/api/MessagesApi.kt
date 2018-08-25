@@ -20,6 +20,8 @@ interface MessagesApi {
     fun getMessagesOrderedByDate(@Path("conversationId") conversationId: String): Single<List<InAppMessage>>
 
     @POST("conversations/{conversationId}/messages")
-    fun createMessage(@Path("conversationId") conversationId: String,
-                      @Body messageDto: MessageDto): Single<InAppMessage>
+    fun createMessage(
+        @Path("conversationId") conversationId: String,
+        @Body messageDto: MessageDto
+    ): Single<InAppMessage>
 }

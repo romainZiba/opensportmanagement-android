@@ -1,6 +1,5 @@
 package com.zcorp.opensportmanagement.di.component
 
-
 import com.zcorp.opensportmanagement.di.PerActivity
 import com.zcorp.opensportmanagement.di.module.ActivityModule
 import com.zcorp.opensportmanagement.ui.eventcreation.EventCreationActivity

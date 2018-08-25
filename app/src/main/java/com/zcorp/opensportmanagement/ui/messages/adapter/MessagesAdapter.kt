@@ -11,8 +11,9 @@ import com.zcorp.opensportmanagement.ui.messages.IMessagesPresenter
  * [RecyclerView.Adapter] that can display a [Event]
  */
 class MessagesAdapter(
-        private var mMessages: MutableList<InAppMessage>,
-        private val presenter: IMessagesPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var mMessages: MutableList<InAppMessage>,
+    private val presenter: IMessagesPresenter
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -26,7 +27,6 @@ class MessagesAdapter(
                         .inflate(R.layout.rv_item_message_friend, parent, false)
                 MessageViewHolder(view, IMessagesPresenter.FRIEND)
             }
-
         }
     }
 

@@ -10,7 +10,6 @@ import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-
 /**
  * EventRepositoryImpl is responsible for providing a clean API for ViewModel so that viewmodel does not
  * know where the data come from
@@ -20,8 +19,9 @@ interface EventRepository {
 }
 
 class EventRepositoryImpl @Inject constructor(
-        private val mEventApi: EventApi,
-        private val mEventDao: EventDao): EventRepository {
+    private val mEventApi: EventApi,
+    private val mEventDao: EventDao
+) : EventRepository {
 
     override fun loadEvents(teamId: Int, forceRefresh: Boolean): Flowable<List<Event>> {
         var forceRemoteFetch = forceRefresh

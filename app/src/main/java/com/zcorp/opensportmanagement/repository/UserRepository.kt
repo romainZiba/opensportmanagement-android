@@ -25,10 +25,11 @@ interface UserRepository {
 }
 
 class UserRepositoryImpl @Inject constructor(
-        private val mUserApi: UserApi,
-        private val mTeamApi: TeamApi,
-        private val mTeamDao: TeamDao,
-        private val mPreferences: IPreferencesHelper) : UserRepository {
+    private val mUserApi: UserApi,
+    private val mTeamApi: TeamApi,
+    private val mTeamDao: TeamDao,
+    private val mPreferences: IPreferencesHelper
+) : UserRepository {
 
     override fun login(username: String, password: String): Completable {
         val loginRequest = LoginRequest(username, password)
@@ -63,7 +64,6 @@ class UserRepositoryImpl @Inject constructor(
                 .toFlowable<List<Team>>()
                 .flatMap { mTeamDao.loadTeams(mPreferences.getAvailableTeamIds().toIntArray()) }
                 .map { entities -> entities.map { Team.from(it) } }
-
     }
 
     @WorkerThread

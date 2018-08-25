@@ -13,8 +13,9 @@ import javax.inject.Inject
  * Created by romainz on 03/02/18.
  */
 class ConversationViewModel @Inject constructor(
-        private val messageRepository: MessageRepository,
-        private val schedulerProvider: SchedulerProvider) : RxViewModel() {
+    private val messageRepository: MessageRepository,
+    private val schedulerProvider: SchedulerProvider
+) : RxViewModel() {
 
     private val mStates = MutableLiveData<State<List<Conversation>>>()
     val states: LiveData<State<List<Conversation>>>

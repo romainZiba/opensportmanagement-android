@@ -29,5 +29,4 @@ class TokenInterceptor(private val preferencesHelper: IPreferencesHelper) : Inte
         }
         return response
     }
-
 }

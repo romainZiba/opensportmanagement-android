@@ -14,7 +14,6 @@ import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.members.adapter.TeamMemberRecyclerAdapter.Companion.ABSENT_PLAYERS_HEADER_VIEW_TYPE
 import com.zcorp.opensportmanagement.ui.eventdetails.fragments.members.adapter.TeamMemberRecyclerAdapter.Companion.PRESENT_PLAYERS_HEADER_VIEW_TYPE
 
-
 /**
  * Application of the material specification
  * https://material.io/guidelines/components/dividers.html#dividers-types-of-dividers
@@ -45,7 +44,7 @@ class DividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val position = parent.getChildAdapterPosition(view)
-        var nextViewType = parent.adapter.getItemViewType(position + 1)
+        var nextViewType = parent.adapter?.getItemViewType(position + 1)
         if (nextViewType == PRESENT_PLAYERS_HEADER_VIEW_TYPE || nextViewType == ABSENT_PLAYERS_HEADER_VIEW_TYPE) {
             outRect.set(0, 0, 0, mDivider.intrinsicHeight + Math.round(20 * mDensity))
         } else {
@@ -71,7 +70,7 @@ class DividerDecoration(context: Context) : RecyclerView.ItemDecoration() {
         for (i in 0 until parent.childCount) {
             val view = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(view)
-            var nextViewType = parent.adapter.getItemViewType(position + 1)
+            var nextViewType = parent.adapter?.getItemViewType(position + 1)
             if (nextViewType == PRESENT_PLAYERS_HEADER_VIEW_TYPE || nextViewType == ABSENT_PLAYERS_HEADER_VIEW_TYPE) {
                 val paddingLeft = Math.round(60 * mDensity)
                 val child = parent.getChildAt(i)

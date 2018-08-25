@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_conversation_list.*
 import kotlinx.android.synthetic.main.fragment_conversation_list.view.*
 import javax.inject.Inject
 
-
 /**
  * A fragment representing a list of Items.
  *

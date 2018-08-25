@@ -1,6 +1,5 @@
 package com.zcorp.opensportmanagement.repository
 
-
 sealed class State<T> {
     data class Progress<T>(var loading: Boolean) : State<T>()
     data class Success<T>(var data: T) : State<T>()

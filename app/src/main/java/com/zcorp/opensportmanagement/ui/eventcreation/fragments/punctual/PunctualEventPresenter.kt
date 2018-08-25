@@ -34,14 +34,13 @@ class PunctualEventPresenter : IPunctualEventPresenter {
         when (mSelectionDateType) {
             SelectionDateType.START -> {
                 mSelectedStartTime = time
-                mView?.showSelectedStartDate("${mSelectedStartDate.toString()} ${mSelectedStartTime.toString()}")
+                mView?.showSelectedStartDate("$mSelectedStartDate $mSelectedStartTime")
             }
             SelectionDateType.END -> {
                 mSelectedEndTime = time
-                mView?.showSelectedEndDate("${mSelectedEndDate.toString()} ${mSelectedEndTime.toString()}")
+                mView?.showSelectedEndDate("$mSelectedEndDate $mSelectedEndTime")
             }
         }
-
     }
 
     override fun selectStartDate() {

@@ -6,7 +6,6 @@ import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import android.arch.persistence.room.Query
 import io.reactivex.Flowable
 
-
 @Dao
 interface EventDao {
     @Insert(onConflict = REPLACE)

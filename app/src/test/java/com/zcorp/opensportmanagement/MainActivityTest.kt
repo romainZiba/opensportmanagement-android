@@ -2,13 +2,14 @@ package com.zcorp.opensportmanagement
 
 import android.view.View
 import com.zcorp.opensportmanagement.ui.main.MainActivity
-import org.junit.Assert.*
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-
 
 /**
  * Created by romainz on 07/02/18.
@@ -24,7 +25,6 @@ class MainActivityTest {
         activity = Robolectric.setupActivity(MainActivity::class.java)
         google = activity.findViewById(R.id.navigation_google)
     }
-
 
     @Test
     fun activityShouldContainEventFragment() {

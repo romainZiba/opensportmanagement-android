@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_event_list.*
 import kotlinx.android.synthetic.main.fragment_event_list.view.*
 import javax.inject.Inject
 
-
 /**
  * A fragment showing a list of Events.
  */
@@ -124,7 +123,6 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         setBackgroundAlpha(1.0f)
     }
 
-
     private fun setBackgroundAlpha(alpha: Float) {
         events_background_layout.alpha = alpha
     }
@@ -140,5 +138,4 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
     private fun forceRefreshData() {
         mEventsViewModel.getEvents(true)
     }
-
 }

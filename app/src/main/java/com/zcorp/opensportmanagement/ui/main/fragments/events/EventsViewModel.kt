@@ -14,9 +14,10 @@ import javax.inject.Inject
  * Created by romainz on 03/02/18.
  */
 class EventsViewModel @Inject constructor(
-        private val eventRepository: EventRepositoryImpl,
-        private val dataManager: IDataManager,
-        private val schedulerProvider: SchedulerProvider) : RxViewModel() {
+    private val eventRepository: EventRepositoryImpl,
+    private val dataManager: IDataManager,
+    private val schedulerProvider: SchedulerProvider
+) : RxViewModel() {
 
     companion object {
         val TAG: String = EventsViewModel::class.java.simpleName
@@ -25,7 +26,6 @@ class EventsViewModel @Inject constructor(
     private val mStates = MutableLiveData<State<List<Event>>>()
     val states: LiveData<State<List<Event>>>
         get() = mStates
-
 
     fun getEvents(forceRefresh: Boolean = false) {
         mStates.value = State.loading(true)

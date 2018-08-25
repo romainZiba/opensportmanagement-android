@@ -70,7 +70,6 @@ class PreferencesHelper @Inject constructor(@ApplicationContext context: Context
         mPrefs.edit().putStringSet(PREF_KEY_AVAILABLE_TEAMS, ids.map { it.toString() }.toSet()).apply()
     }
 
-
     companion object {
         private const val PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE"
         private const val PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME"

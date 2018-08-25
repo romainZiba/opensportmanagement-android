@@ -9,8 +9,9 @@ import javax.inject.Inject
  * Created by romainz on 16/03/18.
  */
 class EventInformationPresenter @Inject constructor(
-        val dataManager: IDataManager,
-        val schedulerProvider: SchedulerProvider) : IEventInformationPresenter {
+    val dataManager: IDataManager,
+    val schedulerProvider: SchedulerProvider
+) : IEventInformationPresenter {
 
     private var mView: IEventInformationView? = null
 
@@ -27,5 +28,4 @@ class EventInformationPresenter @Inject constructor(
     override fun onDetach() {
         mView = null
     }
-
 }

@@ -25,7 +25,7 @@ import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 
 @Module
-class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModule() {
+class ActivityModule(private val mActivity: AppCompatActivity) : BaseContextModule() {
 
     @Provides
     @PerActivity
@@ -35,21 +35,25 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
 
     @Provides
     @PerActivity
-    internal fun provideEventDetailsPresenter(dataManager: IDataManager,
-                                              disposables: CompositeDisposable,
-                                              schedulerProvider: SchedulerProvider,
-                                              logger: ILogger): IEventDetailsPresenter {
+    internal fun provideEventDetailsPresenter(
+        dataManager: IDataManager,
+        disposables: CompositeDisposable,
+        schedulerProvider: SchedulerProvider,
+        logger: ILogger
+    ): IEventDetailsPresenter {
         return EventDetailsPresenter(dataManager, schedulerProvider, disposables, logger)
     }
 
     @Provides
     @PerActivity
-    internal fun provideMessagesPresenter(dataManager: IDataManager,
-                                          schedulerProvider: SchedulerProvider,
-                                          disposables: CompositeDisposable,
-                                          stompClientProvider: IStompClientProvider,
-                                          objectMapper: ObjectMapper,
-                                          logger: ILogger): IMessagesPresenter {
+    internal fun provideMessagesPresenter(
+        dataManager: IDataManager,
+        schedulerProvider: SchedulerProvider,
+        disposables: CompositeDisposable,
+        stompClientProvider: IStompClientProvider,
+        objectMapper: ObjectMapper,
+        logger: ILogger
+    ): IMessagesPresenter {
         return MessagesPresenter(dataManager, schedulerProvider, disposables, stompClientProvider, objectMapper, logger)
     }
 
@@ -91,9 +95,11 @@ class ActivityModule(private val mActivity: AppCompatActivity): BaseContextModul
 
     @Provides
     @PerActivity
-    internal fun provideEventCreationPresenter(dataManager: IDataManager,
-                                               schedulerProvider: SchedulerProvider,
-                                               logger: ILogger): IEventCreationPresenter {
+    internal fun provideEventCreationPresenter(
+        dataManager: IDataManager,
+        schedulerProvider: SchedulerProvider,
+        logger: ILogger
+    ): IEventCreationPresenter {
         return EventCreationPresenter(dataManager, schedulerProvider, logger)
     }
 }

@@ -3,12 +3,18 @@ package com.zcorp.opensportmanagement.data
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.dto.EventDto
 import com.zcorp.opensportmanagement.dto.MessageDto
-import com.zcorp.opensportmanagement.model.*
+import com.zcorp.opensportmanagement.model.Conversation
+import com.zcorp.opensportmanagement.model.Event
+import com.zcorp.opensportmanagement.model.InAppMessage
+import com.zcorp.opensportmanagement.model.LoginRequest
+import com.zcorp.opensportmanagement.model.Team
+import com.zcorp.opensportmanagement.model.TeamMember
+import com.zcorp.opensportmanagement.model.User
 import io.reactivex.Completable
 import io.reactivex.Single
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
-import java.util.*
+import java.util.Random
 import javax.inject.Inject
 
 /**
@@ -133,9 +139,9 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
     }
 
     override fun getEvents(teamId: Int): Single<List<Event>> {
-        if ((mLoggedUser.username == user1.username && (teamId == brooklynNets._id || teamId == nyKnicks._id))
-                || (mLoggedUser.username == user2.username && teamId == brooklynNets._id)
-                || (mLoggedUser.username == user3.username && teamId == houstonRockets._id)) {
+        if ((mLoggedUser.username == user1.username && (teamId == brooklynNets._id || teamId == nyKnicks._id)) ||
+                (mLoggedUser.username == user2.username && teamId == brooklynNets._id) ||
+                (mLoggedUser.username == user3.username && teamId == houstonRockets._id)) {
             return when (teamId) {
                 brooklynNets._id -> Single.create {
                     it.onSuccess(getEventsFromNetwork(teamId, 20))

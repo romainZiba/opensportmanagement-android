@@ -10,7 +10,8 @@ interface MessageRepository {
 }
 
 class MessageRepositoryImpl @Inject constructor(
-        private val messageApi: MessagesApi) : MessageRepository {
+    private val messageApi: MessagesApi
+) : MessageRepository {
     override fun loadConversations(): Single<List<Conversation>> {
         return messageApi.getConversations()
     }

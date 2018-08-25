@@ -14,9 +14,10 @@ import java.io.Serializable
 import javax.inject.Inject
 
 class EventCreationPresenter @Inject constructor(
-        val dataManager: IDataManager,
-        val schedulerProvider: SchedulerProvider,
-        val mLogger: ILogger) : IEventCreationPresenter {
+    val dataManager: IDataManager,
+    val schedulerProvider: SchedulerProvider,
+    val mLogger: ILogger
+) : IEventCreationPresenter {
 
     companion object {
         private val TAG = EventCreationPresenter::class.java.simpleName
@@ -108,13 +109,11 @@ class EventCreationPresenter @Inject constructor(
                     mLogger.d(TAG, "Creation of event '$it' successful")
                     mView?.hideProgress()
                     enableButtons()
-
                 }, {
                     mLogger.d(TAG, "Error occurred while creating event $it")
                     mView?.hideProgress()
                     enableButtons()
                 })
-
     }
 
     fun enableButtons() {

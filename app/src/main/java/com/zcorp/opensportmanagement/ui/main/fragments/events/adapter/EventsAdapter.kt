@@ -10,8 +10,10 @@ import com.zcorp.opensportmanagement.utils.datetime.DateTimeFormatter
 /**
  * [RecyclerView.Adapter] that can display a list of [Event]
  */
-class EventsAdapter(private val mCallback: OnEventClickListener,
-                    private var mEvents: List<Event>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EventsAdapter(
+    private val mCallback: OnEventClickListener,
+    private var mEvents: List<Event>
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnEventClickListener {
         fun onEventClicked(event: Event, adapterPosition: Int)
@@ -56,7 +58,7 @@ class EventsAdapter(private val mCallback: OnEventClickListener,
     override fun getItemViewType(position: Int): Int {
         val event = mEvents[position]
         return when (event.isMatch()) {
-            true -> Event.EventType.CHAMPIONSHIP.ordinal //TODO: distinguish between championship / Tournament /Friendly...
+            true -> Event.EventType.CHAMPIONSHIP.ordinal // TODO: distinguish between championship / Tournament /Friendly...
             else -> Event.EventType.OTHER.ordinal
         }
     }

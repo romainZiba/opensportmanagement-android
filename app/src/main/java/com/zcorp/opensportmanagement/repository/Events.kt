@@ -1,6 +1,5 @@
 package com.zcorp.opensportmanagement.repository
 
-
 /**
  * Abstract Event from ViewModel
  */

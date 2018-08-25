@@ -9,8 +9,10 @@ import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.viewmodel.RxViewModel
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val mUserRepository: UserRepositoryImpl,
-                                        private val mSchedulerProvider: SchedulerProvider) : RxViewModel() {
+class MainViewModel @Inject constructor(
+    private val mUserRepository: UserRepositoryImpl,
+    private val mSchedulerProvider: SchedulerProvider
+) : RxViewModel() {
 
     private val mStates = MutableLiveData<State<List<Team>>>()
     val states: LiveData<State<List<Team>>>
@@ -27,7 +29,5 @@ class MainViewModel @Inject constructor(private val mUserRepository: UserReposit
                         mStates.value = State.failure(it)
                     })
         }
-
     }
-
 }

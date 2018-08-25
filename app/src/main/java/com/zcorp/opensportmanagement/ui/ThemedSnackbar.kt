@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.TextView
 import com.zcorp.opensportmanagement.R
 
-
 /**
  * Created by romainz on 26/02/18.
  */

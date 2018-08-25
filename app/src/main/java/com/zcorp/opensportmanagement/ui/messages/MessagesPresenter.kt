@@ -17,17 +17,17 @@ import ua.naiksoftware.stomp.client.StompClient
 import java.io.Serializable
 import javax.inject.Inject
 
-
 /**
  * Created by romainz on 17/02/18.
  */
 class MessagesPresenter @Inject constructor(
-        private val mDataManager: IDataManager,
-        private val mSchedulerProvider: SchedulerProvider,
-        private val mDisposables: CompositeDisposable,
-        private val mStompClientProvider: IStompClientProvider,
-        private val mObjectMapper: ObjectMapper,
-        private val mLogger: ILogger) : IMessagesPresenter {
+    private val mDataManager: IDataManager,
+    private val mSchedulerProvider: SchedulerProvider,
+    private val mDisposables: CompositeDisposable,
+    private val mStompClientProvider: IStompClientProvider,
+    private val mObjectMapper: ObjectMapper,
+    private val mLogger: ILogger
+) : IMessagesPresenter {
 
     companion object {
         val TAG = MessagesPresenter::class.java.name

@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_event_details.*
 import kotlinx.android.synthetic.main.match_description_layout.*
 import javax.inject.Inject
 
-
 class EventDetailsActivity : BaseActivity(), IEventDetailsView {
 
     @Inject

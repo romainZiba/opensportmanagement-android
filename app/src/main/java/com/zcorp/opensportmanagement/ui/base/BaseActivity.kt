@@ -36,5 +36,4 @@ abstract class BaseActivity : AppCompatActivity(), IBaseView {
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
-
 }

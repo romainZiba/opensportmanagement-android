@@ -12,8 +12,9 @@ import kotlinx.android.synthetic.main.rv_item_conversation.view.*
  * [RecyclerView.Adapter] that can display conversations
  */
 class ConversationsAdapter(
-        private val callback: OnConversationListener,
-        private var mConversations: List<Conversation>) : RecyclerView.Adapter<ConversationsAdapter.ConversationViewHolder>() {
+    private val callback: OnConversationListener,
+    private var mConversations: List<Conversation>
+) : RecyclerView.Adapter<ConversationsAdapter.ConversationViewHolder>() {
 
     interface OnConversationListener {
         fun onConversationSelected(conversation: Conversation)
@@ -42,8 +43,10 @@ class ConversationsAdapter(
         notifyDataSetChanged()
     }
 
-    class ConversationViewHolder(private val callback: OnConversationListener,
-                                 private val mView: View) : RecyclerView.ViewHolder(mView) {
+    class ConversationViewHolder(
+        private val callback: OnConversationListener,
+        private val mView: View
+    ) : RecyclerView.ViewHolder(mView) {
         fun bindView(conversation: Conversation) {
             mView.tv_conversation_topic.text = conversation.conversationTopic
             mView.setOnClickListener {

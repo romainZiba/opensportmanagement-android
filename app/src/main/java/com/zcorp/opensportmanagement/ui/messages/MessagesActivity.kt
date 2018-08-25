@@ -63,7 +63,7 @@ class MessagesActivity : BaseActivity(), IMessagesView {
     }
 
     override fun showProgress() {
-        TODO("not implemented") //To change message of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change message of created functions use File | Settings | File Templates.
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

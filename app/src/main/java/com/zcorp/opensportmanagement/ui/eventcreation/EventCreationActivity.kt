@@ -14,7 +14,6 @@ import org.greenrobot.eventbus.EventBus
 import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
-
 class EventCreationActivity : BaseActivity(),
         IEventCreationView {
 
@@ -26,7 +25,6 @@ class EventCreationActivity : BaseActivity(),
     lateinit var mPresenter: IEventCreationPresenter
 
     override fun setTogglePosition(position: Int) {
-
     }
 
     override fun showPunctualEventView() {

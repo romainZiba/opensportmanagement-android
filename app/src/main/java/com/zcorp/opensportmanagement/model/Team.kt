@@ -30,4 +30,3 @@ data class Team(val _id: Int, val name: String, val sport: Sport, val genderKind
         U5, U6, U7, ADULTS
     }
 }
-

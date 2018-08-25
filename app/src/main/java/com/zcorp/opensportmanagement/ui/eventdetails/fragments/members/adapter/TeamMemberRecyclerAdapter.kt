@@ -12,8 +12,9 @@ import com.zcorp.opensportmanagement.ui.eventdetails.IEventDetailsPresenter
  * [RecyclerView.Adapter] that can display a conversation
  */
 class TeamMemberRecyclerAdapter(
-        private val mContext: Context,
-        private val mPresenter: IEventDetailsPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val mContext: Context,
+    private val mPresenter: IEventDetailsPresenter
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -28,7 +29,6 @@ class TeamMemberRecyclerAdapter(
                 TeamMemberViewHolder(view)
             }
         }
-
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -23,5 +23,4 @@ interface IEventCreationView : IBaseView {
     fun setPunctualChecked()
     fun showPunctualDatesNotProvidedError()
     fun showRecurrentDatesNotProvidedError()
-
 }

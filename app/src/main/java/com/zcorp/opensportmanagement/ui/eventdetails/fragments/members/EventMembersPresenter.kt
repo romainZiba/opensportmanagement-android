@@ -16,5 +16,4 @@ class EventMembersPresenter : IEventMembersPresenter {
     override fun onDetach() {
         mView = null
     }
-
 }

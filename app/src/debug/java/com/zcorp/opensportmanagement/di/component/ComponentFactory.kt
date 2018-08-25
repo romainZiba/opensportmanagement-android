@@ -3,7 +3,6 @@ package com.zcorp.opensportmanagement.di.component
 import android.app.Application
 import com.zcorp.opensportmanagement.di.module.DebugApplicationModule
 
-
 /**
  * Created by romainz on 09/03/18.
  */
@@ -15,5 +14,4 @@ class ComponentFactory {
                     .build()
         }
     }
-
 }

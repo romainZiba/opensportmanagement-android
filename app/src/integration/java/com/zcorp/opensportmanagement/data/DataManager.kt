@@ -8,7 +8,12 @@ import com.zcorp.opensportmanagement.data.api.UserApi
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.dto.EventDto
 import com.zcorp.opensportmanagement.dto.MessageDto
-import com.zcorp.opensportmanagement.model.*
+import com.zcorp.opensportmanagement.model.Conversation
+import com.zcorp.opensportmanagement.model.Event
+import com.zcorp.opensportmanagement.model.InAppMessage
+import com.zcorp.opensportmanagement.model.LoginRequest
+import com.zcorp.opensportmanagement.model.Team
+import com.zcorp.opensportmanagement.model.User
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Retrofit
@@ -17,9 +22,11 @@ import javax.inject.Inject
 /**
  * A nearly not fake data manager as for now, it only makes few real API calls
  */
-class DataManager @Inject constructor(private val mPreferencesHelper: IPreferencesHelper,
-                                      private val retrofit: Retrofit,
-                                      private val objectMapper: ObjectMapper) : IDataManager {
+class DataManager @Inject constructor(
+    private val mPreferencesHelper: IPreferencesHelper,
+    private val retrofit: Retrofit,
+    private val objectMapper: ObjectMapper
+) : IDataManager {
 
     override fun getEvent(id: Int): Single<Event> {
         return retrofit.create(EventApi::class.java).getEvent(id)
@@ -62,7 +69,7 @@ class DataManager @Inject constructor(private val mPreferencesHelper: IPreferenc
     }
 
     override fun createEvent(eventDto: EventDto): Single<Event> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getCurrentUserLoggedInMode(): Int {

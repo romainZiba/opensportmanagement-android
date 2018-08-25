@@ -13,7 +13,12 @@ import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.di.ApplicationContext
 import com.zcorp.opensportmanagement.di.PreferenceInfo
-import com.zcorp.opensportmanagement.repository.*
+import com.zcorp.opensportmanagement.repository.EventRepository
+import com.zcorp.opensportmanagement.repository.EventRepositoryImpl
+import com.zcorp.opensportmanagement.repository.MessageRepository
+import com.zcorp.opensportmanagement.repository.MessageRepositoryImpl
+import com.zcorp.opensportmanagement.repository.UserRepository
+import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
 import com.zcorp.opensportmanagement.utils.Constants
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.log.Logger
@@ -58,17 +63,21 @@ abstract class ApplicationModule(private val context: Context) {
 
     @Provides
     @Singleton
-    internal fun provideEventRepository(eventApi: EventApi,
-                                        eventDao: EventDao): EventRepository {
+    internal fun provideEventRepository(
+        eventApi: EventApi,
+        eventDao: EventDao
+    ): EventRepository {
         return EventRepositoryImpl(eventApi, eventDao)
     }
 
     @Provides
     @Singleton
-    internal fun provideUserRepository(userApi: UserApi,
-                                       teamApi: TeamApi,
-                                       teamDao: TeamDao,
-                                       preferences: IPreferencesHelper): UserRepository {
+    internal fun provideUserRepository(
+        userApi: UserApi,
+        teamApi: TeamApi,
+        teamDao: TeamDao,
+        preferences: IPreferencesHelper
+    ): UserRepository {
         return UserRepositoryImpl(userApi, teamApi, teamDao, preferences)
     }
 
@@ -77,7 +86,6 @@ abstract class ApplicationModule(private val context: Context) {
     internal fun provideMessageRepository(messageApi: MessagesApi): MessageRepository {
         return MessageRepositoryImpl(messageApi)
     }
-
 
     @Provides
     @Singleton

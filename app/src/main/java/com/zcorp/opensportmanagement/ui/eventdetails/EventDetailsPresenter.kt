@@ -14,10 +14,11 @@ import javax.inject.Inject
  * Created by romainz on 16/03/18.
  */
 class EventDetailsPresenter @Inject constructor(
-        private val mDataManager: IDataManager,
-        private val mSchedulerProvider: SchedulerProvider,
-        private val mDisposables: CompositeDisposable,
-        private val mLogger: ILogger) : IEventDetailsPresenter {
+    private val mDataManager: IDataManager,
+    private val mSchedulerProvider: SchedulerProvider,
+    private val mDisposables: CompositeDisposable,
+    private val mLogger: ILogger
+) : IEventDetailsPresenter {
 
     private var mView: IEventDetailsView? = null
     private lateinit var mEventDetails: Event
@@ -73,6 +74,4 @@ class EventDetailsPresenter @Inject constructor(
         mDisposables.clear()
         mView = null
     }
-
-
 }
