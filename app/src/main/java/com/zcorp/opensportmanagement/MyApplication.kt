@@ -3,8 +3,8 @@ package com.zcorp.opensportmanagement
 import android.content.res.Configuration
 import android.support.multidex.MultiDexApplication
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.zcorp.opensportmanagement.di.component.AppComponent
-import com.zcorp.opensportmanagement.di.component.ComponentFactory
+import com.zcorp.opensportmanagement.di.app
+import org.koin.android.ext.android.startKoin
 import java.util.Locale
 
 /**
@@ -14,7 +14,7 @@ class MyApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = ComponentFactory.create(this)
+        startKoin(app)
         systemLanguage = Locale.getDefault()
         AndroidThreeTen.init(this)
     }
@@ -27,10 +27,6 @@ class MyApplication : MultiDexApplication() {
     }
 
     companion object {
-        lateinit var appComponent: AppComponent
         lateinit var systemLanguage: Locale
-
-        // Application constants
-        val PREF_NAME = "zcorp_pref"
     }
 }

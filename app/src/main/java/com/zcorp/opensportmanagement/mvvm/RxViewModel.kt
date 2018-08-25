@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.viewmodel
+package com.zcorp.opensportmanagement.mvvm
 
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.CallSuper

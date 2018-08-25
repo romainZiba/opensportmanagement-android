@@ -12,18 +12,18 @@ import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment.Companion.CONVERSATION_ID_KEY
 import com.zcorp.opensportmanagement.ui.messages.adapter.MessagesAdapter
-import kotlinx.android.synthetic.main.activity_messages.*
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.activity_messages.btn_send_message
+import kotlinx.android.synthetic.main.activity_messages.et_message
+import kotlinx.android.synthetic.main.activity_messages.messages_toolbar
+import kotlinx.android.synthetic.main.activity_messages.rv_messages_list
 
 /**
  * A fragment with messages
  */
 class MessagesActivity : BaseActivity(), IMessagesView {
 
-    @Inject
     lateinit var presenter: IMessagesPresenter
 
-    @Inject
     lateinit var mAdapter: MessagesAdapter
 
     var mSnackbar: Snackbar? = null
@@ -71,7 +71,6 @@ class MessagesActivity : BaseActivity(), IMessagesView {
         setContentView(R.layout.activity_messages)
         setSupportActionBar(messages_toolbar as Toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        super.mActivityComponent.inject(this)
         val conversationId = intent.getStringExtra(CONVERSATION_ID_KEY)
         presenter.setConversationId(conversationId)
         rv_messages_list.adapter = mAdapter

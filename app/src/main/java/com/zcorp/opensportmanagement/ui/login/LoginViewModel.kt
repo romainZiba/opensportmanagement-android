@@ -6,13 +6,13 @@ import com.zcorp.opensportmanagement.repository.Event
 import com.zcorp.opensportmanagement.repository.FailedEvent
 import com.zcorp.opensportmanagement.repository.LoadingEvent
 import com.zcorp.opensportmanagement.repository.SuccessEvent
-import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
+import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
-import com.zcorp.opensportmanagement.viewmodel.RxViewModel
-import javax.inject.Inject
+import com.zcorp.opensportmanagement.mvvm.RxViewModel
+import com.zcorp.opensportmanagement.utils.rx.with
 
-class LoginViewModel @Inject constructor(
-    private val userRepository: UserRepositoryImpl,
+class LoginViewModel(
+    private val userRepository: UserRepository,
     private val mSchedulerProvider: SchedulerProvider
 ) : RxViewModel() {
 
@@ -23,8 +23,8 @@ class LoginViewModel @Inject constructor(
     fun login(username: String, password: String) {
         mEvents.value = LoadingEvent
         launch {
-            userRepository.login(username, password).subscribeOn(mSchedulerProvider.io())
-                    .observeOn(mSchedulerProvider.ui())
+            userRepository.login(username, password)
+                    .with(mSchedulerProvider)
                     .subscribe({
                         mEvents.value = SuccessEvent
                     }, {

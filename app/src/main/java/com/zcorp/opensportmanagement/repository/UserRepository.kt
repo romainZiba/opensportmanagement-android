@@ -13,7 +13,6 @@ import com.zcorp.opensportmanagement.model.User
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
 /**
  * UserRepositoryImpl is responsible for providing a clean API for ViewModel so that viewmodel does not
@@ -24,7 +23,7 @@ interface UserRepository {
     fun loadTeams(): Flowable<List<Team>>
 }
 
-class UserRepositoryImpl @Inject constructor(
+class UserRepositoryImpl(
     private val mUserApi: UserApi,
     private val mTeamApi: TeamApi,
     private val mTeamDao: TeamDao,

@@ -1,8 +1,6 @@
 package com.zcorp.opensportmanagement.ui.login
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -12,8 +10,12 @@ import com.zcorp.opensportmanagement.repository.LoadingEvent
 import com.zcorp.opensportmanagement.repository.SuccessEvent
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.MainActivity
-import kotlinx.android.synthetic.main.activity_login.*
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.activity_login.btn_server_login
+import kotlinx.android.synthetic.main.activity_login.et_password
+import kotlinx.android.synthetic.main.activity_login.et_username
+import kotlinx.android.synthetic.main.activity_login.progressBar_login
+import kotlinx.android.synthetic.main.activity_login.til_password
+import org.koin.android.architecture.ext.viewModel
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
@@ -22,17 +24,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         private val TAG = LoginActivity::class.java.name
     }
 
-    private lateinit var mLoginViewModel: LoginViewModel
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.mActivityComponent.inject(this)
         setContentView(R.layout.activity_login)
         btn_server_login.setOnClickListener(this)
-        mLoginViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
-        mLoginViewModel.events.observe(this, Observer {
+        viewModel.events.observe(this, Observer {
             when (it) {
                 is FailedEvent -> {
                     hideProgress()
@@ -81,6 +79,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        mLoginViewModel.login(et_username.text.toString(), et_password.text.toString())
+        viewModel.login(et_username.text.toString(), et_password.text.toString())
     }
 }

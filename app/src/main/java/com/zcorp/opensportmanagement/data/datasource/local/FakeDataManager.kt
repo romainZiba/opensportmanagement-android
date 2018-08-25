@@ -1,5 +1,6 @@
-package com.zcorp.opensportmanagement.data
+package com.zcorp.opensportmanagement.data.datasource.local
 
+import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.dto.EventDto
 import com.zcorp.opensportmanagement.dto.MessageDto
@@ -15,12 +16,11 @@ import io.reactivex.Single
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
 import java.util.Random
-import javax.inject.Inject
 
 /**
  * Created by romainz on 10/02/18.
  */
-class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPreferencesHelper) : IDataManager {
+class FakeDataManager(private val mPreferencesHelper: IPreferencesHelper) : IDataManager {
 
     companion object {
         private val user1 = User("Robert", "Albert", "RA", "ra@caram.com", "") // has access to brooklynNets and nyKnicks teams
@@ -107,7 +107,7 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
     }
 
     override fun login(loginRequest: LoginRequest): Completable {
-        return Completable.create({
+        return Completable.create {
             try {
                 Thread.sleep(800)
             } catch (e: InterruptedException) {
@@ -124,7 +124,7 @@ class FakeDataManager @Inject constructor(private val mPreferencesHelper: IPrefe
             } else {
                 it.onError(Exception())
             }
-        })
+        }
     }
 
     override fun getTeams(): Single<List<Team>> {

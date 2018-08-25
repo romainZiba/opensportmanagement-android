@@ -1,8 +1,6 @@
 package com.zcorp.opensportmanagement.ui.main
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
@@ -20,9 +18,12 @@ import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
 import com.zcorp.opensportmanagement.utils.log.ILogger
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toolbar.*
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.activity_main.fragment_container
+import kotlinx.android.synthetic.main.activity_main.main_navigation
+import kotlinx.android.synthetic.main.activity_main.main_toolbar
+import kotlinx.android.synthetic.main.toolbar.main_spinner
+import org.koin.android.architecture.ext.viewModel
+import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
@@ -30,12 +31,11 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         val TAG: String = MainActivity::class.java.simpleName
     }
 
-    @Inject lateinit var eventsFragment: EventsFragment
-    @Inject lateinit var conversationsFragment: ConversationsFragment
-    @Inject lateinit var mLogger: ILogger
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val eventsFragment = EventsFragment()
+    private val conversationsFragment = ConversationsFragment()
+    private val mLogger: ILogger by inject()
 
-    private lateinit var mainViewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModel()
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -67,7 +67,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.mActivityComponent.inject(this)
 
         setContentView(R.layout.activity_main)
         setSupportActionBar(main_toolbar as Toolbar)
@@ -75,9 +74,8 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowCustomEnabled(true)
-        mainViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
-        mainViewModel.states.observe(this, Observer { state ->
+        viewModel.states.observe(this, Observer { state ->
             when (state) {
                 is State.Success -> {
                     val spinnerArrayAdapter = ArrayAdapter<String>(
@@ -90,11 +88,11 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
                 is State.Failure -> {
                     ThemedSnackbar
                             .make(fragment_container, getString(R.string.load_teams_error), Snackbar.LENGTH_INDEFINITE)
-                            .setAction(getString(R.string.retry), { mainViewModel.getTeams() })
+                            .setAction(getString(R.string.retry)) { viewModel.getTeams() }
                 }
             }
         })
-        mainViewModel.getTeams()
+        viewModel.getTeams()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -1,8 +1,6 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.conversations
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -19,9 +17,10 @@ import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.messages.MessagesActivity
-import kotlinx.android.synthetic.main.fragment_conversation_list.*
-import kotlinx.android.synthetic.main.fragment_conversation_list.view.*
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_conversation_list.conversations_swipeRefreshLayout
+import kotlinx.android.synthetic.main.fragment_conversation_list.view.conversations_swipeRefreshLayout
+import kotlinx.android.synthetic.main.fragment_conversation_list.view.rv_conversations_list
+import org.koin.android.architecture.ext.viewModel
 
 /**
  * A fragment representing a list of Items.
@@ -40,10 +39,8 @@ class ConversationsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
         const val CONVERSATION_ID_KEY = "conversationId"
     }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var mAdapter: ConversationsAdapter
-    private lateinit var viewModel: ConversationViewModel
+    private val viewModel: ConversationViewModel by viewModel()
 
     fun showNetworkError() {
         ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_INDEFINITE)
@@ -61,7 +58,6 @@ class ConversationsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.mFragmentComponent.inject(this)
         setHasOptionsMenu(true)
     }
 
@@ -79,8 +75,6 @@ class ConversationsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity!!, viewModelFactory)
-                .get(ConversationViewModel::class.java)
         viewModel.states.observe(this, Observer {
             when (it) {
                 is State.Success -> mAdapter.updateConversations(it.data)

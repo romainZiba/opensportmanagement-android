@@ -1,9 +1,6 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
@@ -16,12 +13,15 @@ import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
-import com.zcorp.opensportmanagement.ui.eventcreation.EventCreationActivity
-import com.zcorp.opensportmanagement.ui.eventdetails.EventDetailsActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventsAdapter
-import kotlinx.android.synthetic.main.fragment_event_list.*
-import kotlinx.android.synthetic.main.fragment_event_list.view.*
-import javax.inject.Inject
+import kotlinx.android.synthetic.main.fragment_event_list.event_swipeRefreshLayout
+import kotlinx.android.synthetic.main.fragment_event_list.events_background_layout
+import kotlinx.android.synthetic.main.fragment_event_list.menu_events
+import kotlinx.android.synthetic.main.fragment_event_list.rv_events_list
+import kotlinx.android.synthetic.main.fragment_event_list.view.event_swipeRefreshLayout
+import kotlinx.android.synthetic.main.fragment_event_list.view.fab_add_event
+import kotlinx.android.synthetic.main.fragment_event_list.view.menu_events
+import org.koin.android.architecture.ext.viewModel
 
 /**
  * A fragment showing a list of Events.
@@ -32,26 +32,21 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         private val TAG = EventsFragment::class.java.simpleName
     }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var mEventsAdapter: EventsAdapter
-    private lateinit var mEventsViewModel: EventsViewModel
+    private val viewModel: EventsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.mFragmentComponent.inject(this)
         setHasOptionsMenu(true)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mEventsViewModel = ViewModelProviders.of(activity!!, viewModelFactory)
-                .get(EventsViewModel::class.java)
 
         mEventsAdapter = EventsAdapter(this, mutableListOf())
         rv_events_list.adapter = mEventsAdapter
 
-        mEventsViewModel.states.observe(this, Observer {
+        viewModel.states.observe(this, Observer {
             when (it) {
                 is State.Failure -> {
                     showNetworkError()
@@ -65,21 +60,22 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
                 }
             }
         })
-        mEventsViewModel.getEvents()
+        viewModel.getEvents()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_event_list, container, false)
-        view.menu_events.setOnMenuButtonClickListener({
+        view.menu_events.setOnMenuButtonClickListener {
             if (view.menu_events.isOpened) {
                 closeFloatingMenu()
             } else {
                 openFloatingMenu()
             }
-        })
+        }
         view.fab_add_event.setOnClickListener {
             closeFloatingMenu()
-            startActivity(Intent(activity, EventCreationActivity::class.java))
+            // TODO: event creation
+//            startActivity(Intent(activity, EventCreationActivity::class.java))
         }
         view.event_swipeRefreshLayout.setOnRefreshListener(this)
         return view
@@ -108,9 +104,10 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
             closeFloatingMenu()
             return
         }
-        val intent = Intent(mActivity, EventDetailsActivity::class.java)
-        intent.putExtra("event", event)
-        startActivity(intent)
+        // TODO: event details
+//        val intent = Intent(mActivity, EventDetailsActivity::class.java)
+//        intent.putExtra("event", event)
+//        startActivity(intent)
     }
 
     private fun openFloatingMenu() {
@@ -136,6 +133,6 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
     }
 
     private fun forceRefreshData() {
-        mEventsViewModel.getEvents(true)
+        viewModel.getEvents(true)
     }
 }

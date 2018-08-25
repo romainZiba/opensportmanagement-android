@@ -36,16 +36,6 @@ android {
         }
         debug {
             applicationIdSuffix ".debug"
-            buildConfigField("String", "HOST", "\"localhost\"")
-        }
-        integration {
-            applicationIdSuffix ".integration"
-            lintOptions {
-                disable 'MissingTranslation'
-            }
-            debuggable true
-            signingConfig signingConfigs.integrationConfig
-            buildConfigField("String", "HOST", "\"ns3268474.ip-5-39-81.eu\"")
         }
     }
     testOptions {
@@ -90,12 +80,6 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.anthonymandra:ToggleButtons:2.0.0'
-
-    //  Dependency injection
-    implementation 'com.google.dagger:dagger-android-support:2.14.1'
-    kapt "com.google.dagger:dagger-compiler:2.14.1"
-    kapt "com.google.dagger:dagger-android-processor:2.11"
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"

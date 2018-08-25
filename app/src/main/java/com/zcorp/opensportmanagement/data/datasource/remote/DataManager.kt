@@ -1,6 +1,6 @@
-package com.zcorp.opensportmanagement.data
+package com.zcorp.opensportmanagement.data.datasource.remote
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.MessagesApi
 import com.zcorp.opensportmanagement.data.api.TeamApi
@@ -17,15 +17,13 @@ import com.zcorp.opensportmanagement.model.User
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Retrofit
-import javax.inject.Inject
 
 /**
  * A nearly not fake data manager as for now, it only makes few real API calls
  */
-class DataManager @Inject constructor(
+class DataManager(
     private val mPreferencesHelper: IPreferencesHelper,
-    private val retrofit: Retrofit,
-    private val objectMapper: ObjectMapper
+    private val retrofit: Retrofit
 ) : IDataManager {
 
     override fun getEvent(id: Int): Single<Event> {

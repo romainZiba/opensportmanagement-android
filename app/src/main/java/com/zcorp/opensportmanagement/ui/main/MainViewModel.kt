@@ -3,14 +3,14 @@ package com.zcorp.opensportmanagement.ui.main
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.zcorp.opensportmanagement.model.Team
+import com.zcorp.opensportmanagement.mvvm.RxViewModel
 import com.zcorp.opensportmanagement.repository.State
-import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
+import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
-import com.zcorp.opensportmanagement.viewmodel.RxViewModel
-import javax.inject.Inject
+import com.zcorp.opensportmanagement.utils.rx.with
 
-class MainViewModel @Inject constructor(
-    private val mUserRepository: UserRepositoryImpl,
+class MainViewModel(
+    private val mUserRepository: UserRepository,
     private val mSchedulerProvider: SchedulerProvider
 ) : RxViewModel() {
 
@@ -21,8 +21,8 @@ class MainViewModel @Inject constructor(
     fun getTeams() {
         mStates.value = State.loading(true)
         launch {
-            mUserRepository.loadTeams().subscribeOn(mSchedulerProvider.io())
-                    .observeOn(mSchedulerProvider.ui())
+            mUserRepository.loadTeams()
+                    .with(mSchedulerProvider)
                     .subscribe({
                         mStates.value = State.success(it)
                     }, {

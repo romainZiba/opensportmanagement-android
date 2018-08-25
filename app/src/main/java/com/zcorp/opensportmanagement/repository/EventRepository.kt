@@ -8,7 +8,6 @@ import com.zcorp.opensportmanagement.model.Event
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
 /**
  * EventRepositoryImpl is responsible for providing a clean API for ViewModel so that viewmodel does not
@@ -18,7 +17,7 @@ interface EventRepository {
     fun loadEvents(teamId: Int, forceRefresh: Boolean = false): Flowable<List<Event>>
 }
 
-class EventRepositoryImpl @Inject constructor(
+class EventRepositoryImpl(
     private val mEventApi: EventApi,
     private val mEventDao: EventDao
 ) : EventRepository {
