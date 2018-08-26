@@ -7,15 +7,11 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatButton
 import android.widget.EditText
-import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.di.offlineModule
 import com.zcorp.opensportmanagement.di.onlineModule
-import com.zcorp.opensportmanagement.repository.FailedEvent
-import com.zcorp.opensportmanagement.repository.LoadingEvent
-import com.zcorp.opensportmanagement.repository.SuccessEvent
 import com.zcorp.opensportmanagement.ui.main.MainActivity
 import org.koin.android.architecture.ext.viewModel
 import org.koin.standalone.StandAloneContext.loadKoinModules
@@ -30,25 +26,15 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         mHandler.postDelayed({
-            viewModel.isUserLogged()
-        }, 2500)
-
-        viewModel.connectionEvents.observe(this, Observer { event ->
-            when (event) {
-                is FailedEvent -> {
-                    Toast.makeText(this, "Failed to conntect", Toast.LENGTH_LONG).show()
-                }
-                is LoadingEvent -> {
-                    Toast.makeText(this, "Please wait", Toast.LENGTH_SHORT).show()
-                }
-                is SuccessEvent -> startMainActivity(online = true)
-            }
-        })
+            viewModel.getLoggedState()
+            viewModel.getUserInformation()
+        }, 1500)
 
         viewModel.loggedState.observe(this, Observer { logged ->
             when (logged) {
                 true -> startMainActivity(online = true)
                 false -> {
+                    viewModel.clearTables()
                     MaterialDialog(this)
                             .title(R.string.not_logged)
                             .message(R.string.message_not_logged)
@@ -61,11 +47,12 @@ class SplashActivity : AppCompatActivity() {
                                 val passwordInput = loginDialog.findViewById<EditText>(R.id.et_dialog_login_password)
                                 val loginBtn = loginDialog.findViewById<AppCompatButton>(R.id.btn_dialog_login_login)
                                 val cancelBtn = loginDialog.findViewById<AppCompatButton>(R.id.btn_dialog_login_cancel)
-                                loginBtn.setOnClickListener {
+                                loginBtn.setOnClickListener { _ ->
+                                    loginDialog.dismiss()
                                     viewModel.login(username = usernameInput.text.toString(),
                                             password = passwordInput.text.toString())
                                 }
-                                cancelBtn.setOnClickListener { loginDialog.dismiss() }
+                                cancelBtn.setOnClickListener { _ -> loginDialog.dismiss() }
                                 loginDialog.show()
                             }
                             .negativeButton(R.string.test_offline, null) {

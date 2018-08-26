@@ -38,11 +38,8 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private val eventsFragment = EventsFragment()
     private val conversationsFragment = ConversationsFragment()
     private val mLogger: ILogger by inject()
-    private val mHandler = Handler()
 
-    private lateinit var loginDialog: MaterialDialog
-
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModel()
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -81,14 +78,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
 
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayShowCustomEnabled(true)
-
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        viewModel.apply {
-            // Use the Koin org.koin.android.ext.android.get() function to retrieve dependencies from an Activity
-            mUserRepository = get()
-            mTeamRepository = get()
-            mSchedulerProvider = get()
-        }
 
         viewModel.teams.observe(this, Observer { state ->
             when (state) {

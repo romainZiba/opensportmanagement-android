@@ -25,6 +25,7 @@ import com.zcorp.opensportmanagement.repository.TeamRepository
 import com.zcorp.opensportmanagement.repository.TeamRepositoryImpl
 import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
+import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsViewModel
 import com.zcorp.opensportmanagement.ui.splash.SplashViewModel
@@ -43,12 +44,12 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
 
 val appModule = applicationContext {
-    viewModel { SplashViewModel(get(), get()) }
+    viewModel { SplashViewModel(get(), get(), get()) }
     viewModel { EventsViewModel(get(), get(), get()) }
     viewModel { ConversationViewModel(get(), get()) }
+    viewModel { MainViewModel(get(), get(), get()) }
 
     bean { Logger() as ILogger }
-    bean { EventRepositoryImpl(get(), get()) as EventRepository }
     bean { PreferencesHelper(androidApplication(), "preferences") as IPreferencesHelper }
     bean { AppSchedulerProvider() as SchedulerProvider }
 

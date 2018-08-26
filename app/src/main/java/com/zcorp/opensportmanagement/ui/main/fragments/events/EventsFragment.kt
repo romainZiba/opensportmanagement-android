@@ -9,7 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.model.Event
+import com.zcorp.opensportmanagement.data.db.EventEntity
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
@@ -99,7 +99,7 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
     }
 
-    override fun onEventClicked(event: Event, adapterPosition: Int) {
+    override fun onEventClicked(event: EventEntity, adapterPosition: Int) {
         if (menu_events.isOpened) {
             closeFloatingMenu()
             return

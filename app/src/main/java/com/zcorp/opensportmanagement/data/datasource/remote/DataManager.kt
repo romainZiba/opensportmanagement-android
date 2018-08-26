@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.data.datasource.remote
 
+import android.util.Log
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.EventApi
 import com.zcorp.opensportmanagement.data.api.MessagesApi
@@ -22,6 +23,10 @@ class DataManager(
     private val retrofit: Retrofit
 ) : IDataManager {
 
+    companion object {
+        private const val TAG = "DataManager"
+    }
+
     override fun getEvent(id: Int): Single<Event> {
         return retrofit.create(EventApi::class.java).getEvent(id)
     }
@@ -43,6 +48,7 @@ class DataManager(
     }
 
     override fun getTeams(): Single<List<Team>> {
+        Log.d(TAG, "getTeams")
         return retrofit.create(TeamApi::class.java).getTeams()
     }
 
@@ -56,14 +62,6 @@ class DataManager(
 
     override fun createEvent(eventDto: EventDto): Single<Event> {
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getCurrentUserLoggedInMode(): Int {
-        return mPreferencesHelper.getCurrentUserLoggedInMode()
-    }
-
-    override fun setCurrentUserLoggedInMode(mode: IDataManager.LoggedInMode) {
-        mPreferencesHelper.setCurrentUserLoggedInMode(mode)
     }
 
     override fun getCurrentUserName(): String {

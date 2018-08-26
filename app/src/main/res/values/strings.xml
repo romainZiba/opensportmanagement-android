@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OpenSportManagement</string>
+    <string name="app_name">Open sport management</string>
     <string name="app_name_shorten">OpenSportMgmt</string>
 
     <!-- Strings related to login -->

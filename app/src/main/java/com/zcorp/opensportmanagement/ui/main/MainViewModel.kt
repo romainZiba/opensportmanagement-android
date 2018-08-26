@@ -2,48 +2,39 @@ package com.zcorp.opensportmanagement.ui.main
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.zcorp.opensportmanagement.model.Team
+import com.zcorp.opensportmanagement.data.db.TeamEntity
 import com.zcorp.opensportmanagement.mvvm.RxViewModel
+import com.zcorp.opensportmanagement.repository.Resource
 import com.zcorp.opensportmanagement.repository.State
+import com.zcorp.opensportmanagement.repository.Status
 import com.zcorp.opensportmanagement.repository.TeamRepository
 import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.with
 
-class MainViewModel : RxViewModel() {
+class MainViewModel(
+        private val mUserRepository: UserRepository,
+        private val mTeamRepository: TeamRepository,
+        private val mSchedulerProvider: SchedulerProvider
+) : RxViewModel() {
 
-    lateinit var mUserRepository: UserRepository
-    lateinit var mTeamRepository: TeamRepository
-    lateinit var mSchedulerProvider: SchedulerProvider
 
-    private val mTeams = MutableLiveData<State<List<Team>>>()
-    val teams: LiveData<State<List<Team>>>
+
+    private val mTeams = MutableLiveData<State<List<TeamEntity>>>()
+    val teams: LiveData<State<List<TeamEntity>>>
         get() = mTeams
-
-    private val mLoggedState = MutableLiveData<Boolean>()
-    val loggedState: LiveData<Boolean>
-        get() = mLoggedState
-
-    fun getLoggedState() {
-        launch {
-            mUserRepository.userLoggedObservable
-                    .with(mSchedulerProvider)
-                    .subscribe { logged ->
-                        mLoggedState.value = logged
-                    }
-        }
-    }
 
     fun getTeams() {
         mTeams.value = State.loading(true)
         launch {
-            mTeamRepository.getTeams()
+            mTeamRepository.getTeams(forceRefresh = true)
                     .with(mSchedulerProvider)
-                    .subscribe({
-                        mTeams.value = State.success(it)
-                    }, {
-                        mTeams.value = State.failure(it)
-                    })
+                    .subscribe { resource: Resource<List<TeamEntity>> ->
+                        when (resource.status) {
+                            Status.ERROR -> mTeams.value = State.failure(resource.message)
+                            else -> mTeams.value = State.success(resource.data ?: emptyList())
+                        }
+                    }
         }
     }
 }

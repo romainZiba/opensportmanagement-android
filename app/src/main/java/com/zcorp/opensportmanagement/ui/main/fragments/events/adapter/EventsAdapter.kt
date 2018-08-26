@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.data.db.EventEntity
 import com.zcorp.opensportmanagement.model.Event
 import com.zcorp.opensportmanagement.utils.datetime.DateTimeFormatter
 
@@ -12,11 +13,11 @@ import com.zcorp.opensportmanagement.utils.datetime.DateTimeFormatter
  */
 class EventsAdapter(
     private val mCallback: OnEventClickListener,
-    private var mEvents: List<Event>
+    private var mEvents: List<EventEntity>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface OnEventClickListener {
-        fun onEventClicked(event: Event, adapterPosition: Int)
+        fun onEventClicked(event: EventEntity, adapterPosition: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -57,13 +58,13 @@ class EventsAdapter(
 
     override fun getItemViewType(position: Int): Int {
         val event = mEvents[position]
-        return when (event.isMatch()) {
+        return when (event.opponent != null) {
             true -> Event.EventType.CHAMPIONSHIP.ordinal // TODO: distinguish between championship / Tournament /Friendly...
             else -> Event.EventType.OTHER.ordinal
         }
     }
 
-    fun updateEvents(events: List<Event>) {
+    fun updateEvents(events: List<EventEntity>) {
         mEvents = events
         notifyDataSetChanged()
     }

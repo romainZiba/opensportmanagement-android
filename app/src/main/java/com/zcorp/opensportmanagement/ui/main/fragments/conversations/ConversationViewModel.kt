@@ -31,7 +31,7 @@ class ConversationViewModel(
                         mStates.value = State.success(it)
                     }, {
                         mStates.value = State.loading(false)
-                        mStates.value = State.failure(it)
+                        mStates.value = State.failure(it.message ?: "")
                     })
         }
     }

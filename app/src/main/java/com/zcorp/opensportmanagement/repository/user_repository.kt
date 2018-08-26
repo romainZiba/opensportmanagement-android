@@ -3,9 +3,11 @@ package com.zcorp.opensportmanagement.repository
 import android.support.annotation.WorkerThread
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.api.UserApi
+import com.zcorp.opensportmanagement.data.db.OpenDatabase
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.model.LoginRequest
 import com.zcorp.opensportmanagement.model.User
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
@@ -16,6 +18,7 @@ import io.reactivex.subjects.BehaviorSubject
  */
 interface UserRepository {
     fun login(username: String, password: String): Single<User>
+    fun getUserInformation(): Single<User>
     val userLoggedObservable: Observable<Boolean>
 }
 
@@ -28,25 +31,26 @@ class UserRepositoryImpl(
     override val userLoggedObservable: Observable<Boolean>
         get() = mUserLoggedSubject
 
-    init {
-        mUserLoggedSubject.onNext(mPreferences.getCurrentUserLoggedInMode() == IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER.type)
-    }
-
     override fun login(username: String, password: String): Single<User> {
         val loginRequest = LoginRequest(username, password)
         return mUserApi.login(loginRequest)
                 .toSingleDefault(true)
                 .flatMap { mUserApi.whoAmI() }
                 .doOnSuccess { user: User ->
-                    mUserLoggedSubject.onNext(true)
                     saveUserDetails(user)
+                    mUserLoggedSubject.onNext(true)
                 }
+    }
+
+    override fun getUserInformation(): Single<User> {
+        return mUserApi.whoAmI()
+                .doOnSuccess { mUserLoggedSubject.onNext(true) }
+                .doOnError { mUserLoggedSubject.onNext(false) }
     }
 
     @WorkerThread
     private fun saveUserDetails(user: User) {
         mPreferences.setCurrentUserName(user.username)
         mPreferences.setCurrentUserEmail(user.email)
-        mPreferences.setCurrentUserLoggedInMode(IDataManager.LoggedInMode.LOGGED_IN_MODE_SERVER)
     }
 }

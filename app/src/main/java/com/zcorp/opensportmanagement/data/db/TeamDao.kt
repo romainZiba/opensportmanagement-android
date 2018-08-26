@@ -4,7 +4,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import io.reactivex.Single
+import io.reactivex.Flowable
 
 @Dao
 interface TeamDao {
@@ -15,5 +15,5 @@ interface TeamDao {
     fun saveTeam(entity: TeamEntity)
 
     @Query("SELECT * FROM team")
-    fun loadTeams(): Single<List<TeamEntity>>
+    fun loadTeams(): Flowable<List<TeamEntity>>
 }

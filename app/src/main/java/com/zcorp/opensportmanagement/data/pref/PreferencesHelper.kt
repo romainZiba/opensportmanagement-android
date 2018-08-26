@@ -35,15 +35,6 @@ class PreferencesHelper(
         mPrefs.edit().putString(PREF_KEY_CURRENT_USER_PROFILE_PIC_URL, profilePicUrl).apply()
     }
 
-    override fun getCurrentUserLoggedInMode(): Int {
-        return mPrefs.getInt(PREF_KEY_USER_LOGGED_IN_MODE,
-                IDataManager.LoggedInMode.LOGGED_OUT.type)
-    }
-
-    override fun setCurrentUserLoggedInMode(mode: IDataManager.LoggedInMode) {
-        mPrefs.edit().putInt(PREF_KEY_USER_LOGGED_IN_MODE, mode.type).apply()
-    }
-
     override fun getAccessToken(): String {
         return mPrefs.getString(PREF_KEY_ACCESS_TOKEN, "")
     }

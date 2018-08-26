@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.data.datasource.local
 
+import android.util.Log
 import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
 import com.zcorp.opensportmanagement.dto.EventDto
@@ -21,6 +22,7 @@ import java.util.Random
 class FakeDataManager(private val mPreferencesHelper: IPreferencesHelper) : IDataManager {
 
     companion object {
+        private const val TAG = "DataManager"
         private val user1 = User("Robert", "Albert", "RA", "ra@caram.com", "", true) // has access to brooklynNets and nyKnicks teams
         private val user2 = User("Pierre", "Mousquetaire", "PM", "pm@caram.com", "", false) // has access to brooklynNets only
         private val user3 = User("Jean", "Lament", "JL", "jl@gg.com", "", false) // has access to Houston Rockets only
@@ -99,6 +101,7 @@ class FakeDataManager(private val mPreferencesHelper: IPreferencesHelper) : IDat
     }
 
     override fun getTeams(): Single<List<Team>> {
+        Log.d(TAG, "getTeams")
         return Single.create {
             when (mLoggedUser) {
                 user1 -> it.onSuccess(listOf(brooklynNets, nyKnicks))
@@ -241,14 +244,6 @@ class FakeDataManager(private val mPreferencesHelper: IPreferencesHelper) : IDat
     private fun createDummyMessage(conversationId: String, position: Int, username: String) =
             InAppMessage(conversationId, "", username, "Message $position",
                     OffsetDateTime.now().minusMonths(1).plusHours(position.toLong()))
-
-    override fun getCurrentUserLoggedInMode(): Int {
-        return mPreferencesHelper.getCurrentUserLoggedInMode()
-    }
-
-    override fun setCurrentUserLoggedInMode(mode: IDataManager.LoggedInMode) {
-        mPreferencesHelper.setCurrentUserLoggedInMode(mode)
-    }
 
     override fun getCurrentUserName(): String {
         return mPreferencesHelper.getCurrentUserName()

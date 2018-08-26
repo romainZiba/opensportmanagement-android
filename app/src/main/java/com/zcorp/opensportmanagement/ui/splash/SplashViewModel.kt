@@ -2,29 +2,24 @@ package com.zcorp.opensportmanagement.ui.splash
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import com.zcorp.opensportmanagement.data.db.OpenDatabase
 import com.zcorp.opensportmanagement.mvvm.RxViewModel
-import com.zcorp.opensportmanagement.repository.Event
-import com.zcorp.opensportmanagement.repository.FailedEvent
-import com.zcorp.opensportmanagement.repository.LoadingEvent
-import com.zcorp.opensportmanagement.repository.SuccessEvent
 import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.with
+import io.reactivex.Completable
 
 class SplashViewModel(
-    private val mUserRepository: UserRepository,
-    private val mSchedulerProvider: SchedulerProvider
+        private val mUserRepository: UserRepository,
+        private val mSchedulerProvider: SchedulerProvider,
+        private val database: OpenDatabase
 ) : RxViewModel() {
 
     private val mLoggedState = MutableLiveData<Boolean>()
     val loggedState: LiveData<Boolean>
         get() = mLoggedState
 
-    private val mConnectionEvents = MutableLiveData<Event>()
-    val connectionEvents: LiveData<Event>
-        get() = mConnectionEvents
-
-    fun isUserLogged() {
+    fun getLoggedState() {
         launch {
             mUserRepository.userLoggedObservable
                     .with(mSchedulerProvider)
@@ -34,16 +29,31 @@ class SplashViewModel(
         }
     }
 
+    fun getUserInformation() {
+        launch {
+            mUserRepository.getUserInformation()
+                    .with(mSchedulerProvider)
+                    .subscribe({}, {})
+        }
+    }
+
     fun login(username: String, password: String) {
-        mConnectionEvents.value = LoadingEvent
         launch {
             mUserRepository.login(username, password)
                     .with(mSchedulerProvider)
-                    .subscribe({
-                        mConnectionEvents.value = SuccessEvent
-                    }, {
-                        mConnectionEvents.value = FailedEvent(it)
-                    })
+                    .subscribe()
         }
+    }
+
+    fun clearTables() {
+        launch {
+            clearAllTables()
+                    .with(mSchedulerProvider)
+                    .subscribe()
+        }
+    }
+
+    private fun clearAllTables(): Completable {
+        return Completable.fromCallable { database.clearAllTables() }
     }
 }
