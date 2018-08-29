@@ -2,7 +2,8 @@ package com.zcorp.opensportmanagement.ui.main
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.zcorp.opensportmanagement.data.db.TeamEntity
+import android.util.Log
+import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
 import com.zcorp.opensportmanagement.mvvm.RxViewModel
 import com.zcorp.opensportmanagement.repository.Resource
 import com.zcorp.opensportmanagement.repository.State
@@ -17,8 +18,7 @@ class MainViewModel(
         private val mTeamRepository: TeamRepository,
         private val mSchedulerProvider: SchedulerProvider
 ) : RxViewModel() {
-
-
+    private val TAG = "MainViewModel"
 
     private val mTeams = MutableLiveData<State<List<TeamEntity>>>()
     val teams: LiveData<State<List<TeamEntity>>>
@@ -32,7 +32,10 @@ class MainViewModel(
                     .subscribe { resource: Resource<List<TeamEntity>> ->
                         when (resource.status) {
                             Status.ERROR -> mTeams.value = State.failure(resource.message)
-                            else -> mTeams.value = State.success(resource.data ?: emptyList())
+                            else -> {
+                                Log.d(TAG, "resource.data ${resource.data}, size ${resource.data?.size}")
+                                mTeams.value = State.success(resource.data ?: emptyList())
+                            }
                         }
                     }
         }

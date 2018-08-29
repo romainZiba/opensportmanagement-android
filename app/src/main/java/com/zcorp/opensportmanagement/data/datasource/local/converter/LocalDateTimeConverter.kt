@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.data.db.converter
+package com.zcorp.opensportmanagement.data.datasource.local.converter
 
 import android.arch.persistence.room.TypeConverter
 import org.threeten.bp.Instant

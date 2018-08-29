@@ -1,9 +1,10 @@
 package com.zcorp.opensportmanagement.repository
 
-import com.zcorp.opensportmanagement.data.api.EventApi
-import com.zcorp.opensportmanagement.data.db.EventDao
-import com.zcorp.opensportmanagement.data.db.EventEntity
-import com.zcorp.opensportmanagement.model.Event
+import com.zcorp.opensportmanagement.data.datasource.remote.api.EventApi
+import com.zcorp.opensportmanagement.data.datasource.local.EventDao
+import com.zcorp.opensportmanagement.data.datasource.local.EventEntity
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDtosPage
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -18,18 +19,18 @@ interface EventRepository {
 }
 
 class EventRepositoryImpl(
-    private val mEventApi: EventApi,
-    private val mEventDao: EventDao
+        private val mEventApi: EventApi,
+        private val mEventDao: EventDao
 ) : EventRepository {
 
     override fun loadEvents(teamId: Int, forceRefresh: Boolean): Flowable<Resource<List<EventEntity>>> {
         return Flowable.create({ emitter ->
-            object : NetworkBoundSource<List<EventEntity>, List<Event>>(emitter) {
+            object : NetworkBoundSource<List<EventEntity>, EventDtosPage>(emitter) {
                 override fun shouldFetch(data: List<EventEntity>?): Boolean {
                     return data == null || data.isEmpty() || forceRefresh
                 }
 
-                override val remote: Single<List<Event>>
+                override val remote: Single<EventDtosPage>
                     get() = mEventApi.getEvents(teamId)
                 override val local: Flowable<List<EventEntity>>
                     get() = mEventDao.loadEvents(teamId)
@@ -38,8 +39,8 @@ class EventRepositoryImpl(
                     mEventDao.saveEvents(data)
                 }
 
-                override fun mapper(): Function<List<Event>, List<EventEntity>> {
-                    return Function { list: List<Event> -> list.map { EventEntity.from(it) } }
+                override fun mapper(): Function<EventDtosPage, List<EventEntity>> {
+                    return Function { page: EventDtosPage -> page._embedded.eventDtoes.map { EventEntity.from(it) } }
                 }
             }
         }, BackpressureStrategy.BUFFER)

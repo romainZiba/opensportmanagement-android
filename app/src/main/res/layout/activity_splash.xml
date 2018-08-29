@@ -28,4 +28,18 @@
         android:textColor="@color/white"
         android:textSize="80sp" />
 
+    <android.support.design.button.MaterialButton
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/login"/>
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/btn_test_offline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="@string/test_offline"/>
+
 </LinearLayout>

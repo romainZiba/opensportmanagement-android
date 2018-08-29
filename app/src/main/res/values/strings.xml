@@ -81,4 +81,5 @@
     <string name="not_logged">Not logged</string>
     <string name="message_not_logged">You are currently not logged. Either connect you or test the application</string>
     <string name="test_offline">Test</string>
+    <string name="ok">Ok</string>
 </resources>

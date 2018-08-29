@@ -6,17 +6,17 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
-import com.zcorp.opensportmanagement.data.IDataManager
-import com.zcorp.opensportmanagement.data.api.EventApi
-import com.zcorp.opensportmanagement.data.api.MessagesApi
-import com.zcorp.opensportmanagement.data.api.TeamApi
-import com.zcorp.opensportmanagement.data.api.UserApi
-import com.zcorp.opensportmanagement.data.api.UserApiImpl
-import com.zcorp.opensportmanagement.data.datasource.local.FakeDataManager
-import com.zcorp.opensportmanagement.data.datasource.remote.DataManager
-import com.zcorp.opensportmanagement.data.db.OpenDatabase
-import com.zcorp.opensportmanagement.data.pref.IPreferencesHelper
+import com.zcorp.opensportmanagement.data.datasource.local.OpenDatabase
+import com.zcorp.opensportmanagement.data.datasource.remote.api.EventApi
+import com.zcorp.opensportmanagement.data.datasource.remote.api.EventApiImpl
+import com.zcorp.opensportmanagement.data.datasource.remote.api.MessagesApi
+import com.zcorp.opensportmanagement.data.datasource.remote.api.MessagesApiImpl
+import com.zcorp.opensportmanagement.data.datasource.remote.api.TeamApi
+import com.zcorp.opensportmanagement.data.datasource.remote.api.TeamApiImpl
+import com.zcorp.opensportmanagement.data.datasource.remote.api.UserApi
+import com.zcorp.opensportmanagement.data.datasource.remote.api.UserApiImpl
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
+import com.zcorp.opensportmanagement.data.pref.PreferencesHelperImpl
 import com.zcorp.opensportmanagement.repository.EventRepository
 import com.zcorp.opensportmanagement.repository.EventRepositoryImpl
 import com.zcorp.opensportmanagement.repository.MessageRepository
@@ -45,19 +45,23 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 
 val appModule = applicationContext {
     viewModel { SplashViewModel(get(), get(), get()) }
-    viewModel { EventsViewModel(get(), get(), get()) }
-    viewModel { ConversationViewModel(get(), get()) }
-    viewModel { MainViewModel(get(), get(), get()) }
+
+
+    bean { UserRepositoryImpl(get(), get()) as UserRepository }
+    context("repo") {
+        viewModel { MainViewModel(get(), get(), get()) }
+        viewModel { EventsViewModel(get(), get(), get()) }
+        viewModel { ConversationViewModel(get(), get()) }
+
+        bean { EventRepositoryImpl(get(), get()) as EventRepository }
+        bean { MessageRepositoryImpl(get()) as MessageRepository }
+        bean { TeamRepositoryImpl(get(), get(), get()) as TeamRepository }
+    }
 
     bean { Logger() as ILogger }
-    bean { PreferencesHelper(androidApplication(), "preferences") as IPreferencesHelper }
+    bean { PreferencesHelperImpl(androidApplication(), "preferences") as PreferencesHelper }
     bean { AppSchedulerProvider() as SchedulerProvider }
 
-    // Repositories
-    bean { EventRepositoryImpl(get(), get()) as EventRepository }
-    bean { UserRepositoryImpl(get(), get()) as UserRepository }
-    bean { MessageRepositoryImpl(get()) as MessageRepository }
-    bean { TeamRepositoryImpl(get(), get(), get()) as TeamRepository }
 
     // Room Database
     bean {
@@ -75,7 +79,7 @@ val appModule = applicationContext {
     val PORT = 8090
     val HOST = "ns3268474.ip-5-39-81.eu"
 
-    bean { PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(androidApplication())) as CookieJar }
+    bean { PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(androidApplication())) as CookieJar } bind PersistentCookieJar::class
 
     bean {
         OkHttpClient.Builder()
@@ -101,11 +105,13 @@ val appModule = applicationContext {
 }
 
 val offlineModule = applicationContext {
-    bean { FakeDataManager(get()) as EventApi } bind TeamApi::class bind IDataManager::class bind MessagesApi::class
+//    bean { FakeDataManager(get()) as EventApi } bind TeamApi::class bind IDataManager::class bind MessagesApi::class
 }
 
 val onlineModule = applicationContext {
-    bean { DataManager(get(), get()) as EventApi } bind TeamApi::class bind IDataManager::class bind MessagesApi::class
+    bean { TeamApiImpl(get()) as TeamApi }
+    bean { EventApiImpl(get()) as EventApi }
+    bean { MessagesApiImpl(get()) as MessagesApi }
 }
 
 val app = listOf(appModule)

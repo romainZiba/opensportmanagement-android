@@ -1,11 +1,10 @@
 package com.zcorp.opensportmanagement.ui.messages
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.zcorp.opensportmanagement.data.IDataManager
-import com.zcorp.opensportmanagement.dto.MessageDto
+import com.zcorp.opensportmanagement.data.datasource.remote.api.MessagesApi
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.MessageDto
+import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
-import com.zcorp.opensportmanagement.utils.stomp.IStompClientProvider
 import io.reactivex.disposables.CompositeDisposable
 import ua.naiksoftware.stomp.client.StompClient
 import java.io.Serializable
@@ -14,12 +13,11 @@ import java.io.Serializable
  * Created by romainz on 17/02/18.
  */
 class MessagesPresenter(
-    private val mDataManager: IDataManager,
-    private val mSchedulerProvider: SchedulerProvider,
-    private val mDisposables: CompositeDisposable,
-    private val mStompClientProvider: IStompClientProvider,
-    private val mObjectMapper: ObjectMapper,
-    private val mLogger: ILogger
+        private val mMessagesApi: MessagesApi,
+        private val mPreferencesHelper: PreferencesHelper,
+        private val mSchedulerProvider: SchedulerProvider,
+        private val mDisposables: CompositeDisposable,
+        private val mLogger: ILogger
 ) : IMessagesPresenter {
 
     companion object {
@@ -82,7 +80,7 @@ class MessagesPresenter(
     }
 
     override fun getMessages() {
-        mDisposables.add(mDataManager.getMessagesOrderedByDate(mConversationId)
+        mDisposables.add(mMessagesApi.getMessagesOrderedByDate(mConversationId)
                 .subscribeOn(mSchedulerProvider.newThread())
                 .observeOn(mSchedulerProvider.ui())
                 .subscribe({
@@ -94,7 +92,7 @@ class MessagesPresenter(
     }
 
     override fun postMessage(stringMessage: String) {
-        mDisposables.add(mDataManager.createMessage(mConversationId, MessageDto(stringMessage))
+        mDisposables.add(mMessagesApi.createMessage(mConversationId, MessageDto(stringMessage))
                 .subscribeOn(mSchedulerProvider.newThread())
                 .observeOn(mSchedulerProvider.ui())
                 .subscribe({
@@ -109,6 +107,6 @@ class MessagesPresenter(
     }
 
     override fun getCurrentUserName(): String {
-        return mDataManager.getCurrentUserName()
+        return mPreferencesHelper.getCurrentUserName()
     }
 }

@@ -1,8 +1,6 @@
 package com.zcorp.opensportmanagement
 
 import assertk.assert
-import assertk.assertions.isEqualTo
-import com.zcorp.opensportmanagement.data.IDataManager
 import com.zcorp.opensportmanagement.ui.eventcreation.EventCreationPresenter
 import com.zcorp.opensportmanagement.ui.eventcreation.IEventCreationView
 import com.zcorp.opensportmanagement.utils.log.ILogger

@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.dto
+package com.zcorp.opensportmanagement.data.datasource.remote.dto
 
 /**
  * Created by romainz on 07/03/18.

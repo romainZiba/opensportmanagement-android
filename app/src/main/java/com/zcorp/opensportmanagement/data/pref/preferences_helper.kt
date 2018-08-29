@@ -2,12 +2,28 @@ package com.zcorp.opensportmanagement.data.pref
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.zcorp.opensportmanagement.data.IDataManager
 
-class PreferencesHelper(
-    private val context: Context,
-    private val prefFileName: String
-) : IPreferencesHelper {
+/**
+ * Created by romainz on 16/02/18.
+ */
+interface PreferencesHelper {
+    fun getCurrentUserName(): String
+    fun setCurrentUserName(username: String)
+    fun getCurrentUserEmail(): String
+    fun setCurrentUserEmail(email: String)
+    fun getCurrentUserProfilePicUrl(): String
+    fun setCurrentUserProfilePicUrl(profilePicUrl: String)
+    fun getCurrentTeamId(): Int
+    fun setCurrentTeamId(teamId: Int)
+    fun setAvailableTeamIds(availableTeams: List<Int>)
+    fun getAvailableTeamIds(): List<Int>
+    fun clear()
+}
+
+class PreferencesHelperImpl(
+        private val context: Context,
+        private val prefFileName: String
+) : PreferencesHelper {
 
     private val mPrefs: SharedPreferences = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE)
 
@@ -35,14 +51,6 @@ class PreferencesHelper(
         mPrefs.edit().putString(PREF_KEY_CURRENT_USER_PROFILE_PIC_URL, profilePicUrl).apply()
     }
 
-    override fun getAccessToken(): String {
-        return mPrefs.getString(PREF_KEY_ACCESS_TOKEN, "")
-    }
-
-    override fun setAccessToken(accessToken: String) {
-        mPrefs.edit().putString(PREF_KEY_ACCESS_TOKEN, accessToken).apply()
-    }
-
     override fun getCurrentTeamId(): Int {
         return mPrefs.getInt(PREF_KEY_CURRENT_TEAM, -1)
     }
@@ -57,6 +65,13 @@ class PreferencesHelper(
 
     override fun setAvailableTeamIds(ids: List<Int>) {
         mPrefs.edit().putStringSet(PREF_KEY_AVAILABLE_TEAMS, ids.map { it.toString() }.toSet()).apply()
+    }
+
+    override fun clear() {
+        with (mPrefs.edit()) {
+            clear()
+            apply()
+        }
     }
 
     companion object {

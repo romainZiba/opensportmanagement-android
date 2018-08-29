@@ -2,9 +2,10 @@ package com.zcorp.opensportmanagement.ui.splash
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.zcorp.opensportmanagement.data.db.OpenDatabase
+import com.zcorp.opensportmanagement.data.datasource.local.OpenDatabase
 import com.zcorp.opensportmanagement.mvvm.RxViewModel
 import com.zcorp.opensportmanagement.repository.UserRepository
+import com.zcorp.opensportmanagement.utils.Optional
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.with
 import io.reactivex.Completable
@@ -23,8 +24,10 @@ class SplashViewModel(
         launch {
             mUserRepository.userLoggedObservable
                     .with(mSchedulerProvider)
+                    .doOnNext { logged: Optional<Boolean> -> if (logged.isNotPresent()) { getUserInformation() }  }
+                    .filter { it.isPresent() }
                     .subscribe { logged ->
-                        mLoggedState.value = logged
+                        mLoggedState.value = logged.get()
                     }
         }
     }

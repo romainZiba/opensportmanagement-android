@@ -1,7 +1,7 @@
 package com.zcorp.opensportmanagement.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.zcorp.opensportmanagement.data.db.TeamEntity
+import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
 
 /**
  * Created by romainz on 01/02/18.

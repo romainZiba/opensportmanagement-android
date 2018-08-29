@@ -1,6 +1,6 @@
 package com.zcorp.opensportmanagement.repository
 
-import com.zcorp.opensportmanagement.data.api.MessagesApi
+import com.zcorp.opensportmanagement.data.datasource.remote.api.MessagesApi
 import com.zcorp.opensportmanagement.model.Conversation
 import io.reactivex.Single
 

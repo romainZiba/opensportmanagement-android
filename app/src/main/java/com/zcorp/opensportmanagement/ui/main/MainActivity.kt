@@ -2,6 +2,8 @@ package com.zcorp.opensportmanagement.ui.main
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomNavigationView
@@ -14,6 +16,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.afollestad.materialdialogs.MaterialDialog
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
@@ -25,6 +28,8 @@ import kotlinx.android.synthetic.main.activity_main.fragment_container
 import kotlinx.android.synthetic.main.activity_main.main_navigation
 import kotlinx.android.synthetic.main.activity_main.main_toolbar
 import kotlinx.android.synthetic.main.toolbar.main_spinner
+import okhttp3.CookieJar
+import okhttp3.OkHttpClient
 import org.koin.android.architecture.ext.viewModel
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
@@ -38,7 +43,6 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
     private val eventsFragment = EventsFragment()
     private val conversationsFragment = ConversationsFragment()
     private val mLogger: ILogger by inject()
-
     private val viewModel: MainViewModel by viewModel()
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -82,12 +86,14 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         viewModel.teams.observe(this, Observer { state ->
             when (state) {
                 is State.Success -> {
-                    val spinnerArrayAdapter = ArrayAdapter<String>(
-                            this, R.layout.simple_spinner_item, state.data.map { it.name })
-                    spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-                    main_spinner.adapter = spinnerArrayAdapter
-                    main_spinner.onItemSelectedListener = this
-                    displayEvents()
+                    if (state.data.isNotEmpty()) {
+                        val spinnerArrayAdapter = ArrayAdapter<String>(
+                                this, R.layout.simple_spinner_item, state.data.map { it.name })
+                        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+                        main_spinner.adapter = spinnerArrayAdapter
+                        main_spinner.onItemSelectedListener = this
+                        displayEvents()
+                    }
                 }
                 is State.Failure -> {
                     ThemedSnackbar

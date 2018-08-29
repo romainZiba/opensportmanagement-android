@@ -1,7 +1,7 @@
-package com.zcorp.opensportmanagement.data.api
+package com.zcorp.opensportmanagement.data.datasource.remote.api
 
-import com.zcorp.opensportmanagement.model.LoginRequest
-import com.zcorp.opensportmanagement.model.User
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.AccountDto
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.LoginRequest
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Retrofit
@@ -17,7 +17,7 @@ interface UserApi {
     fun login(@Body loginRequest: LoginRequest): Completable
 
     @GET("/accounts/me")
-    fun whoAmI(): Single<User>
+    fun whoAmI(): Single<AccountDto>
 }
 
 class UserApiImpl(
@@ -27,7 +27,7 @@ class UserApiImpl(
         return retrofit.create(UserApi::class.java).login(loginRequest)
     }
 
-    override fun whoAmI(): Single<User> {
+    override fun whoAmI(): Single<AccountDto> {
         return retrofit.create(UserApi::class.java).whoAmI()
     }
 }
