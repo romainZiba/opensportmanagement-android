@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.rv_item_match.view.*
 class MatchViewHolder(private val mView: View) : BaseViewHolder(mView) {
 
     override fun setDate(dateAsString: String) {
-        mView.tv_date_event.text = dateAsString
+        mView.tv_event_date.text = dateAsString
     }
 
     fun setLocalTeamName(name: String) {
@@ -28,5 +28,9 @@ class MatchViewHolder(private val mView: View) : BaseViewHolder(mView) {
 
     fun setVisitorTeamImage(drawable: Drawable) {
         mView.iv_visitor_match.setImageDrawable(drawable)
+    }
+
+    override fun setPlace(place: String) {
+        mView.tv_event_place.text = place
     }
 }

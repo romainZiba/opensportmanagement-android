@@ -27,8 +27,6 @@ import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
 import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationViewModel
-import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsViewModel
-import com.zcorp.opensportmanagement.ui.splash.SplashViewModel
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.log.Logger
 import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider
@@ -44,13 +42,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
 
 val appModule = applicationContext {
-    viewModel { SplashViewModel(get(), get(), get()) }
-
 
     bean { UserRepositoryImpl(get(), get()) as UserRepository }
     context("repo") {
-        viewModel { MainViewModel(get(), get(), get()) }
-        viewModel { EventsViewModel(get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get(), get()) }
         viewModel { ConversationViewModel(get(), get()) }
 
         bean { EventRepositoryImpl(get(), get()) as EventRepository }
@@ -105,7 +100,7 @@ val appModule = applicationContext {
 }
 
 val offlineModule = applicationContext {
-//    bean { FakeDataManager(get()) as EventApi } bind TeamApi::class bind IDataManager::class bind MessagesApi::class
+    //    bean { FakeDataManager(get()) as EventApi } bind TeamApi::class bind IDataManager::class bind MessagesApi::class
 }
 
 val onlineModule = applicationContext {
@@ -114,4 +109,4 @@ val onlineModule = applicationContext {
     bean { MessagesApiImpl(get()) as MessagesApi }
 }
 
-val app = listOf(appModule)
+val app = listOf(appModule, onlineModule)

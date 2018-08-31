@@ -35,9 +35,6 @@ class TeamRepositoryImpl(
                     get() = mTeamDao.loadTeams()
 
                 override fun saveCallResult(data: List<TeamEntity>) {
-                    if (data.isNotEmpty() && shouldChangeCurrentTeam(data.map { it._id })) {
-                        mPreferences.setCurrentTeamId(data[0]._id)
-                    }
                     mPreferences.setAvailableTeamIds(data.map { it._id })
                     mTeamDao.saveTeams(data)
                 }
@@ -47,10 +44,5 @@ class TeamRepositoryImpl(
                 }
             }
         }, BackpressureStrategy.BUFFER)
-    }
-
-    private fun shouldChangeCurrentTeam(teamIds: List<Int>): Boolean {
-        val currentTeamId = mPreferences.getCurrentTeamId()
-        return currentTeamId == -1 || !teamIds.contains(currentTeamId)
     }
 }

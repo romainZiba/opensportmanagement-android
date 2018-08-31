@@ -14,4 +14,6 @@ abstract class BaseViewHolder(private val mView: View) : RecyclerView.ViewHolder
     fun setParticipantsNumber(number: Int) {
         mView.tv_participants_number.text = number.toString()
     }
+
+    abstract fun setPlace(place: String)
 }

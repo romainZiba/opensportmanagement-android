@@ -1,9 +1,8 @@
 package com.zcorp.opensportmanagement.repository
 
-import com.zcorp.opensportmanagement.data.datasource.remote.api.EventApi
 import com.zcorp.opensportmanagement.data.datasource.local.EventDao
 import com.zcorp.opensportmanagement.data.datasource.local.EventEntity
-import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
+import com.zcorp.opensportmanagement.data.datasource.remote.api.EventApi
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDtosPage
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -40,7 +39,9 @@ class EventRepositoryImpl(
                 }
 
                 override fun mapper(): Function<EventDtosPage, List<EventEntity>> {
-                    return Function { page: EventDtosPage -> page._embedded.eventDtoes.map { EventEntity.from(it) } }
+                    return Function { page: EventDtosPage ->
+                        page._embedded?.eventDtoes?.map { EventEntity.from(it) } ?: emptyList()
+                    }
                 }
             }
         }, BackpressureStrategy.BUFFER)

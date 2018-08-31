@@ -11,7 +11,7 @@ const val other = "OTHER"
 const val training = "TRAINING"
 
 data class EventDtosPage(
-        val _embedded: Embedded,
+        val _embedded: Embedded? = null,
         val _links: Links,
         val page: Page
 )

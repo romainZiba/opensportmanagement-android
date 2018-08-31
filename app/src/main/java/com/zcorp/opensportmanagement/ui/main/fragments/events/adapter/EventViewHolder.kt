@@ -7,12 +7,11 @@ import kotlinx.android.synthetic.main.rv_item_event.view.*
  * Created by romainz on 03/02/18.
  */
 class EventViewHolder(private val mView: View) : BaseViewHolder(mView) {
-
-    fun setDescription(description: String) {
-        mView.tv_description_event.text = description
+    override fun setDate(dateAsString: String) {
+        mView.tv_event_date.text = dateAsString
     }
 
-    override fun setDate(dateAsString: String) {
-        mView.tv_date_event.text = dateAsString
+    override fun setPlace(place: String) {
+        mView.tv_event_place.text = place
     }
 }

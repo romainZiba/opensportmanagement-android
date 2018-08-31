@@ -8,19 +8,16 @@ import com.zcorp.opensportmanagement.data.datasource.local.EventEntity
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventType
 import com.zcorp.opensportmanagement.utils.datetime.DateTimeFormatter
 
-/**
- * [RecyclerView.Adapter] that can display a list of [Event]
- */
 class EventsAdapter(
     private val mCallback: OnEventClickListener,
     private var mEvents: List<EventEntity>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<BaseViewHolder>() {
 
     interface OnEventClickListener {
         fun onEventClicked(event: EventEntity, adapterPosition: Int)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
             EventType.MATCH.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
@@ -35,9 +32,11 @@ class EventsAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val event = mEvents[position]
-        (holder as BaseViewHolder).setDate(DateTimeFormatter.dateFormatterWithDayOfWeek.format(event.fromDateTime))
+        holder.setDate(DateTimeFormatter.dateFormatterWithDayOfWeek.format(event.fromDateTime))
+        holder.setPlace(event.place)
+        holder.setParticipantsNumber(event.presentTeamMembers.size)
         holder.itemView.setOnClickListener {
             mCallback.onEventClicked(mEvents[position], position)
         }
@@ -45,9 +44,6 @@ class EventsAdapter(
             is MatchViewHolder -> {
                 holder.setLocalTeamName("Local")
                 holder.setVisitorTeamName(event.opponent ?: "")
-            }
-            is EventViewHolder -> {
-                holder.setDescription(event.name)
             }
         }
     }

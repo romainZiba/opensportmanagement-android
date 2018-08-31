@@ -4,15 +4,19 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.datasource.local.EventEntity
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
+import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.event_swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_event_list.events_background_layout
@@ -21,19 +25,17 @@ import kotlinx.android.synthetic.main.fragment_event_list.rv_events_list
 import kotlinx.android.synthetic.main.fragment_event_list.view.event_swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_event_list.view.fab_add_event
 import kotlinx.android.synthetic.main.fragment_event_list.view.menu_events
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.architecture.ext.sharedViewModel
+
 
 /**
  * A fragment showing a list of Events.
  */
 class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, EventsAdapter.OnEventClickListener {
 
-    companion object {
-        private val TAG = EventsFragment::class.java.simpleName
-    }
-
-    lateinit var mEventsAdapter: EventsAdapter
-    private val viewModel: EventsViewModel by viewModel()
+    private lateinit var mEventsAdapter: EventsAdapter
+    private lateinit var mLayoutManager: LinearLayoutManager
+    private val viewModel: MainViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,13 +46,18 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         super.onActivityCreated(savedInstanceState)
 
         mEventsAdapter = EventsAdapter(this, mutableListOf())
-        rv_events_list.adapter = mEventsAdapter
+        mLayoutManager = LinearLayoutManager(activity)
+
+        rv_events_list.apply {
+            adapter = mEventsAdapter
+            layoutManager = mLayoutManager
+            val dividerItemDecoration = DividerItemDecoration(rv_events_list.context, mLayoutManager.orientation)
+            this.addItemDecoration(dividerItemDecoration)
+        }
 
         viewModel.states.observe(this, Observer {
             when (it) {
-                is State.Failure -> {
-                    showNetworkError()
-                }
+                is State.Failure -> showNetworkError()
                 is State.Progress -> {
                     if (it.loading) showProgress()
                     else hideProgress()
@@ -60,7 +67,6 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
                 }
             }
         })
-        viewModel.getEvents()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -105,6 +111,7 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
             return
         }
         // TODO: event details
+        Toast.makeText(activity, "Event clicked, id ${event._id}", Toast.LENGTH_LONG).show()
 //        val intent = Intent(mActivity, EventDetailsActivity::class.java)
 //        intent.putExtra("event", event)
 //        startActivity(intent)

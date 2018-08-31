@@ -1,49 +1,95 @@
 package com.zcorp.opensportmanagement.ui.main
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.widget.EditText
 import com.afollestad.materialdialogs.MaterialDialog
-import com.franmontiel.persistentcookiejar.PersistentCookieJar
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.zcorp.opensportmanagement.R
+import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
+import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
-import com.zcorp.opensportmanagement.utils.log.ILogger
-import kotlinx.android.synthetic.main.activity_main.fragment_container
+import kotlinx.android.synthetic.main.activity_main.cl_main
 import kotlinx.android.synthetic.main.activity_main.main_navigation
 import kotlinx.android.synthetic.main.activity_main.main_toolbar
-import kotlinx.android.synthetic.main.toolbar.main_spinner
-import okhttp3.CookieJar
-import okhttp3.OkHttpClient
 import org.koin.android.architecture.ext.viewModel
-import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 
-class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
-
-    companion object {
-        val TAG: String = MainActivity::class.java.simpleName
-    }
+class MainActivity : BaseActivity() {
 
     private val eventsFragment = EventsFragment()
     private val conversationsFragment = ConversationsFragment()
-    private val mLogger: ILogger by inject()
     private val viewModel: MainViewModel by viewModel()
+    private var availableTeams: List<TeamEntity>? = null
+    private val mPreferencesHelper: PreferencesHelper by inject()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_main)
+        setSupportActionBar(main_toolbar as Toolbar)
+        main_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+
+        viewModel.loggedState.observe(this, Observer { logged ->
+            when (logged) {
+                false -> {
+                    ThemedSnackbar
+                            .make(cl_main, getString(R.string.not_logged), Snackbar.LENGTH_INDEFINITE)
+                            .setAction(getString(R.string.login)) { showLoginDialog() }
+                            .show()
+                }
+                else -> {
+                }
+            }
+        })
+
+        viewModel.teams.observe(this, Observer { state ->
+            when (state) {
+                is State.Success -> {
+                    availableTeams = state.data
+                    if (mPreferencesHelper.getCurrentTeamId() == -1) {
+                        showTeamPickerDialog(availableTeams!!)
+                    } else {
+                        onTeamSelected()
+                    }
+                }
+                is State.Failure -> {
+                    ThemedSnackbar
+                            .make(cl_main, getString(R.string.load_teams_error), Snackbar.LENGTH_INDEFINITE)
+                            .setAction(getString(R.string.retry)) { viewModel.getTeams() }
+                }
+            }
+        })
+        viewModel.getLoggedState()
+        viewModel.getTeams()
+        displayEvents()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.change_team -> {
+                availableTeams?.let { showTeamPickerDialog(it) }
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun onTeamSelected() {
+        viewModel.getEvents(true)
+    }
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -73,52 +119,38 @@ class MainActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         displayFragment(conversationsFragment)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(main_toolbar as Toolbar)
-        main_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
-
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayShowCustomEnabled(true)
-
-        viewModel.teams.observe(this, Observer { state ->
-            when (state) {
-                is State.Success -> {
-                    if (state.data.isNotEmpty()) {
-                        val spinnerArrayAdapter = ArrayAdapter<String>(
-                                this, R.layout.simple_spinner_item, state.data.map { it.name })
-                        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-                        main_spinner.adapter = spinnerArrayAdapter
-                        main_spinner.onItemSelectedListener = this
-                        displayEvents()
-                    }
-                }
-                is State.Failure -> {
-                    ThemedSnackbar
-                            .make(fragment_container, getString(R.string.load_teams_error), Snackbar.LENGTH_INDEFINITE)
-                            .setAction(getString(R.string.retry)) { viewModel.getTeams() }
-                }
-            }
-        })
-        viewModel.getTeams()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu_toolbar, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return false
+    private fun showTeamPickerDialog(teams: List<TeamEntity>) {
+        MaterialDialog(this)
+                .title(R.string.choose_team)
+                .positiveButton(R.string.select)
+                .listItemsSingleChoice(items = teams.map { team -> team.name }) { dialog, index, _ ->
+                    val selected = teams[index]
+                    mPreferencesHelper.setCurrentTeamId(selected._id)
+                    onTeamSelected()
+                    dialog.dismiss()
+                }
+                .show()
     }
 
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-        mLogger.d(TAG, "No team selected")
-    }
-
-    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        mLogger.d(TAG, "team selected")
+    private fun showLoginDialog() {
+        val loginDialog = MaterialDialog(this)
+                .customView(R.layout.dialog_login)
+        loginDialog.show()
+        val usernameInput = loginDialog.findViewById<EditText>(R.id.et_dialog_login_username)
+        val passwordInput = loginDialog.findViewById<EditText>(R.id.et_dialog_login_password)
+        val loginBtn = loginDialog.findViewById<AppCompatButton>(R.id.btn_dialog_login_login)
+        val cancelBtn = loginDialog.findViewById<AppCompatButton>(R.id.btn_dialog_login_cancel)
+        loginBtn.setOnClickListener { _ ->
+            loginDialog.dismiss()
+            viewModel.login(username = usernameInput?.text.toString(),
+                    password = passwordInput?.text.toString())
+        }
+        cancelBtn.setOnClickListener { _ -> loginDialog.dismiss() }
+        loginDialog.show()
     }
 }
