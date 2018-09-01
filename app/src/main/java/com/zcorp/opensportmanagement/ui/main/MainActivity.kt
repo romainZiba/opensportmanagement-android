@@ -17,7 +17,6 @@ import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.repository.State
-import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
@@ -47,7 +46,7 @@ class MainActivity : BaseActivity() {
         viewModel.loggedState.observe(this, Observer { state ->
             when (state) {
                 is State.Failure -> {
-                    ThemedSnackbar
+                    Snackbar
                             .make(cl_main, getString(R.string.not_logged), Snackbar.LENGTH_INDEFINITE)
                             .setAction(getString(R.string.login)) { showLoginDialog() }
                             .show()
@@ -71,9 +70,9 @@ class MainActivity : BaseActivity() {
                     }
                 }
                 is State.Failure -> {
-                    ThemedSnackbar
-                            .make(cl_main, getString(R.string.load_teams_error), Snackbar.LENGTH_INDEFINITE)
-                            .setAction(getString(R.string.retry)) { viewModel.getTeams() }
+//                    Snackbar
+//                            .make(cl_main, getString(R.string.load_teams_error), Snackbar.LENGTH_INDEFINITE)
+//                            .setAction(getString(R.string.retry)) { viewModel.getTeams() }
                 }
             }
         })

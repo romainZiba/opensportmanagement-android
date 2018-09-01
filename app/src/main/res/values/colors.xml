@@ -1,60 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/colorBluePrimary</color>
-    <color name="colorPrimaryDark">@color/black</color>
-    <color name="colorAccent">#ec9db8</color>
-    <color name="light_gray">#dbdbdb</color>
-    <color name="gray">#7e7e7e</color>
-    <color name="semi_gray">#979797</color>
-    <color name="dark_gray">#696969</color>
-    <color name="bg_color">#f7f7f7</color>
-    <color name="white">#ffffff</color>
-    <color name="black_effective">#2a2a2a</color>
-    <color name="shadow">#d0d8dc</color>
-    <color name="transparent">#00000000</color>
-    <color name="translucent_white">#88ffffff</color>
-    <color name="fb">#3b5998</color>
-    <color name="google">#d34836</color>
-    <color name="transparent_black">#4D000000</color>
-    
-    <color name="red_A200_pressed">#66FF5252</color>
-    <color name="red_A200_disabled">#42FF5252</color>
-
-    <color name="blue_500_pressed">#662196F3</color>
-    <color name="blue_500_disabled">#422196F3</color>
-
-
-    <!--Material Design colors-->
-    <color name="black">#000000</color>
-
-
-    <color name="pink_100">#F8BBD0</color>
-    <color name="pink_200">#F48FB1</color>
-    <color name="pink_300">#F06292</color>
-
-    <color name="red_A200">#FF5252</color>
-    <color name="red_A700">#D50000</color>
-    <color name="red_900">#B71C1C</color>
-
-    <color name="cyan_50">#E0F7FA</color>
-    <color name="cyan_100">#B2EBF2</color>
-    <color name="cyan_300">#4DD0E1</color>
-
-    <color name="blue_300">#4FC3F7</color>
-    <color name="blue_500">#2196F3</color>
-    <color name="blue_600">#039BE5</color>
-    <color name="blue_800">#1565C0</color>
-    <color name="blue_900">#0D47A1</color>
-
-    <color name="green_500">#4CAF50</color>
-    <color name="light_green_500">#8BC34A</color>
-
-    <color name="light_blue_200">#81D4FA</color>
-
-    <color name="grey_400">#BDBDBD</color>
-
-    <color name="yellow_500">#FFEB3B</color>
-
-    <color name="colorBluePrimary">@color/blue_900</color>
+    <color name="primaryColor">#ffa726</color>
+    <color name="primaryLightColor">#ffd95b</color>
+    <color name="primaryDarkColor">#c77800</color>
+    <color name="secondaryColor">#8e24aa</color>
+    <color name="secondaryLightColor">#c158dc</color>
+    <color name="secondaryDarkColor">#5c007a</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#ffffff</color>
 </resources>
 

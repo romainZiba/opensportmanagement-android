@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.Conversation
 import com.zcorp.opensportmanagement.repository.State
-import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.messages.MessagesActivity
 import kotlinx.android.synthetic.main.fragment_conversation_list.conversations_swipeRefreshLayout
@@ -43,7 +42,7 @@ class ConversationsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
     private val viewModel: ConversationViewModel by viewModel()
 
     fun showNetworkError() {
-        ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(R.string.retry), { viewModel.getConversations() })
                 .show()
     }

@@ -14,7 +14,6 @@ import android.widget.Toast
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.datasource.local.EventEntity
 import com.zcorp.opensportmanagement.repository.State
-import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventsAdapter
@@ -40,6 +39,24 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_event_list, container, false)
+        view.menu_events.setOnMenuButtonClickListener {
+            if (view.menu_events.isOpened) {
+                closeFloatingMenu()
+            } else {
+                openFloatingMenu()
+            }
+        }
+        view.fab_add_event.setOnClickListener {
+            closeFloatingMenu()
+            // TODO: event creation
+//            startActivity(Intent(activity, EventCreationActivity::class.java))
+        }
+        view.event_swipeRefreshLayout.setOnRefreshListener(this)
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,24 +86,6 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_event_list, container, false)
-        view.menu_events.setOnMenuButtonClickListener {
-            if (view.menu_events.isOpened) {
-                closeFloatingMenu()
-            } else {
-                openFloatingMenu()
-            }
-        }
-        view.fab_add_event.setOnClickListener {
-            closeFloatingMenu()
-            // TODO: event creation
-//            startActivity(Intent(activity, EventCreationActivity::class.java))
-        }
-        view.event_swipeRefreshLayout.setOnRefreshListener(this)
-        return view
-    }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.refresh_events -> {
@@ -102,7 +101,7 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
     }
 
     private fun showNetworkError() {
-        ThemedSnackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
+//        Snackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onEventClicked(event: EventEntity, adapterPosition: Int) {

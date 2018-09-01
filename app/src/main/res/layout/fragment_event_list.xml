@@ -44,7 +44,7 @@
             android:layout_gravity="bottom|end"
             fab:menu_animationDelayPerItem="50"
             fab:menu_backgroundColor="@android:color/transparent"
-            fab:menu_colorNormal="@color/colorAccent"
+            fab:menu_colorNormal="@color/secondaryColor"
             fab:menu_fab_size="normal"
             fab:menu_icon="@drawable/ic_add_24dp"
             fab:menu_openDirection="up">
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_local_drink_black_24dp"
-                app:fab_colorNormal="@color/red_900"
+                app:fab_colorNormal="@color/secondaryLightColor"
                 fab:fab_label="@string/event"
                 fab:fab_size="mini" />
 
@@ -63,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_airport_shuttle_black_24dp"
+                app:fab_colorNormal="@color/secondaryLightColor"
                 fab:fab_label="@string/match"
                 fab:fab_size="mini" />
 

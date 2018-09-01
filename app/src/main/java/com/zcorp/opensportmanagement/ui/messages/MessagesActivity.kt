@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.InAppMessage
-import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment.Companion.CONVERSATION_ID_KEY
 import com.zcorp.opensportmanagement.ui.messages.adapter.MessagesAdapter
@@ -53,7 +52,7 @@ class MessagesActivity : BaseActivity(), IMessagesView {
     }
 
     override fun showNewMessageIndicator() {
-        mSnackbar = ThemedSnackbar.make(findViewById<View>(android.R.id.content).rootView,
+        mSnackbar = Snackbar.make(findViewById<View>(android.R.id.content).rootView,
                 "New message available", Snackbar.LENGTH_LONG)
                 .setAction("OK", {
                     mSnackbar!!.dismiss()

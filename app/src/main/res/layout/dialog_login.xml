@@ -7,10 +7,6 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout"
         style="@style/TextInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +15,6 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/et_dialog_login_username"
             style="@style/TextInputLayout.TextInputEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:gravity="center|start|bottom"
             android:hint="@string/username" />
 
@@ -29,12 +23,8 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/til_password"
         style="@style/TextInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:hint="@string/password"
         app:errorEnabled="true"
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
@@ -43,8 +33,6 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/et_dialog_login_password"
             style="@style/TextInputLayout.TextInputEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:inputType="textPassword" />
 
     </android.support.design.widget.TextInputLayout>
