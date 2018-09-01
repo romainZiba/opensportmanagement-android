@@ -34,7 +34,7 @@ class MainActivity : BaseActivity() {
     private val conversationsFragment = ConversationsFragment()
     private val teamDetailsFragment = TeamDetailsFragment()
     private val viewModel: MainViewModel by viewModel()
-    private var availableTeams: List<TeamEntity>? = null
+    private var availableTeams: List<TeamEntity> = listOf()
     private val mPreferencesHelper: PreferencesHelper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,9 +44,9 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(main_toolbar as Toolbar)
         main_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
 
-        viewModel.loggedState.observe(this, Observer { logged ->
-            when (logged) {
-                false -> {
+        viewModel.loggedState.observe(this, Observer { state ->
+            when (state) {
+                is State.Failure -> {
                     ThemedSnackbar
                             .make(cl_main, getString(R.string.not_logged), Snackbar.LENGTH_INDEFINITE)
                             .setAction(getString(R.string.login)) { showLoginDialog() }
@@ -55,16 +55,19 @@ class MainActivity : BaseActivity() {
                 else -> {
                 }
             }
+            viewModel.getTeams()
         })
 
         viewModel.teams.observe(this, Observer { state ->
             when (state) {
                 is State.Success -> {
                     availableTeams = state.data
-                    if (mPreferencesHelper.getCurrentTeamId() == -1) {
-                        showTeamPickerDialog(availableTeams!!)
-                    } else {
-                        onTeamSelected()
+                    if (availableTeams.isNotEmpty()) {
+                        if (mPreferencesHelper.getCurrentTeamId() == -1) {
+                            showTeamPickerDialog(availableTeams)
+                        } else {
+                            onTeamSelected()
+                        }
                     }
                 }
                 is State.Failure -> {
@@ -74,15 +77,16 @@ class MainActivity : BaseActivity() {
                 }
             }
         })
-        viewModel.getLoggedState()
-        viewModel.getTeams()
+        viewModel.getUserInformation()
         displayEvents()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.change_team -> {
-                availableTeams?.let { showTeamPickerDialog(it) }
+                if (availableTeams.isNotEmpty()) {
+                    showTeamPickerDialog(availableTeams)
+                }
                 return true
             }
         }

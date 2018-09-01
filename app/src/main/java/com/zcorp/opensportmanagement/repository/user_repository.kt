@@ -18,18 +18,12 @@ import io.reactivex.subjects.BehaviorSubject
 interface UserRepository {
     fun login(username: String, password: String): Single<AccountDto>
     fun getUserInformation(): Single<AccountDto>
-    val userLoggedObservable: Observable<Optional<Boolean>>
 }
 
 class UserRepositoryImpl(
         private val mUserApi: UserApi,
         private val mPreferences: PreferencesHelper
 ) : UserRepository {
-
-    private val mUserLoggedSubject = BehaviorSubject.createDefault<Optional<Boolean>>(Optional.empty())
-    override val userLoggedObservable: Observable<Optional<Boolean>>
-        get() = mUserLoggedSubject
-
     override fun login(username: String, password: String): Single<AccountDto> {
         val loginRequest = LoginRequest(username, password)
         return mUserApi.login(loginRequest)
@@ -37,14 +31,11 @@ class UserRepositoryImpl(
                 .flatMap { mUserApi.whoAmI() }
                 .doOnSuccess { account: AccountDto ->
                     saveUserDetails(account)
-                    mUserLoggedSubject.onNext(Optional.of(true))
                 }
     }
 
     override fun getUserInformation(): Single<AccountDto> {
         return mUserApi.whoAmI()
-                .doOnSuccess { mUserLoggedSubject.onNext(Optional.of(true)) }
-                .doOnError { mUserLoggedSubject.onNext(Optional.of(false)) }
     }
 
     @WorkerThread

@@ -33,42 +33,41 @@ class MainViewModel(
     val states: LiveData<State<List<EventEntity>>>
         get() = mStates
 
-    private val mLoggedState = MutableLiveData<Boolean>()
-    val loggedState: LiveData<Boolean>
+    private val mLoggedState = MutableLiveData<State<Boolean>>()
+    val loggedState: LiveData<State<Boolean>>
         get() = mLoggedState
-
-    fun getLoggedState() {
-        launch {
-            mUserRepository.userLoggedObservable
-                    .with(mSchedulerProvider)
-                    .doOnNext { logged: Optional<Boolean> -> if (logged.isNotPresent()) { getUserInformation() }  }
-                    .filter { it.isPresent() }
-                    .subscribe { logged ->
-                        mLoggedState.value = logged.get()
-                    }
-        }
-    }
 
     fun login(username: String, password: String) {
         launch {
             mUserRepository.login(username, password)
                     .with(mSchedulerProvider)
-                    .subscribe()
+                    .subscribe({
+                        mLoggedState.value = State.success(true)
+                    }, {
+                        mLoggedState.value = State.failure(it.localizedMessage)
+                    })
         }
     }
 
-    private fun getUserInformation() {
+    fun getUserInformation() {
         launch {
             mUserRepository.getUserInformation()
                     .with(mSchedulerProvider)
-                    .subscribe({}, {})
+                    .subscribe({
+                        mLoggedState.value = State.success(true)
+                    }, {
+                        mLoggedState.value = State.failure(it.localizedMessage)
+                    })
         }
     }
 
+    private var teamsDisposable: Disposable? = null
+
     fun getTeams() {
+        teamsDisposable?.dispose()
         mTeamStates.value = State.loading(true)
         launch {
-            mTeamRepository.getTeams(forceRefresh = true)
+            teamsDisposable = mTeamRepository.getTeams(forceRefresh = true)
                     .with(mSchedulerProvider)
                     .subscribe { resource: Resource<List<TeamEntity>> ->
                         when (resource.status) {
@@ -78,6 +77,7 @@ class MainViewModel(
                             }
                         }
                     }
+            return@launch teamsDisposable!!
         }
     }
 
