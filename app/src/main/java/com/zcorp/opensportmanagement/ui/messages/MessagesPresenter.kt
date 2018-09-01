@@ -32,11 +32,11 @@ class MessagesPresenter(
         this.mConversationId = conversationId
     }
 
-    override fun onAttach(view: IMessagesView, vararg args: Serializable) {
-        this.getMessages()
-        mMessagesView = view
-        configureWebsocketConnection()
-    }
+//    override fun onAttach(view: IMessagesView, vararg args: Serializable) {
+//        this.getMessages()
+//        mMessagesView = view
+//        configureWebsocketConnection()
+//    }
 
     private fun configureWebsocketConnection() {
 //        mStompClient = mStompClientProvider.client("$WSSCHEME://${BuildConfig.HOST}:$PORT/messagesWS/websocket")
@@ -73,11 +73,11 @@ class MessagesPresenter(
 //        })
     }
 
-    override fun onDetach() {
-        mDisposables.clear()
-        mMessagesView = null
-        mStompClient.disconnect()
-    }
+//    override fun onDetach() {
+//        mDisposables.clear()
+//        mMessagesView = null
+//        mStompClient.disconnect()
+//    }
 
     override fun getMessages() {
         mDisposables.add(mMessagesApi.getMessagesOrderedByDate(mConversationId)
@@ -102,7 +102,7 @@ class MessagesPresenter(
                     mMessagesView?.showNetworkError()
                 })
         )
-        mMessagesView?.closeSoftKeyboard()
+//        mMessagesView?.closeSoftKeyboard()
         mMessagesView?.clearInputMessage()
     }
 

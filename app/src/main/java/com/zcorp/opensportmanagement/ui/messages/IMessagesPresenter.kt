@@ -1,11 +1,9 @@
 package com.zcorp.opensportmanagement.ui.messages
 
-import com.zcorp.opensportmanagement.ui.base.IBasePresenter
-
 /**
  * Created by romainz on 17/02/18.
  */
-interface IMessagesPresenter : IBasePresenter<IMessagesView> {
+interface IMessagesPresenter {
     fun getMessages()
     fun postMessage(stringMessage: String)
     fun getCurrentUserName(): String

@@ -3,9 +3,9 @@ package com.zcorp.opensportmanagement.data.datasource.local.converter
 import android.arch.persistence.room.TypeConverter
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.Role
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.TeamMemberDto
 import com.zcorp.opensportmanagement.model.Team
-import com.zcorp.opensportmanagement.model.TeamMember
 
 class Converters {
 
@@ -63,5 +63,15 @@ class Converters {
     @TypeConverter
     fun ageGroupToString(ageGroup: Team.AgeGroup): String {
         return ageGroup.toString()
+    }
+
+    @TypeConverter
+    fun rolesToString(roles: Set<Role>): String {
+        return mapper.writeValueAsString(roles)
+    }
+
+    @TypeConverter
+    fun stringToRoles(str: String?): Set<Role> {
+        return if (str == null) emptySet() else mapper.readValue(str)
     }
 }

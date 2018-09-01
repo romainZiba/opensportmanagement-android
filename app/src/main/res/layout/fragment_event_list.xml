@@ -40,17 +40,13 @@
 
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/menu_events"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/FloatingActionButton"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             fab:menu_animationDelayPerItem="50"
             fab:menu_backgroundColor="@android:color/transparent"
-            fab:menu_colorNormal="#DA4336"
+            fab:menu_colorNormal="@color/colorAccent"
             fab:menu_fab_size="normal"
-            fab:menu_icon="@drawable/fab_add"
+            fab:menu_icon="@drawable/ic_add_24dp"
             fab:menu_openDirection="up">
 
             <com.github.clans.fab.FloatingActionButton

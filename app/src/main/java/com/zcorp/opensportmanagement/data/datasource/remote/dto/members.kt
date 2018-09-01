@@ -8,6 +8,7 @@ data class TeamMemberDto(
         val licenceNumber: String,
         val email: String,
         val phoneNumber: String?,
+        val teamId: Int,
         val _id: Int
 )
 

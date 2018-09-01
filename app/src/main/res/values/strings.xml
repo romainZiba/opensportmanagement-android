@@ -87,4 +87,6 @@
     <string name="use_offline">Use offline</string>
     <string name="account_details">My profile</string>
     <string name="title_team">Team</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>

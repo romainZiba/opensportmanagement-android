@@ -21,6 +21,7 @@ import com.zcorp.opensportmanagement.ui.ThemedSnackbar
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
+import com.zcorp.opensportmanagement.ui.main.fragments.team_details.TeamDetailsFragment
 import kotlinx.android.synthetic.main.activity_main.cl_main
 import kotlinx.android.synthetic.main.activity_main.main_navigation
 import kotlinx.android.synthetic.main.activity_main.main_toolbar
@@ -31,6 +32,7 @@ class MainActivity : BaseActivity() {
 
     private val eventsFragment = EventsFragment()
     private val conversationsFragment = ConversationsFragment()
+    private val teamDetailsFragment = TeamDetailsFragment()
     private val viewModel: MainViewModel by viewModel()
     private var availableTeams: List<TeamEntity>? = null
     private val mPreferencesHelper: PreferencesHelper by inject()
@@ -101,6 +103,10 @@ class MainActivity : BaseActivity() {
                 displayConversations()
                 return@OnNavigationItemSelectedListener true
             }
+            R.id.navigation_team -> {
+                displayTeamDetails()
+                return@OnNavigationItemSelectedListener true
+            }
         }
         false
     }
@@ -117,6 +123,10 @@ class MainActivity : BaseActivity() {
 
     private fun displayConversations() {
         displayFragment(conversationsFragment)
+    }
+
+    private fun displayTeamDetails() {
+        displayFragment(teamDetailsFragment)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

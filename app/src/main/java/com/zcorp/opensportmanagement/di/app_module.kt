@@ -27,6 +27,7 @@ import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
 import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationViewModel
+import com.zcorp.opensportmanagement.ui.main.fragments.team_details.TeamDetailsViewModel
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.log.Logger
 import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider
@@ -44,14 +45,14 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 val appModule = applicationContext {
 
     bean { UserRepositoryImpl(get(), get()) as UserRepository }
-    context("repo") {
-        viewModel { MainViewModel(get(), get(), get(), get(), get()) }
-        viewModel { ConversationViewModel(get(), get()) }
+    viewModel { MainViewModel(get(), get(), get(), get(), get()) }
+    viewModel { ConversationViewModel(get(), get()) }
+    viewModel { TeamDetailsViewModel(get(), get(), get()) }
 
-        bean { EventRepositoryImpl(get(), get()) as EventRepository }
-        bean { MessageRepositoryImpl(get()) as MessageRepository }
-        bean { TeamRepositoryImpl(get(), get(), get()) as TeamRepository }
-    }
+    bean { EventRepositoryImpl(get(), get()) as EventRepository }
+    bean { MessageRepositoryImpl(get()) as MessageRepository }
+    bean { TeamRepositoryImpl(get(), get(), get()) as TeamRepository }
+
 
     bean { Logger() as ILogger }
     bean { PreferencesHelperImpl(androidApplication(), "preferences") as PreferencesHelper }

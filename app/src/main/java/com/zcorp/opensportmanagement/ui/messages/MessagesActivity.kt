@@ -77,11 +77,9 @@ class MessagesActivity : BaseActivity(), IMessagesView {
         btn_send_message.setOnClickListener { presenter.postMessage(et_message.text.toString()) }
         val layoutManager = rv_messages_list.layoutManager as LinearLayoutManager
         layoutManager.stackFromEnd = true
-        presenter.onAttach(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        presenter.onDetach()
     }
 }

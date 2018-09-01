@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment
 /**
  * Created by romainz on 16/02/18.
  */
-abstract class BaseFragment : Fragment(), IBaseView {
+abstract class BaseFragment : Fragment() {
 
     protected var mActivity: BaseActivity? = null
 
@@ -20,9 +20,5 @@ abstract class BaseFragment : Fragment(), IBaseView {
     override fun onDetach() {
         super.onDetach()
         this.mActivity = null
-    }
-
-    override fun closeSoftKeyboard() {
-        mActivity?.closeSoftKeyboard()
     }
 }

@@ -51,7 +51,7 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         rv_events_list.apply {
             adapter = mEventsAdapter
             layoutManager = mLayoutManager
-            val dividerItemDecoration = DividerItemDecoration(rv_events_list.context, mLayoutManager.orientation)
+            val dividerItemDecoration = DividerItemDecoration(this.context, mLayoutManager.orientation)
             this.addItemDecoration(dividerItemDecoration)
         }
 

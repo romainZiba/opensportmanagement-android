@@ -7,14 +7,14 @@ import android.view.inputmethod.InputMethodManager
 /**
  * Created by romainz on 10/02/18.
  */
-abstract class BaseActivity : AppCompatActivity(), IBaseView {
+abstract class BaseActivity : AppCompatActivity() {
 
     companion object {
         const val DIRECTION_SCROLL_DOWN = 1
         const val DIRECTION_SCROLL_UP = -1
     }
 
-    override fun closeSoftKeyboard() {
+    fun closeSoftKeyboard() {
         val view = this.currentFocus
         if (view != null) {
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
