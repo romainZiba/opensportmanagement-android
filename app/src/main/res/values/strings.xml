@@ -85,4 +85,6 @@
     <string name="choose_team">Choose a team</string>
     <string name="switch_team">Switch team</string>
     <string name="use_offline">Use offline</string>
+    <string name="account_details">My profile</string>
+    <string name="title_team">Team</string>
 </resources>
