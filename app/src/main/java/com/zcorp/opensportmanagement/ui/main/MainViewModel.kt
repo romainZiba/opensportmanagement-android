@@ -28,9 +28,9 @@ class MainViewModel(
     val teams: LiveData<State<List<TeamEntity>>>
         get() = mTeamStates
 
-    private val mStates = MutableLiveData<State<List<EventEntity>>>()
-    val states: LiveData<State<List<EventEntity>>>
-        get() = mStates
+    private val mEventStates = MutableLiveData<State<List<EventEntity>>>()
+    val eventStates: LiveData<State<List<EventEntity>>>
+        get() = mEventStates
 
     private val mLoggedState = MutableLiveData<State<Boolean>>()
     val loggedState: LiveData<State<Boolean>>
@@ -70,8 +70,15 @@ class MainViewModel(
                     .with(mSchedulerProvider)
                     .subscribe { resource: Resource<List<TeamEntity>> ->
                         when (resource.status) {
-                            Status.ERROR -> mTeamStates.value = State.failure(resource.message)
-                            else -> {
+                            Status.ERROR -> {
+                                mTeamStates.value = State.loading(false)
+                                mTeamStates.value = State.failure(resource.message)
+                            }
+                            Status.LOADING -> {
+                                mTeamStates.value = State.success(resource.data ?: emptyList())
+                            }
+                            Status.SUCCESS -> {
+                                mTeamStates.value = State.loading(false)
                                 mTeamStates.value = State.success(resource.data ?: emptyList())
                             }
                         }
@@ -84,18 +91,25 @@ class MainViewModel(
 
     fun getEvents(forceRefresh: Boolean = false) {
         eventsDisposable?.dispose()
-        mStates.value = State.loading(true)
+        mEventStates.value = State.loading(true)
         launch {
             eventsDisposable = mEventRepository.loadEvents(mPreferencesHelper.getCurrentTeamId(), forceRefresh)
                     .with(mSchedulerProvider)
                     .subscribe { resource ->
-                        mStates.value = State.loading(false)
                         when (resource.status) {
                             Status.ERROR -> {
-                                mStates.value = State.failure(resource.message)
+                                mEventStates.value = State.loading(false)
+                                mEventStates.value = State.failure(resource.message)
                             }
-                            else -> {
-                                mStates.value = State.success(resource.data!!)
+                            Status.LOADING -> {
+                                if (!forceRefresh) {
+                                    mEventStates.value = State.loading(false)
+                                }
+                                mEventStates.value = State.successFromDb(resource.data!!)
+                            }
+                            Status.SUCCESS -> {
+                                mEventStates.value = State.loading(false)
+                                mEventStates.value = State.success(resource.data!!)
                             }
                         }
                     }

@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
+import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
@@ -46,8 +47,7 @@ class MainActivity : BaseActivity() {
         viewModel.loggedState.observe(this, Observer { state ->
             when (state) {
                 is State.Failure -> {
-                    Snackbar
-                            .make(cl_main, getString(R.string.not_logged), Snackbar.LENGTH_INDEFINITE)
+                    Snackbar.make(cl_main, getString(R.string.not_logged), Snackbar.LENGTH_INDEFINITE)
                             .setAction(getString(R.string.login)) { showLoginDialog() }
                             .show()
                 }
@@ -59,25 +59,26 @@ class MainActivity : BaseActivity() {
 
         viewModel.teams.observe(this, Observer { state ->
             when (state) {
-                is State.Success -> {
-                    availableTeams = state.data
-                    if (availableTeams.isNotEmpty()) {
-                        if (mPreferencesHelper.getCurrentTeamId() == -1) {
-                            showTeamPickerDialog(availableTeams)
-                        } else {
-                            onTeamSelected()
-                        }
-                    }
-                }
+                is State.SuccessFromDb -> handleTeams(state.data)
+                is State.Success -> handleTeams(state.data)
                 is State.Failure -> {
-//                    Snackbar
-//                            .make(cl_main, getString(R.string.load_teams_error), Snackbar.LENGTH_INDEFINITE)
-//                            .setAction(getString(R.string.retry)) { viewModel.getTeams() }
+                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_LONG).show()
                 }
             }
         })
         viewModel.getUserInformation()
         displayEvents()
+    }
+
+    private fun handleTeams(teams: List<TeamEntity>) {
+        availableTeams = teams
+        if (availableTeams.isNotEmpty()) {
+            if (mPreferencesHelper.getCurrentTeamId() == -1) {
+                showTeamPickerDialog(availableTeams)
+            } else {
+                onTeamSelected()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

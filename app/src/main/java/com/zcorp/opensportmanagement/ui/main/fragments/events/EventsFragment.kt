@@ -70,18 +70,22 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
             this.addItemDecoration(dividerItemDecoration)
         }
 
-        viewModel.states.observe(this, Observer {
-            when (it) {
+        viewModel.eventStates.observe(this, Observer { state ->
+            when (state) {
                 is State.Failure -> showNetworkError()
                 is State.Progress -> {
-                    if (it.loading) showProgress()
+                    if (state.loading) showProgress()
                     else hideProgress()
                 }
+                is State.SuccessFromDb -> {
+                    mEventsAdapter.updateEvents(state.data)
+                }
                 is State.Success -> {
-                    mEventsAdapter.updateEvents(it.data)
+                    mEventsAdapter.updateEvents(state.data)
                 }
             }
         })
+        viewModel.getEvents()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -99,7 +103,7 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
     }
 
     private fun showNetworkError() {
-//        Snackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_LONG).show()
+        Toast.makeText(activity, getString(R.string.network_error), Toast.LENGTH_LONG).show()
     }
 
     override fun onEventClicked(event: EventEntity, adapterPosition: Int) {
