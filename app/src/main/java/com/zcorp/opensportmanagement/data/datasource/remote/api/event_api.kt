@@ -22,7 +22,7 @@ interface EventApi {
     fun getMatch(id: Int): Single<EventDto>
 }
 
-class EventApiImpl(private val retrofit: Retrofit): EventApi {
+class EventApiImpl(private val retrofit: Retrofit) : EventApi {
     override fun getEvent(id: Int): Single<EventDto> {
         return retrofit.create(EventApi::class.java).getEvent(id)
     }

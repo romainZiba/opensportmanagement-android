@@ -21,8 +21,8 @@ interface PreferencesHelper {
 }
 
 class PreferencesHelperImpl(
-        private val context: Context,
-        private val prefFileName: String
+    private val context: Context,
+    private val prefFileName: String
 ) : PreferencesHelper {
 
     private val mPrefs: SharedPreferences = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE)
@@ -68,7 +68,7 @@ class PreferencesHelperImpl(
     }
 
     override fun clear() {
-        with (mPrefs.edit()) {
+        with(mPrefs.edit()) {
             clear()
             apply()
         }

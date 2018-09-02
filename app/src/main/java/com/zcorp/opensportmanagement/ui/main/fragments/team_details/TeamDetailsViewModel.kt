@@ -14,9 +14,9 @@ import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.with
 
 class TeamDetailsViewModel(
-        private val mTeamRepository: TeamRepository,
-        private val mPreferencesHelper: PreferencesHelper,
-        private val mSchedulerProvider: SchedulerProvider
+    private val mTeamRepository: TeamRepository,
+    private val mPreferencesHelper: PreferencesHelper,
+    private val mSchedulerProvider: SchedulerProvider
 ) : RxViewModel() {
 
     private val mStates = MutableLiveData<State<List<TeamMember>>>()

@@ -27,7 +27,7 @@ interface MessagesApi {
     ): Single<InAppMessage>
 }
 
-class MessagesApiImpl(private val retrofit: Retrofit): MessagesApi {
+class MessagesApiImpl(private val retrofit: Retrofit) : MessagesApi {
     override fun getConversations(): Single<List<Conversation>> {
         return retrofit.create(MessagesApi::class.java).getConversations()
     }

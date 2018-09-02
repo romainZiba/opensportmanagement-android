@@ -5,20 +5,18 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.Role
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.TeamMemberDto
-import com.zcorp.opensportmanagement.dto.TeamDto
-import com.zcorp.opensportmanagement.model.Team
 
 @Entity(tableName = "members")
 data class TeamMemberEntity(
-        @PrimaryKey val _id: Int,
-        @ColumnInfo(name = "username") val username: String,
-        @ColumnInfo(name = "first_name") val firstName: String,
-        @ColumnInfo(name = "last_name") val lastName: String,
-        @ColumnInfo(name = "roles") val roles: Set<Role>,
-        @ColumnInfo(name = "licence_number") val licenceNumber: String,
-        @ColumnInfo(name = "email") val email: String,
-        @ColumnInfo(name = "team_id") val teamId: Int,
-        @ColumnInfo(name = "phone_number") val phoneNumber: String? = null
+    @PrimaryKey val _id: Int,
+    @ColumnInfo(name = "username") val username: String,
+    @ColumnInfo(name = "first_name") val firstName: String,
+    @ColumnInfo(name = "last_name") val lastName: String,
+    @ColumnInfo(name = "roles") val roles: Set<Role>,
+    @ColumnInfo(name = "licence_number") val licenceNumber: String,
+    @ColumnInfo(name = "email") val email: String,
+    @ColumnInfo(name = "team_id") val teamId: Int,
+    @ColumnInfo(name = "phone_number") val phoneNumber: String? = null
 ) {
     companion object {
         fun from(dto: TeamMemberDto) = TeamMemberEntity(

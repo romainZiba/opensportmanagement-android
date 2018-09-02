@@ -13,7 +13,6 @@ import com.imminov.equisure.view.base.BaseListFragment
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.TeamMember
 import com.zcorp.opensportmanagement.repository.State
-import kotlinx.android.synthetic.main.fragment_event_list.rv_events_list
 import kotlinx.android.synthetic.main.fragment_team_details.fab_add_team_member
 import kotlinx.android.synthetic.main.fragment_team_details.rv_team_members
 import org.koin.android.architecture.ext.viewModel
@@ -27,7 +26,6 @@ class TeamDetailsFragment : BaseListFragment<TeamMember>() {
     override val recyclerView: RecyclerView?
         get() = activity?.findViewById(R.id.rv_team_members)
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_team_details, container, false)
     }
@@ -35,7 +33,6 @@ class TeamDetailsFragment : BaseListFragment<TeamMember>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fab_add_team_member.setOnClickListener {
-
         }
 
         mTeamMembersAdapter = TeamMembersAdapter(listOf(), this)
@@ -54,17 +51,16 @@ class TeamDetailsFragment : BaseListFragment<TeamMember>() {
                     mItems = state.data
                     rv_team_members.adapter = TeamMembersAdapter(state.data, this)
                 }
-
             }
         })
         viewModel.getTeamMembers()
     }
 
     override fun buildIntent(selectedItem: Int): Intent {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun deleteSelectedItems(items: List<TeamMember>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -18,8 +18,8 @@ interface EventRepository {
 }
 
 class EventRepositoryImpl(
-        private val mEventApi: EventApi,
-        private val mEventDao: EventDao
+    private val mEventApi: EventApi,
+    private val mEventDao: EventDao
 ) : EventRepository {
 
     override fun loadEvents(teamId: Int, forceRefresh: Boolean): Flowable<Resource<List<EventEntity>>> {

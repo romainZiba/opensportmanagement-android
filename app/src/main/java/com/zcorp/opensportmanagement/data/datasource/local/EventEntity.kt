@@ -11,22 +11,22 @@ import org.threeten.bp.LocalDateTime
 
 @Entity(tableName = "event")
 data class EventEntity(
-        @PrimaryKey val _id: Int,
-        val name: String,
-        @ColumnInfo(name = "team_id")
-        val teamId: Int,
-        @ColumnInfo(name = "from_date")
-        val fromDateTime: LocalDateTime,
-        @ColumnInfo(name = "to_date")
-        val toDateTime: LocalDateTime? = null,
-        val place: String,
-        @ColumnInfo(name = "present_members")
-        @TypeConverters(Converters::class)
-        var presentTeamMembers: List<TeamMemberDto> = listOf(),
-        @ColumnInfo(name = "absent_members")
-        @TypeConverters(Converters::class)
-        var absentTeamMembers: List<TeamMemberDto> = listOf(),
-        val opponent: String? = null
+    @PrimaryKey val _id: Int,
+    val name: String,
+    @ColumnInfo(name = "team_id")
+    val teamId: Int,
+    @ColumnInfo(name = "from_date")
+    val fromDateTime: LocalDateTime,
+    @ColumnInfo(name = "to_date")
+    val toDateTime: LocalDateTime? = null,
+    val place: String,
+    @ColumnInfo(name = "present_members")
+    @TypeConverters(Converters::class)
+    var presentTeamMembers: List<TeamMemberDto> = listOf(),
+    @ColumnInfo(name = "absent_members")
+    @TypeConverters(Converters::class)
+    var absentTeamMembers: List<TeamMemberDto> = listOf(),
+    val opponent: String? = null
 ) {
     companion object {
         fun from(dto: EventDto) = EventEntity(

@@ -53,11 +53,9 @@ val appModule = applicationContext {
     bean { MessageRepositoryImpl(get()) as MessageRepository }
     bean { TeamRepositoryImpl(get(), get(), get()) as TeamRepository }
 
-
     bean { Logger() as ILogger }
     bean { PreferencesHelperImpl(androidApplication(), "preferences") as PreferencesHelper }
     bean { AppSchedulerProvider() as SchedulerProvider }
-
 
     // Room Database
     bean {

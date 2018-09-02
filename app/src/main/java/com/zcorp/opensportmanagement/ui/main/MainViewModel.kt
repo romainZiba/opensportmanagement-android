@@ -12,17 +12,16 @@ import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.repository.Status
 import com.zcorp.opensportmanagement.repository.TeamRepository
 import com.zcorp.opensportmanagement.repository.UserRepository
-import com.zcorp.opensportmanagement.utils.Optional
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.with
 import io.reactivex.disposables.Disposable
 
 class MainViewModel(
-        private val mUserRepository: UserRepository,
-        private val mTeamRepository: TeamRepository,
-        private val mEventRepository: EventRepository,
-        private val mPreferencesHelper: PreferencesHelper,
-        private val mSchedulerProvider: SchedulerProvider
+    private val mUserRepository: UserRepository,
+    private val mTeamRepository: TeamRepository,
+    private val mEventRepository: EventRepository,
+    private val mPreferencesHelper: PreferencesHelper,
+    private val mSchedulerProvider: SchedulerProvider
 ) : RxViewModel() {
 
     private val mTeamStates = MutableLiveData<State<List<TeamEntity>>>()

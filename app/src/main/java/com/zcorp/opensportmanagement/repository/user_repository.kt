@@ -5,11 +5,7 @@ import com.zcorp.opensportmanagement.data.datasource.remote.api.UserApi
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.AccountDto
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.LoginRequest
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
-import com.zcorp.opensportmanagement.model.User
-import com.zcorp.opensportmanagement.utils.Optional
-import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
 
 /**
  * UserRepositoryImpl is responsible for providing a clean API for ViewModel so that viewmodel does not
@@ -21,8 +17,8 @@ interface UserRepository {
 }
 
 class UserRepositoryImpl(
-        private val mUserApi: UserApi,
-        private val mPreferences: PreferencesHelper
+    private val mUserApi: UserApi,
+    private val mPreferences: PreferencesHelper
 ) : UserRepository {
     override fun login(username: String, password: String): Single<AccountDto> {
         val loginRequest = LoginRequest(username, password)

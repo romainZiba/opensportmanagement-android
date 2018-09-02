@@ -2,7 +2,6 @@ package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -25,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_event_list.view.event_swipeRefres
 import kotlinx.android.synthetic.main.fragment_event_list.view.fab_add_event
 import kotlinx.android.synthetic.main.fragment_event_list.view.menu_events
 import org.koin.android.architecture.ext.sharedViewModel
-
 
 /**
  * A fragment showing a list of Events.

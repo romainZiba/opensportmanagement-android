@@ -12,8 +12,8 @@ import com.zcorp.opensportmanagement.model.TeamMember
 import kotlinx.android.synthetic.main.rv_item_team_member.view.tv_team_member_name
 
 class TeamMembersAdapter(
-        private val mValues: List<TeamMember>,
-        mListener: RecyclerViewClickListener
+    private val mValues: List<TeamMember>,
+    mListener: RecyclerViewClickListener
 ) : BaseRecyclerViewAdapter<TeamMember, TeamMembersAdapter.ViewHolder>(mValues, mListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

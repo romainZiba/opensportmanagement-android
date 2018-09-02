@@ -7,17 +7,16 @@ import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import ua.naiksoftware.stomp.client.StompClient
-import java.io.Serializable
 
 /**
  * Created by romainz on 17/02/18.
  */
 class MessagesPresenter(
-        private val mMessagesApi: MessagesApi,
-        private val mPreferencesHelper: PreferencesHelper,
-        private val mSchedulerProvider: SchedulerProvider,
-        private val mDisposables: CompositeDisposable,
-        private val mLogger: ILogger
+    private val mMessagesApi: MessagesApi,
+    private val mPreferencesHelper: PreferencesHelper,
+    private val mSchedulerProvider: SchedulerProvider,
+    private val mDisposables: CompositeDisposable,
+    private val mLogger: ILogger
 ) : IMessagesPresenter {
 
     companion object {
