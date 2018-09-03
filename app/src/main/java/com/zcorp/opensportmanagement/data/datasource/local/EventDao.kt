@@ -1,5 +1,6 @@
 package com.zcorp.opensportmanagement.data.datasource.local
 
+import android.arch.paging.DataSource
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
@@ -14,6 +15,6 @@ interface EventDao {
     @Insert(onConflict = REPLACE)
     fun saveEvent(entity: EventEntity)
 
-    @Query("SELECT * FROM event WHERE team_id = :teamId")
-    fun loadEvents(teamId: Int): Flowable<List<EventEntity>>
+    @Query("SELECT * FROM event WHERE team_id = :teamId ORDER BY from_date ASC")
+    fun loadEvents(teamId: Int): DataSource.Factory<Int, EventEntity>
 }

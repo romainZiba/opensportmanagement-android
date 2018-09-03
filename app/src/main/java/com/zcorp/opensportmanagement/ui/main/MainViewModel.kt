@@ -2,11 +2,14 @@ package com.zcorp.opensportmanagement.ui.main
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.zcorp.opensportmanagement.data.datasource.local.EventEntity
+import android.arch.paging.PagedList
 import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.mvvm.RxViewModel
 import com.zcorp.opensportmanagement.repository.EventRepository
+import com.zcorp.opensportmanagement.repository.Listing
+import com.zcorp.opensportmanagement.repository.NetworkState
 import com.zcorp.opensportmanagement.repository.Resource
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.repository.Status
@@ -17,24 +20,21 @@ import com.zcorp.opensportmanagement.utils.rx.with
 import io.reactivex.disposables.Disposable
 
 class MainViewModel(
-    private val mUserRepository: UserRepository,
-    private val mTeamRepository: TeamRepository,
-    private val mEventRepository: EventRepository,
-    private val mPreferencesHelper: PreferencesHelper,
-    private val mSchedulerProvider: SchedulerProvider
+        private val mUserRepository: UserRepository,
+        private val mTeamRepository: TeamRepository,
+        private val mEventRepository: EventRepository,
+        private val mSchedulerProvider: SchedulerProvider
 ) : RxViewModel() {
 
     private val mTeamStates = MutableLiveData<State<List<TeamEntity>>>()
     val teams: LiveData<State<List<TeamEntity>>>
         get() = mTeamStates
 
-    private val mEventStates = MutableLiveData<State<List<EventEntity>>>()
-    val eventStates: LiveData<State<List<EventEntity>>>
-        get() = mEventStates
-
     private val mLoggedState = MutableLiveData<State<Boolean>>()
     val loggedState: LiveData<State<Boolean>>
         get() = mLoggedState
+
+    private val mEventsResults = mEventRepository.loadEvents()
 
     fun login(username: String, password: String) {
         launch {
@@ -84,36 +84,6 @@ class MainViewModel(
                         }
                     }
             return@launch teamsDisposable!!
-        }
-    }
-
-    private var eventsDisposable: Disposable? = null
-
-    fun getEvents(forceRefresh: Boolean = false) {
-        eventsDisposable?.dispose()
-        mEventStates.value = State.loading(true)
-        launch {
-            eventsDisposable = mEventRepository.loadEvents(mPreferencesHelper.getCurrentTeamId(), forceRefresh)
-                    .with(mSchedulerProvider)
-                    .subscribe { resource ->
-                        when (resource.status) {
-                            Status.ERROR -> {
-                                mEventStates.value = State.loading(false)
-                                mEventStates.value = State.failure(resource.message)
-                            }
-                            Status.LOADING -> {
-                                if (!forceRefresh) {
-                                    mEventStates.value = State.loading(false)
-                                }
-                                mEventStates.value = State.successFromDb(resource.data!!)
-                            }
-                            Status.SUCCESS -> {
-                                mEventStates.value = State.loading(false)
-                                mEventStates.value = State.success(resource.data!!)
-                            }
-                        }
-                    }
-            return@launch eventsDisposable!!
         }
     }
 }

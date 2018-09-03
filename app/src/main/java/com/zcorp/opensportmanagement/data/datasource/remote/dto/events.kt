@@ -9,7 +9,7 @@ const val match = "MATCH"
 const val other = "OTHER"
 const val training = "TRAINING"
 
-data class EventDtosPage(
+data class EventDtos(
     val _embedded: Embedded? = null,
     val _links: Links,
     val page: Page
@@ -22,16 +22,20 @@ data class Page(
     val number: Int
 )
 
-data class Links(
-    val self: Self
-)
-
-data class Self(
-    val href: String
-)
-
 data class Embedded(
     val eventDtoes: List<EventDto>
+)
+
+data class Links(
+    val self: Link,
+    val last: Link? = null,
+    val first: Link? = null,
+    val prev: Link? = null,
+    val next: Link? = null
+)
+
+data class Link(
+    val href: String
 )
 
 data class EventDto(

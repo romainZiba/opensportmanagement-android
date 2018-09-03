@@ -2,18 +2,21 @@ package com.zcorp.opensportmanagement.data.datasource.remote.api
 
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventCreationDto
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
-import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDtosPage
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDtos
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * Created by romainz on 01/02/18.
  */
 interface EventApi {
     @GET("/teams/{teamId}/events")
-    fun getEvents(@Path("teamId") teamId: Int): Single<EventDtosPage>
+    fun getEvents(@Path("teamId") teamId: Int,
+                  @Query("page") page: Int = 0,
+                  @Query("size") size: Int = 5): Single<EventDtos>
 
     fun createEvent(eventDto: EventCreationDto): Single<EventDto>
 
@@ -31,8 +34,8 @@ class EventApiImpl(private val retrofit: Retrofit) : EventApi {
         return retrofit.create(EventApi::class.java).getMatch(id)
     }
 
-    override fun getEvents(teamId: Int): Single<EventDtosPage> {
-        return retrofit.create(EventApi::class.java).getEvents(teamId)
+    override fun getEvents(teamId: Int, page: Int, size: Int): Single<EventDtos> {
+        return retrofit.create(EventApi::class.java).getEvents(teamId, page, size)
     }
 
     override fun createEvent(eventDto: EventCreationDto): Single<EventDto> {

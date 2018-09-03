@@ -94,7 +94,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onTeamSelected() {
-        viewModel.getEvents(true)
+        eventsFragment.onTeamSelected()
     }
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->

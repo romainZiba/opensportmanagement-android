@@ -27,6 +27,7 @@ import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
 import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationViewModel
+import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.team_details.TeamDetailsViewModel
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.log.Logger
@@ -41,15 +42,21 @@ import org.koin.dsl.module.applicationContext
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 val appModule = applicationContext {
 
     bean { UserRepositoryImpl(get(), get()) as UserRepository }
-    viewModel { MainViewModel(get(), get(), get(), get(), get()) }
+    viewModel { MainViewModel(get(), get(), get(), get()) }
     viewModel { ConversationViewModel(get(), get()) }
     viewModel { TeamDetailsViewModel(get(), get(), get()) }
+    viewModel { EventsViewModel(get(), get()) }
 
-    bean { EventRepositoryImpl(get(), get()) as EventRepository }
+    // Network executor
+    bean { Executors.newFixedThreadPool(5) as Executor }
+
+    bean { EventRepositoryImpl(get(), get(), get(), get(), get()) as EventRepository }
     bean { MessageRepositoryImpl(get()) as MessageRepository }
     bean { TeamRepositoryImpl(get(), get(), get()) as TeamRepository }
 

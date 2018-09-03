@@ -1,6 +1,7 @@
 package com.zcorp.opensportmanagement.ui.main.fragments.events
 
 import android.arch.lifecycle.Observer
+import android.arch.paging.PagedList
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
@@ -12,7 +13,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.datasource.local.EventEntity
-import com.zcorp.opensportmanagement.repository.State
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
+import com.zcorp.opensportmanagement.repository.NetworkState
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventsAdapter
@@ -23,16 +25,18 @@ import kotlinx.android.synthetic.main.fragment_event_list.rv_events_list
 import kotlinx.android.synthetic.main.fragment_event_list.view.event_swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_event_list.view.fab_add_event
 import kotlinx.android.synthetic.main.fragment_event_list.view.menu_events
-import org.koin.android.architecture.ext.sharedViewModel
+import org.koin.android.architecture.ext.viewModel
 
 /**
  * A fragment showing a list of Events.
  */
-class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, EventsAdapter.OnEventClickListener {
+class EventsFragment : BaseFragment(),
+        SwipeRefreshLayout.OnRefreshListener,
+        EventsAdapter.OnEventClickListener {
 
     private lateinit var mEventsAdapter: EventsAdapter
     private lateinit var mLayoutManager: LinearLayoutManager
-    private val viewModel: MainViewModel by sharedViewModel()
+    private val viewModel: EventsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +64,7 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        mEventsAdapter = EventsAdapter(this, mutableListOf())
+        mEventsAdapter = EventsAdapter()
         mLayoutManager = LinearLayoutManager(activity)
 
         rv_events_list.apply {
@@ -70,21 +74,16 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
             this.addItemDecoration(dividerItemDecoration)
         }
 
-        viewModel.eventStates.observe(this, Observer { state ->
-            when (state) {
-                is State.Failure -> showNetworkError()
-                is State.Progress -> {
-                    if (state.loading) showProgress()
-                    else hideProgress()
-                }
-                is State.SuccessFromDb -> {
-                    mEventsAdapter.updateEvents(state.data)
-                }
-                is State.Success -> {
-                    mEventsAdapter.updateEvents(state.data)
-                }
-            }
+        viewModel.eventsLiveData.observe(this, Observer<PagedList<EventDto>> {
+            mEventsAdapter.submitList(it)
         })
+        viewModel.refreshState.observe(this, Observer { networkState: NetworkState? ->
+            event_swipeRefreshLayout.isRefreshing = networkState == NetworkState.LOADING
+        })
+        viewModel.networkState.observe(this, Observer { networkState ->
+            mEventsAdapter.setNetworkState(networkState)
+        })
+
         viewModel.getEvents()
     }
 
@@ -98,12 +97,12 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         }
     }
 
-    override fun onRefresh() {
+    fun onTeamSelected() {
         forceRefreshData()
     }
 
-    private fun showNetworkError() {
-        Toast.makeText(activity, getString(R.string.network_error), Toast.LENGTH_LONG).show()
+    override fun onRefresh() {
+        forceRefreshData()
     }
 
     override fun onEventClicked(event: EventEntity, adapterPosition: Int) {
@@ -132,15 +131,7 @@ class EventsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener, Eve
         events_background_layout.alpha = alpha
     }
 
-    private fun showProgress() {
-        event_swipeRefreshLayout.isRefreshing = true
-    }
-
-    private fun hideProgress() {
-        event_swipeRefreshLayout.isRefreshing = false
-    }
-
     private fun forceRefreshData() {
-        viewModel.getEvents(true)
+        viewModel.refresh()
     }
 }
