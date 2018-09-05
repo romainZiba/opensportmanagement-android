@@ -16,7 +16,6 @@ import com.zcorp.opensportmanagement.data.datasource.local.EventEntity
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
 import com.zcorp.opensportmanagement.repository.NetworkState
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
-import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.main.fragments.events.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.event_swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_event_list.events_background_layout

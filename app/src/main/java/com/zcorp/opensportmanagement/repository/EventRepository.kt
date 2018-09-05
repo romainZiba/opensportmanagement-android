@@ -21,11 +21,11 @@ interface EventRepository {
 }
 
 class EventRepositoryImpl(
-        private val mEventApi: EventApi,
-        private val mSchedulerProvider: SchedulerProvider,
-        private val mEventDao: EventDao,
-        private val executor: Executor,
-        private val mPreferencesHelper: PreferencesHelper
+    private val mEventApi: EventApi,
+    private val mSchedulerProvider: SchedulerProvider,
+    private val mEventDao: EventDao,
+    private val executor: Executor,
+    private val mPreferencesHelper: PreferencesHelper
 ) : EventRepository {
 
     val config = PagedList.Config.Builder()

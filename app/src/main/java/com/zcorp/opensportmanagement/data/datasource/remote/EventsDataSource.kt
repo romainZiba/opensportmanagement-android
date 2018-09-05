@@ -10,14 +10,12 @@ import com.zcorp.opensportmanagement.repository.NetworkState
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 
 class EventsDataSource(
-        private val eventsApi: EventApi,
-        private val teamId: Int,
-        private val retryExecutor: Executor
+    private val eventsApi: EventApi,
+    private val teamId: Int,
+    private val retryExecutor: Executor
 ) : PageKeyedDataSource<Int, EventDto>() {
 
     companion object {
@@ -91,9 +89,9 @@ class EventsDataSource(
 }
 
 class EventsDataSourceFactory(
-        private val eventsApi: EventApi,
-        private val executor: Executor,
-        private val mPreferencesHelper: PreferencesHelper
+    private val eventsApi: EventApi,
+    private val executor: Executor,
+    private val mPreferencesHelper: PreferencesHelper
 ) : DataSource.Factory<Int, EventDto>(), KoinComponent {
     val sourceSubject = BehaviorSubject.create<EventsDataSource>()
     override fun create(): DataSource<Int, EventDto> {

@@ -67,7 +67,6 @@ class EventsAdapter : PagedListAdapter<EventDto, RecyclerView.ViewHolder>(EVENT_
                 }
             }
         }
-
     }
 
     fun setNetworkState(newNetworkState: NetworkState?) {

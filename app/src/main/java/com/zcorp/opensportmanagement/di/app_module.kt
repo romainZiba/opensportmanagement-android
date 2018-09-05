@@ -6,6 +6,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
+import com.zcorp.opensportmanagement.ConnectivityListener
+import com.zcorp.opensportmanagement.ConnectivityRepository
+import com.zcorp.opensportmanagement.ConnectivityRepositoryImpl
 import com.zcorp.opensportmanagement.data.datasource.local.OpenDatabase
 import com.zcorp.opensportmanagement.data.datasource.remote.api.EventApi
 import com.zcorp.opensportmanagement.data.datasource.remote.api.EventApiImpl
@@ -73,6 +76,9 @@ val appModule = applicationContext {
     // Expose DAO directly
     bean { get<OpenDatabase>().eventDao() }
     bean { get<OpenDatabase>().teamDao() }
+
+    // Connectivity listener
+    bean { ConnectivityRepositoryImpl() as ConnectivityRepository } bind ConnectivityListener::class
 
     // User api
     val SCHEME = "https"

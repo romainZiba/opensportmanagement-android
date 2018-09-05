@@ -14,9 +14,11 @@ import retrofit2.http.Query
  */
 interface EventApi {
     @GET("/teams/{teamId}/events")
-    fun getEvents(@Path("teamId") teamId: Int,
-                  @Query("page") page: Int = 0,
-                  @Query("size") size: Int = 5): Single<EventDtos>
+    fun getEvents(
+        @Path("teamId") teamId: Int,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 5
+    ): Single<EventDtos>
 
     fun createEvent(eventDto: EventCreationDto): Single<EventDto>
 

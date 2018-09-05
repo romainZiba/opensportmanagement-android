@@ -89,4 +89,6 @@
     <string name="title_team">Team</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="no_connection">No connection</string>
+    <string name="connection_retrieved">Connected</string>
 </resources>

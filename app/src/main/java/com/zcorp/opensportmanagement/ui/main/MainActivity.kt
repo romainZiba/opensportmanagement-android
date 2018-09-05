@@ -1,6 +1,8 @@
 package com.zcorp.opensportmanagement.ui.main
 
 import android.arch.lifecycle.Observer
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
@@ -14,6 +16,8 @@ import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import com.zcorp.opensportmanagement.ConnectivityState
+import com.zcorp.opensportmanagement.NetworkChangesListener
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
@@ -36,6 +40,7 @@ class MainActivity : BaseActivity() {
     private val viewModel: MainViewModel by viewModel()
     private var availableTeams: List<TeamEntity> = listOf()
     private val mPreferencesHelper: PreferencesHelper by inject()
+    private val networkChangesListener = NetworkChangesListener()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +48,16 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(main_toolbar as Toolbar)
         main_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
+
+        viewModel.connectivityStates.observe(this, Observer { state ->
+            when (state) {
+                ConnectivityState.CONNECTED -> {
+                    Snackbar.make(cl_main, getString(R.string.connection_retrieved), Snackbar.LENGTH_SHORT).show()
+                    viewModel.getUserInformation()
+                }
+                else -> Snackbar.make(cl_main, getString(R.string.no_connection), Snackbar.LENGTH_LONG).show()
+            }
+        })
 
         viewModel.loggedState.observe(this, Observer { state ->
             when (state) {
@@ -66,8 +81,14 @@ class MainActivity : BaseActivity() {
                 }
             }
         })
-        viewModel.getUserInformation()
+        viewModel.getConnectivityStates()
         displayEvents()
+        this.registerReceiver(networkChangesListener, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.unregisterReceiver(networkChangesListener)
     }
 
     private fun handleTeams(teams: List<TeamEntity>) {
