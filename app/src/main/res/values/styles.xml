@@ -21,20 +21,28 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="TextInputLayout.TextLabel" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="TextInputLayout">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">8dp</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="hintTextAppearance">@style/TextInputLayout.TextLabel</item>
     </style>
 
     <style name="TextInputLayout.TextInputEditText" parent="TextStyle">
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
         <item name="android:cursorVisible">true</item>
         <item name="android:maxLength">50</item>
         <item name="android:inputType">text</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="TextStyle.Title" parent="TextStyle">
@@ -65,6 +73,18 @@
     </style>
 
     <style name="MaterialButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/material_button_margin</item>
+    </style>
+
+    <style name="MaterialButton.Dialog.Cancel" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/material_button_margin</item>
+    </style>
+
+    <style name="MaterialButton.Dialog.Confirm" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/material_button_margin</item>

@@ -6,9 +6,11 @@ import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
 import com.zcorp.opensportmanagement.data.datasource.local.TeamMemberEntity
 import com.zcorp.opensportmanagement.data.datasource.remote.api.TeamApi
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.TeamMemberDto
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.TeamMemberUpdateDto
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.dto.TeamDto
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Function
@@ -16,6 +18,8 @@ import io.reactivex.functions.Function
 interface TeamRepository {
     fun getTeams(forceRefresh: Boolean): Single<Resource<List<TeamEntity>>>
     fun getTeamMembers(teamId: Int, forceRefresh: Boolean): Flowable<Resource<List<TeamMemberEntity>>>
+    fun getTeamMemberInfo(memberId: Int, teamId: Int): Flowable<Resource<List<TeamMemberEntity>>>
+    fun updateTeamMemberProfile(teamId: Int, dto: TeamMemberUpdateDto): Completable
 }
 
 class TeamRepositoryImpl(
@@ -23,6 +27,14 @@ class TeamRepositoryImpl(
     private val mTeamDao: TeamDao,
     private val mPreferences: PreferencesHelper
 ) : TeamRepository {
+
+    override fun updateTeamMemberProfile(teamId: Int, dto: TeamMemberUpdateDto): Completable {
+        return mTeamApi.updateTeamMember(teamId, dto)
+                .doOnSuccess {
+                    remoteDto -> mTeamDao.updateTeamMember(TeamMemberEntity.from(remoteDto))
+                }
+                .ignoreElement()
+    }
 
     @WorkerThread
     override fun getTeams(forceRefresh: Boolean): Single<Resource<List<TeamEntity>>> {
@@ -68,6 +80,35 @@ class TeamRepositoryImpl(
 
                 override fun mapper(): Function<List<TeamMemberDto>, List<TeamMemberEntity>> {
                     return Function { list: List<TeamMemberDto> -> list.map { TeamMemberEntity.from(it) } }
+                }
+            }
+        }, BackpressureStrategy.BUFFER)
+    }
+
+    @WorkerThread
+    override fun getTeamMemberInfo(memberId: Int, teamId: Int): Flowable<Resource<List<TeamMemberEntity>>> {
+        return Flowable.create({ emitter ->
+            object : NetworkBoundSource<List<TeamMemberEntity>, TeamMemberDto>(emitter) {
+
+                override val remote: Single<TeamMemberDto>
+                    get() = mTeamApi.whoAmI(teamId)
+                override val local: Flowable<List<TeamMemberEntity>>
+                    get() = mTeamDao.getDistincMemberById(memberId)
+
+                override fun shouldFetch(data: List<TeamMemberEntity>?): Boolean {
+                    return true
+                }
+
+                override fun saveCallResult(data: List<TeamMemberEntity>) {
+                    val member = data.firstOrNull()
+                    if (member != null) {
+                        mPreferences.setCurrentTeamMemberId(member._id)
+                    }
+                    mTeamDao.saveTeamMembers(data)
+                }
+
+                override fun mapper(): Function<TeamMemberDto, List<TeamMemberEntity>> {
+                    return Function { dto: TeamMemberDto -> listOf(TeamMemberEntity.from(dto)) }
                 }
             }
         }, BackpressureStrategy.BUFFER)

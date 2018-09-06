@@ -4,8 +4,10 @@ import android.arch.lifecycle.Observer
 import android.arch.paging.PagedList
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -19,6 +21,7 @@ import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.events.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.event_swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_event_list.events_background_layout
+import kotlinx.android.synthetic.main.fragment_event_list.events_toolbar
 import kotlinx.android.synthetic.main.fragment_event_list.menu_events
 import kotlinx.android.synthetic.main.fragment_event_list.rv_events_list
 import kotlinx.android.synthetic.main.fragment_event_list.view.event_swipeRefreshLayout
@@ -53,6 +56,11 @@ class EventsFragment : BaseFragment(),
         }
         view.event_swipeRefreshLayout.setOnRefreshListener(this)
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).setSupportActionBar(events_toolbar as Toolbar)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

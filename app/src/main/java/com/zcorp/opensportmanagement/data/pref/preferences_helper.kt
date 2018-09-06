@@ -15,6 +15,8 @@ interface PreferencesHelper {
     fun setCurrentUserProfilePicUrl(profilePicUrl: String)
     fun getCurrentTeamId(): Int
     fun setCurrentTeamId(teamId: Int)
+    fun getCurrentTeamMemberId(): Int
+    fun setCurrentTeamMemberId(memberId: Int)
     fun setAvailableTeamIds(availableTeams: List<Int>)
     fun getAvailableTeamIds(): List<Int>
     fun clear()
@@ -67,6 +69,14 @@ class PreferencesHelperImpl(
         mPrefs.edit().putStringSet(PREF_KEY_AVAILABLE_TEAMS, ids.map { it.toString() }.toSet()).apply()
     }
 
+    override fun getCurrentTeamMemberId(): Int {
+        return mPrefs.getInt(PREF_KEY_CURRENT_MEMBER_ID, -1)
+    }
+
+    override fun setCurrentTeamMemberId(memberId: Int) {
+        mPrefs.edit().putInt(PREF_KEY_CURRENT_MEMBER_ID, memberId).apply()
+    }
+
     override fun clear() {
         with(mPrefs.edit()) {
             clear()
@@ -82,5 +92,6 @@ class PreferencesHelperImpl(
         private const val PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN"
         private const val PREF_KEY_CURRENT_TEAM = "PREF_KEY_CURRENT_TEAM"
         private const val PREF_KEY_AVAILABLE_TEAMS = "PREF_KEY_AVAILABLE_TEAMS"
+        private const val PREF_KEY_CURRENT_MEMBER_ID = "PREF_KEY_CURRENT_MEMBER"
     }
 }

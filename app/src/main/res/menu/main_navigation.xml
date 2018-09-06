@@ -15,9 +15,6 @@
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_message_text_outline"
         android:title="@string/title_messages" />
-
-
-
     <item
         android:id="@+id/navigation_account_details"
         android:icon="@drawable/ic_account_details"

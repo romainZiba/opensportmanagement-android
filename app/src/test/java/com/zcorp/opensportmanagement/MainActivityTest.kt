@@ -18,29 +18,29 @@ import org.robolectric.RobolectricTestRunner
 class MainActivityTest {
 
     private lateinit var activity: MainActivity
-    private lateinit var google: View
+    private lateinit var myProfile: View
 
     @Before
     fun setup() {
         activity = Robolectric.setupActivity(MainActivity::class.java)
-        google = activity.findViewById(R.id.navigation_google)
+        myProfile = activity.findViewById(R.id.navigation_account_details)
     }
 
     @Test
     fun activityShouldContainEventFragment() {
         assertNotNull(activity)
-        val eventFragment = activity.fragmentManager.findFragmentByTag(MainActivity.EVENTS)
-        val otherFragment = activity.fragmentManager.findFragmentByTag(MainActivity.PLUS_ONE)
+        val eventFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.EVENTS_TAG)
+        val otherFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.PROFILE_TAG)
         assertNotNull(eventFragment)
-        assertTrue(eventFragment.isAdded)
+        assertTrue(eventFragment?.isAdded ?: false)
         assertNull(otherFragment)
     }
 
     @Test
     fun activityShouldChangeTheFragment() {
-        google.performClick()
-        val eventFragment = activity.fragmentManager.findFragmentByTag(MainActivity.EVENTS)
-        val otherFragment = activity.fragmentManager.findFragmentByTag(MainActivity.PLUS_ONE)
+        myProfile.performClick()
+        val eventFragment = activity.fragmentManager.findFragmentByTag(MainActivity.EVENTS_TAG)
+        val otherFragment = activity.fragmentManager.findFragmentByTag(MainActivity.PROFILE_TAG)
         assertNotNull(eventFragment)
         assertTrue(eventFragment.isVisible.not())
         assertNotNull(otherFragment)

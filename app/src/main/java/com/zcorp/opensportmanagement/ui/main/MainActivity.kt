@@ -6,9 +6,7 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
 import android.support.v7.widget.AppCompatButton
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -26,24 +24,26 @@ import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.conversations.ConversationsFragment
 import com.zcorp.opensportmanagement.ui.events.EventsFragment
 import com.zcorp.opensportmanagement.ui.team_details.TeamDetailsFragment
+import com.zcorp.opensportmanagement.ui.user_profile.MyProfileFragment
 import kotlinx.android.synthetic.main.activity_main.cl_main
 import kotlinx.android.synthetic.main.activity_main.main_navigation
-import kotlinx.android.synthetic.main.activity_main.main_toolbar
 import org.koin.android.architecture.ext.viewModel
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
 
     companion object {
-        private const val EVENTS_TAG = "events"
-        private const val TEAM_TAG = "team"
-        private const val MESSAGES_TAG = "messages"
-        private const val VISIBLE_FRAGMENT_KEY = "fragment"
+        const val EVENTS_TAG = "events"
+        const val TEAM_TAG = "team"
+        const val MESSAGES_TAG = "messages"
+        const val PROFILE_TAG = "profile"
+        const val VISIBLE_FRAGMENT_KEY = "fragment"
     }
 
     private val eventsFragment = EventsFragment()
     private val conversationsFragment = ConversationsFragment()
     private val teamDetailsFragment = TeamDetailsFragment()
+    private val myProfileFragment = MyProfileFragment()
     private val viewModel: MainViewModel by viewModel()
     private var availableTeams: List<TeamEntity> = listOf()
     private val mPreferencesHelper: PreferencesHelper by inject()
@@ -54,7 +54,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        setSupportActionBar(main_toolbar as Toolbar)
         main_navigation.setOnNavigationItemSelectedListener(mBottomNavigationListener)
 
         viewModel.connectivityStates.observe(this, Observer { state ->
@@ -151,6 +150,10 @@ class MainActivity : BaseActivity() {
                 displayFragment(TEAM_TAG)
                 return@OnNavigationItemSelectedListener true
             }
+            R.id.navigation_account_details -> {
+                displayFragment(PROFILE_TAG)
+                return@OnNavigationItemSelectedListener true
+            }
         }
         false
     }
@@ -159,6 +162,7 @@ class MainActivity : BaseActivity() {
         val fragment = when (tag) {
             MESSAGES_TAG -> conversationsFragment
             TEAM_TAG -> teamDetailsFragment
+            PROFILE_TAG -> myProfileFragment
             else -> eventsFragment
         }
         visibleFragment = tag

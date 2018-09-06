@@ -16,7 +16,7 @@ data class TeamMemberEntity(
     @ColumnInfo(name = "licence_number") val licenceNumber: String,
     @ColumnInfo(name = "email") val email: String,
     @ColumnInfo(name = "team_id") val teamId: Int,
-    @ColumnInfo(name = "phone_number") val phoneNumber: String? = null
+    @ColumnInfo(name = "phone_number") val phoneNumber: String = ""
 ) {
     companion object {
         fun from(dto: TeamMemberDto) = TeamMemberEntity(

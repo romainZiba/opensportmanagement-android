@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 
-abstract class NetworkBoundSource<LocalType, RemoteType>(private val emitter: FlowableEmitter<Resource<LocalType>>) {
+abstract class NetworkSingleBoundSource<LocalType, RemoteType>(private val emitter: SingleEmitter<Resource<LocalType>>) {
 
     companion object {
         private const val TAG = "NetworkBoundSource"
@@ -17,7 +17,7 @@ abstract class NetworkBoundSource<LocalType, RemoteType>(private val emitter: Fl
 
     abstract val remote: Single<RemoteType>
 
-    abstract val local: Flowable<LocalType>
+    abstract val local: Single<LocalType>
 
     private var dbDataDispsable: Disposable? = null
 
@@ -26,12 +26,13 @@ abstract class NetworkBoundSource<LocalType, RemoteType>(private val emitter: Fl
         dbDataDispsable = local
                 .map { localData -> Resource.loading(localData) }
                 .subscribe({ resource ->
-                    emitter.onNext(resource)
                     if (shouldFetch(resource.data)) {
                         fetchFromNetwork()
+                    } else {
+                        emitter.onSuccess(resource)
                     }
                 }, { error ->
-                    Log.d(TAG, error.toString())
+                    Log.d("", error.toString())
                 })
     }
 
@@ -39,15 +40,15 @@ abstract class NetworkBoundSource<LocalType, RemoteType>(private val emitter: Fl
         remote.map(mapper())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.newThread())
-                .subscribe({ remoteDataAsLocalType: LocalType ->
+                .subscribe({ localTypeData: LocalType ->
                     dbDataDispsable?.dispose()
-                    saveCallResult(remoteDataAsLocalType)
-                    local.map { localData -> Resource.success(localData) }
-                            .subscribe { emitter.onNext(it) }
+                    saveCallResult(localTypeData)
+                    local.map { dbEntity -> Resource.success(dbEntity) }
+                            .subscribe { resource -> emitter.onSuccess(resource) }
                 }, { error ->
                     onFetchFailed(error)
                     local.map { Resource.error(error.message ?: "", it) }
-                            .subscribe { emitter.onNext(it) }
+                            .subscribe { resource -> emitter.onSuccess(resource) }
                 })
     }
 
