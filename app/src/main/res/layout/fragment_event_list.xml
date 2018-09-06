@@ -7,7 +7,7 @@
     android:id="@+id/event_list_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment">
+    tools:context=".ui.conversations.ConversationsFragment">
 
     <LinearLayout
         android:id="@+id/events_background_layout"

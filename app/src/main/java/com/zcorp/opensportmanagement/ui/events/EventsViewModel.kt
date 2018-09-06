@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.events
+package com.zcorp.opensportmanagement.ui.events
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData

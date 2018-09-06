@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.conversations
+package com.zcorp.opensportmanagement.ui.conversations
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

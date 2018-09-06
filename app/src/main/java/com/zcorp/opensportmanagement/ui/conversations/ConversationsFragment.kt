@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.conversations
+package com.zcorp.opensportmanagement.ui.conversations
 
 import android.arch.lifecycle.Observer
 import android.content.Intent

@@ -1,4 +1,4 @@
-package com.zcorp.opensportmanagement.ui.main.fragments.events.adapter
+package com.zcorp.opensportmanagement.ui.events.adapter
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil

@@ -29,9 +29,9 @@ import com.zcorp.opensportmanagement.repository.TeamRepositoryImpl
 import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
 import com.zcorp.opensportmanagement.ui.main.MainViewModel
-import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationViewModel
-import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsViewModel
-import com.zcorp.opensportmanagement.ui.main.fragments.team_details.TeamDetailsViewModel
+import com.zcorp.opensportmanagement.ui.conversations.ConversationViewModel
+import com.zcorp.opensportmanagement.ui.events.EventsViewModel
+import com.zcorp.opensportmanagement.ui.team_details.TeamDetailsViewModel
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.log.Logger
 import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider

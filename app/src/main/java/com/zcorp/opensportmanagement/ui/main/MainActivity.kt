@@ -23,9 +23,9 @@ import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
-import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.events.EventsFragment
-import com.zcorp.opensportmanagement.ui.main.fragments.team_details.TeamDetailsFragment
+import com.zcorp.opensportmanagement.ui.conversations.ConversationsFragment
+import com.zcorp.opensportmanagement.ui.events.EventsFragment
+import com.zcorp.opensportmanagement.ui.team_details.TeamDetailsFragment
 import kotlinx.android.synthetic.main.activity_main.cl_main
 import kotlinx.android.synthetic.main.activity_main.main_navigation
 import kotlinx.android.synthetic.main.activity_main.main_toolbar

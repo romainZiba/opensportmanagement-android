@@ -9,7 +9,7 @@ import android.view.View
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.InAppMessage
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
-import com.zcorp.opensportmanagement.ui.main.fragments.conversations.ConversationsFragment.Companion.CONVERSATION_ID_KEY
+import com.zcorp.opensportmanagement.ui.conversations.ConversationsFragment.Companion.CONVERSATION_ID_KEY
 import com.zcorp.opensportmanagement.ui.messages.adapter.MessagesAdapter
 import kotlinx.android.synthetic.main.activity_messages.btn_send_message
 import kotlinx.android.synthetic.main.activity_messages.et_message
