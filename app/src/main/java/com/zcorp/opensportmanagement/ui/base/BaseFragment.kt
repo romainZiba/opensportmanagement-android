@@ -1,6 +1,7 @@
 package com.zcorp.opensportmanagement.ui.base
 
 import android.content.Context
+import android.os.Bundle
 import android.support.v4.app.Fragment
 
 /**
@@ -9,6 +10,12 @@ import android.support.v4.app.Fragment
 abstract class BaseFragment : Fragment() {
 
     protected var mActivity: BaseActivity? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        retainInstance = true
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

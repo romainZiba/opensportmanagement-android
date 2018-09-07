@@ -34,6 +34,13 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
 
+    companion object {
+        private const val EVENTS_TAG = "events"
+        private const val TEAM_TAG = "team"
+        private const val MESSAGES_TAG = "messages"
+        private const val VISIBLE_FRAGMENT_KEY = "fragment"
+    }
+
     private val eventsFragment = EventsFragment()
     private val conversationsFragment = ConversationsFragment()
     private val teamDetailsFragment = TeamDetailsFragment()
@@ -41,6 +48,7 @@ class MainActivity : BaseActivity() {
     private var availableTeams: List<TeamEntity> = listOf()
     private val mPreferencesHelper: PreferencesHelper by inject()
     private val networkChangesListener = NetworkChangesListener()
+    private var visibleFragment: String = EVENTS_TAG
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,8 +90,17 @@ class MainActivity : BaseActivity() {
             }
         })
         viewModel.getConnectivityStates()
-        displayEvents()
         this.registerReceiver(networkChangesListener, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        if (savedInstanceState == null) {
+            displayFragment(EVENTS_TAG)
+        } else {
+            displayFragment(savedInstanceState.getString(VISIBLE_FRAGMENT_KEY, EVENTS_TAG))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putString(VISIBLE_FRAGMENT_KEY, visibleFragment)
     }
 
     override fun onDestroy() {
@@ -115,43 +132,39 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onTeamSelected() {
-        eventsFragment.onTeamSelected()
+        if (eventsFragment.isAdded) {
+            eventsFragment.onTeamSelected()
+        }
     }
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_events -> {
-                displayEvents()
+                displayFragment(EVENTS_TAG)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                displayConversations()
+                displayFragment(MESSAGES_TAG)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_team -> {
-                displayTeamDetails()
+                displayFragment(TEAM_TAG)
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
 
-    private fun displayFragment(fragment: Fragment) {
+    private fun displayFragment(tag: String) {
+        val fragment = when (tag) {
+            MESSAGES_TAG -> conversationsFragment
+            TEAM_TAG -> teamDetailsFragment
+            else -> eventsFragment
+        }
+        visibleFragment = tag
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, fragment, "")
         transaction.commit()
-    }
-
-    private fun displayEvents() {
-        displayFragment(eventsFragment)
-    }
-
-    private fun displayConversations() {
-        displayFragment(conversationsFragment)
-    }
-
-    private fun displayTeamDetails() {
-        displayFragment(teamDetailsFragment)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

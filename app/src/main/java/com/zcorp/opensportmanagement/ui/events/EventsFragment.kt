@@ -37,11 +37,6 @@ class EventsFragment : BaseFragment(),
     private lateinit var mLayoutManager: LinearLayoutManager
     private val viewModel: EventsViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_event_list, container, false)
         view.menu_events.setOnMenuButtonClickListener {
