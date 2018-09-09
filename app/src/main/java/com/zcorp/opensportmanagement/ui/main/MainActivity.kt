@@ -26,6 +26,7 @@ import com.zcorp.opensportmanagement.ui.events.EventsFragment
 import com.zcorp.opensportmanagement.ui.team_details.TeamDetailsFragment
 import com.zcorp.opensportmanagement.ui.user_profile.MyProfileFragment
 import kotlinx.android.synthetic.main.activity_main.cl_main
+import kotlinx.android.synthetic.main.activity_main.main_fab
 import kotlinx.android.synthetic.main.activity_main.main_navigation
 import org.koin.android.architecture.ext.viewModel
 import org.koin.android.ext.android.inject
@@ -139,18 +140,22 @@ class MainActivity : BaseActivity() {
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_events -> {
+                main_fab.show()
                 displayFragment(EVENTS_TAG)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
+                main_fab.show()
                 displayFragment(MESSAGES_TAG)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_team -> {
+                main_fab.show()
                 displayFragment(TEAM_TAG)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_account_details -> {
+                main_fab.hide()
                 displayFragment(PROFILE_TAG)
                 return@OnNavigationItemSelectedListener true
             }

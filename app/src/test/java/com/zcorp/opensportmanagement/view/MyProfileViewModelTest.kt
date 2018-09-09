@@ -30,7 +30,6 @@ class MyProfileViewModelTest {
     private val repository: TeamRepository = mock()
     private val preferences: PreferencesHelper = mock()
 
-
     @get:Rule
     val rule = InstantTaskExecutorRule()
 

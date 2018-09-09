@@ -20,13 +20,9 @@ import com.zcorp.opensportmanagement.repository.NetworkState
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.events.adapter.EventsAdapter
 import kotlinx.android.synthetic.main.fragment_event_list.event_swipeRefreshLayout
-import kotlinx.android.synthetic.main.fragment_event_list.events_background_layout
 import kotlinx.android.synthetic.main.fragment_event_list.events_toolbar
-import kotlinx.android.synthetic.main.fragment_event_list.menu_events
 import kotlinx.android.synthetic.main.fragment_event_list.rv_events_list
 import kotlinx.android.synthetic.main.fragment_event_list.view.event_swipeRefreshLayout
-import kotlinx.android.synthetic.main.fragment_event_list.view.fab_add_event
-import kotlinx.android.synthetic.main.fragment_event_list.view.menu_events
 import org.koin.android.architecture.ext.viewModel
 
 /**
@@ -42,18 +38,6 @@ class EventsFragment : BaseFragment(),
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_event_list, container, false)
-        view.menu_events.setOnMenuButtonClickListener {
-            if (view.menu_events.isOpened) {
-                closeFloatingMenu()
-            } else {
-                openFloatingMenu()
-            }
-        }
-        view.fab_add_event.setOnClickListener {
-            closeFloatingMenu()
-            // TODO: event creation
-//            startActivity(Intent(activity, EventCreationActivity::class.java))
-        }
         view.event_swipeRefreshLayout.setOnRefreshListener(this)
         return view
     }
@@ -108,29 +92,7 @@ class EventsFragment : BaseFragment(),
     }
 
     override fun onEventClicked(event: EventEntity, adapterPosition: Int) {
-        if (menu_events.isOpened) {
-            closeFloatingMenu()
-            return
-        }
-        // TODO: event details
         Toast.makeText(activity, "Event clicked, id ${event._id}", Toast.LENGTH_LONG).show()
-//        val intent = Intent(mActivity, EventDetailsActivity::class.java)
-//        intent.putExtra("event", event)
-//        startActivity(intent)
-    }
-
-    private fun openFloatingMenu() {
-        menu_events.open(true)
-        setBackgroundAlpha(0.3f)
-    }
-
-    private fun closeFloatingMenu() {
-        menu_events.close(true)
-        setBackgroundAlpha(1.0f)
-    }
-
-    private fun setBackgroundAlpha(alpha: Float) {
-        events_background_layout.alpha = alpha
     }
 
     private fun forceRefreshData() {
