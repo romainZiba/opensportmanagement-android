@@ -20,7 +20,6 @@ import com.zcorp.opensportmanagement.NetworkChangesListener
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
-import com.zcorp.opensportmanagement.model.Team
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.conversations.ConversationsFragment
@@ -69,7 +68,7 @@ class MainActivity : BaseActivity() {
                 }
                 else -> {
                     Log.d(TAG, "User does not have data access.")
-                    Snackbar.make(cl_main, getString(R.string.no_connection), Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(cl_main, getString(R.string.error_no_connection), Snackbar.LENGTH_LONG).show()
                 }
             }
         })
@@ -79,7 +78,7 @@ class MainActivity : BaseActivity() {
                 is State.Failure -> {
                     Log.d(TAG, "User is not logged. Trying to get teams data from db")
                     viewModel.getTeams(false)
-                    Snackbar.make(cl_main, getString(R.string.not_logged), Snackbar.LENGTH_INDEFINITE)
+                    Snackbar.make(cl_main, getString(R.string.error_not_logged), Snackbar.LENGTH_INDEFINITE)
                             .setAction(getString(R.string.login)) { showLoginDialog() }
                             .show()
                 }
@@ -95,7 +94,7 @@ class MainActivity : BaseActivity() {
                 is State.SuccessFromDb -> availableTeams = state.data
                 is State.Success -> handleTeams(state.data)
                 is State.Failure -> {
-                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.error_retrieve_teams), Toast.LENGTH_LONG).show()
                 }
             }
         })

@@ -10,7 +10,6 @@ import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.zcorp.opensportmanagement.ConnectivityRepository
-import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.repository.EventRepository
 import com.zcorp.opensportmanagement.repository.TeamRepository
 import com.zcorp.opensportmanagement.repository.UserRepository

@@ -22,7 +22,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:padding="10dp"
-        android:text="@string/username_example"
         app:layout_constraintStart_toEndOf="@+id/civ_participant_user"
         app:layout_constraintTop_toTopOf="parent" />
 

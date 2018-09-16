@@ -42,7 +42,7 @@ class ConversationsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
     private val viewModel: ConversationViewModel by viewModel()
 
     fun showNetworkError() {
-        Snackbar.make(view!!, R.string.network_error, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(view!!, R.string.error_retrieve_conversations, Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(R.string.retry), { viewModel.getConversations() })
                 .show()
     }

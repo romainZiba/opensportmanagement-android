@@ -16,25 +16,24 @@ class DayOfWeekPickerFragment : AppCompatDialogFragment() {
         builder.setTitle("Choose days")
         val daysOfWeek = DayOfWeek.values().map { it.toString() }.toTypedArray()
         val selected = BooleanArray(7, { false })
-        builder.setMultiChoiceItems(daysOfWeek, selected,
-                { _, which, isChecked ->
-                    selected[which] = isChecked
-                })
+        builder.setMultiChoiceItems(daysOfWeek, selected
+        ) { _, which, isChecked ->
+            selected[which] = isChecked
+        }
         val positiveText = mContext.getString(R.string.select)
-        builder.setPositiveButton(positiveText,
-                { dialog, _ ->
-                    val selectedPositions = selected.mapIndexed { index, checked ->
-                        if (checked) index
-                        else -1
-                    }.filter { it != -1 }
-                    val selectedDays = daysOfWeek.filterIndexed({ index, _ -> selectedPositions.contains(index) })
-                            .map { DayOfWeek.valueOf(it) }
-                            .toList()
-                    this.onDaysSet(selectedDays)
-                    this.dismiss()
-                })
+        builder.setPositiveButton(positiveText) { _, _ ->
+            val selectedPositions = selected.mapIndexed { index, checked ->
+                if (checked) index
+                else -1
+            }.filter { it != -1 }
+            val selectedDays = daysOfWeek.filterIndexed { index, _ -> selectedPositions.contains(index) }
+                    .map { DayOfWeek.valueOf(it) }
+                    .toList()
+            this.onDaysSet(selectedDays)
+            this.dismiss()
+        }
         val negativeText = mContext.getString(android.R.string.cancel)
-        builder.setNegativeButton(negativeText, { _, _ -> this.dismiss() })
+        builder.setNegativeButton(negativeText) { _, _ -> this.dismiss() }
         return builder.create()
     }
 

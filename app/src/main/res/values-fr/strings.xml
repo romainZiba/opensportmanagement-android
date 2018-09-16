@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Open sport management</string>
+    <string name="app_name_shorten">OpenSportMgmt</string>
+    <string name="title_activity_main">OpenSportManagement</string>
+
     <!-- Strings related to login -->
     <string name="password">Mot de passe</string>
     <string name="login">Se connecter</string>
     <string name="username">Nom d\'utilisateur</string>
     <string name="login_text">Se connecter</string>
-    <string name="username_error">Nom d\'utilisateur invalide</string>
-    <string name="password_error">Mot de passe invalide</string>
 
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_messages">Messages</string>
+    <!-- Common strings -->
+    <string name="cancel">Annuler</string>
+    <string name="select">Sélectionner</string>
+    <string name="email">Email</string>
+    <string name="retry">Réessayer</string>
+    <string name="switch_team">Changer d\'équipe</string>
+    <string name="edit">Editer</string>
+    <string name="delete">Supprimer</string>
+    <string name="connection_retrieved">De nouveau connecté à Internet</string>
+
+    <!-- Main navigation -->
     <string name="title_events">Evènements</string>
+    <string name="title_messages">Messages</string>
+    <string name="title_team">Equipe</string>
+    <string name="title_profile">Mon profil</string>
 
+    <!-- Strings related to events and matches -->
+    <string name="vs">CONTRE</string>
+    <string name="local_team_description">Locaux</string>
+    <string name="visitor_team_description">Visiteurs</string>
+    <string name="event_place">Lieu</string>
 
-    <string name="network_error">Erreur réseau</string>
-    <string name="event">Nouvel évènement</string>
-    <string name="match">Nouveau match</string>
-    <string name="vs">contre</string>
-    <string name="event_item_date_example">Lundi 1 Janvier 2018</string>
-    <string name="visitor_example">Visiteur</string>
-    <string name="local_team_example">Local</string>
+    <!-- Strings related to conversations -->
     <string name="type_your_message">Taper votre message ici</string>
+
+    <!-- Strings related to profile -->
+    <string name="firstname">Prénom</string>
+    <string name="lastname">Nom</string>
+    <string name="name">Nom</string>
+    <string name="date_of_birth">Date de naissance</string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <string name="licence_number">Numéro de licence</string>
+    <string name="confirm">Confirmer</string>
+    <string name="edit_email">Modifier votre adresse email</string>
+    <string name="success_update_profile">Profil édité</string>
+    <string name="choose_team">Choisir une équipe</string>
+
+    <!-- Error messages -->
+    <string name="error_password">Mot de passe incorrect</string>
+    <string name="error_not_logged">Vous n\'êtes pas connecté</string>
+    <string name="error_no_connection">Aucune connexion</string>
+    <string name="error_update_profile">La mise à jour du profil a échoué</string>
+    <string name="error_get_profile">La récupération des données du profil a échoué</string>
+    <string name="error_retrieve_conversations">La récupération des conversations a échoué</string>
+    <string name="error_retrieve_teams">La récupération des équipes a échoué</string>
 </resources>

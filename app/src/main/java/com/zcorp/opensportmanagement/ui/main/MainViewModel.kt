@@ -28,11 +28,11 @@ import com.zcorp.opensportmanagement.utils.rx.with
 import io.reactivex.disposables.Disposable
 
 class MainViewModel(
-        private val mUserRepository: UserRepository,
-        private val mTeamRepository: TeamRepository,
-        private val mEventRepository: EventRepository,
-        private val mConnectivityRepo: ConnectivityRepository,
-        private val mSchedulerProvider: SchedulerProvider
+    private val mUserRepository: UserRepository,
+    private val mTeamRepository: TeamRepository,
+    private val mEventRepository: EventRepository,
+    private val mConnectivityRepo: ConnectivityRepository,
+    private val mSchedulerProvider: SchedulerProvider
 ) : RxViewModel() {
 
     private val mSelectedTeamId = MutableLiveData<Int>()
@@ -174,12 +174,12 @@ class MainViewModel(
     }
 
     fun updateTeamMember(
-            teamId: Int,
-            firstName: String,
-            lastName: String,
-            email: String,
-            phoneNumber: String,
-            licenceNumber: String
+        teamId: Int,
+        firstName: String,
+        lastName: String,
+        email: String,
+        phoneNumber: String,
+        licenceNumber: String
     ) {
         mUpdateProfileEvents.value = LoadingEvent
         val updateDto = TeamMemberUpdateDto(

@@ -23,7 +23,6 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/rounded_corner_messages_friend"
         android:padding="10dp"
-        android:text="@string/some_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/civ_message_friend"
         app:layout_constraintTop_toTopOf="@+id/civ_message_friend" />
@@ -33,7 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/someuser_and_date"
         android:textSize="@dimen/user_messages_text_size"
         app:layout_constraintTop_toBottomOf="@+id/tv_friend_message_content"
         app:layout_constraintStart_toStartOf="@id/tv_friend_message_content"

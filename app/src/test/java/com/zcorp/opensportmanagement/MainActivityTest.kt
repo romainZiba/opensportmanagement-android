@@ -10,11 +10,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 /**
  * Created by romainz on 07/02/18.
  */
 @RunWith(RobolectricTestRunner::class)
+@Config(application = TestApplication::class)
 class MainActivityTest {
 
     private lateinit var activity: MainActivity
@@ -32,18 +34,19 @@ class MainActivityTest {
         val eventFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.EVENTS_TAG)
         val otherFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.PROFILE_TAG)
         assertNotNull(eventFragment)
-        assertTrue(eventFragment?.isAdded ?: false)
+        assertTrue(eventFragment!!.isAdded)
         assertNull(otherFragment)
     }
 
     @Test
     fun activityShouldChangeTheFragment() {
         myProfile.performClick()
-        val eventFragment = activity.fragmentManager.findFragmentByTag(MainActivity.EVENTS_TAG)
-        val otherFragment = activity.fragmentManager.findFragmentByTag(MainActivity.PROFILE_TAG)
+        assertNotNull(activity)
+        val eventFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.EVENTS_TAG)
+        val otherFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.PROFILE_TAG)
         assertNotNull(eventFragment)
-        assertTrue(eventFragment.isVisible.not())
+        assertTrue(eventFragment!!.isVisible.not())
         assertNotNull(otherFragment)
-        assertTrue(otherFragment.isVisible)
+        assertTrue(otherFragment!!.isVisible)
     }
 }

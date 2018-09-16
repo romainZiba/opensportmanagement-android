@@ -5,7 +5,6 @@ import android.arch.paging.PageKeyedDataSource
 import android.util.Log
 import com.zcorp.opensportmanagement.data.datasource.remote.api.EventApi
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
-import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.repository.NetworkState
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject

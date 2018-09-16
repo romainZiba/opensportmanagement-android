@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
         android:id="@+id/change_team"
         android:title="@string/switch_team"
         android:icon="@drawable/ic_swap_horiz_24dp"
-        app:showAsAction="ifRoom"
-        />
-
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/refresh_events"
@@ -16,11 +13,4 @@
         android:title="@string/title_events"
         app:showAsAction="ifRoom"
         />
-
-    <item
-        android:id="@+id/user_prefs"
-        android:title="@string/user_preferences"
-        app:showAsAction="never"
-        />
-
 </menu>

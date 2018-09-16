@@ -23,9 +23,9 @@ interface TeamRepository {
 }
 
 class TeamRepositoryImpl(
-        private val mTeamApi: TeamApi,
-        private val mTeamDao: TeamDao,
-        private val mPreferences: PreferencesHelper
+    private val mTeamApi: TeamApi,
+    private val mTeamDao: TeamDao,
+    private val mPreferences: PreferencesHelper
 ) : TeamRepository {
 
     override fun updateTeamMemberProfile(teamId: Int, dto: TeamMemberUpdateDto): Completable {

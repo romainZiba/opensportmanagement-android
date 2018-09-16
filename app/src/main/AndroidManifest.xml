@@ -33,10 +33,5 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.zcorp.opensportmanagement.ui.main.MainActivity" />
         </activity>
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>

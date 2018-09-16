@@ -116,7 +116,7 @@ class EventsFragment : BaseFragment(),
         if (mPreferencesHelper.isLogged()) {
             viewModel.refreshEvents()
         } else {
-            Toast.makeText(context, getString(R.string.not_logged), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.error_not_logged), Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -24,15 +24,12 @@ interface PreferencesHelper {
     fun clear()
 }
 
-class PreferencesHelperImpl(
-    private val context: Context,
-    private val prefFileName: String
-) : PreferencesHelper {
+class PreferencesHelperImpl(context: Context, prefFileName: String) : PreferencesHelper {
 
     private val mPrefs: SharedPreferences = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE)
 
     override fun getCurrentUserName(): String {
-        return mPrefs.getString(PREF_KEY_CURRENT_USER_NAME, "")
+        return mPrefs.getString(PREF_KEY_CURRENT_USER_NAME, "") ?: ""
     }
 
     override fun setCurrentUserName(username: String) {
@@ -40,7 +37,7 @@ class PreferencesHelperImpl(
     }
 
     override fun getCurrentUserEmail(): String {
-        return mPrefs.getString(PREF_KEY_CURRENT_USER_EMAIL, "")
+        return mPrefs.getString(PREF_KEY_CURRENT_USER_EMAIL, "") ?: ""
     }
 
     override fun setCurrentUserEmail(email: String) {
@@ -48,7 +45,7 @@ class PreferencesHelperImpl(
     }
 
     override fun getCurrentUserProfilePicUrl(): String {
-        return mPrefs.getString(PREF_KEY_CURRENT_USER_PROFILE_PIC_URL, "")
+        return mPrefs.getString(PREF_KEY_CURRENT_USER_PROFILE_PIC_URL, "") ?: ""
     }
 
     override fun setCurrentUserProfilePicUrl(profilePicUrl: String) {
@@ -64,11 +61,15 @@ class PreferencesHelperImpl(
     }
 
     override fun getAvailableTeamIds(): List<Int> {
-        return mPrefs.getStringSet(PREF_KEY_AVAILABLE_TEAMS, emptySet()).map { it.toInt() }.toList()
+        return (mPrefs.getStringSet(PREF_KEY_AVAILABLE_TEAMS, emptySet()) ?: emptySet<String>())
+                .asSequence()
+                .map { it.toInt() }
+                .toList()
     }
 
-    override fun setAvailableTeamIds(ids: List<Int>) {
-        mPrefs.edit().putStringSet(PREF_KEY_AVAILABLE_TEAMS, ids.map { it.toString() }.toSet()).apply()
+    override fun setAvailableTeamIds(availableTeams: List<Int>) {
+        mPrefs.edit().putStringSet(PREF_KEY_AVAILABLE_TEAMS,
+                availableTeams.asSequence().map { it.toString() }.toSet()).apply()
     }
 
     override fun getCurrentTeamMemberId(): Int {

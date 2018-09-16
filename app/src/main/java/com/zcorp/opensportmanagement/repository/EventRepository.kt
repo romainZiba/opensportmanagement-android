@@ -2,12 +2,10 @@ package com.zcorp.opensportmanagement.repository
 
 import android.arch.paging.PagedList
 import android.arch.paging.RxPagedListBuilder
-import com.zcorp.opensportmanagement.data.datasource.local.EventDao
 import com.zcorp.opensportmanagement.data.datasource.remote.EventsDataSource
 import com.zcorp.opensportmanagement.data.datasource.remote.EventsDataSourceFactory
 import com.zcorp.opensportmanagement.data.datasource.remote.api.EventApi
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
-import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import io.reactivex.BackpressureStrategy
 import java.util.concurrent.Executor

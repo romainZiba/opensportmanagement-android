@@ -17,7 +17,6 @@
         android:id="@+id/tv_event_date"
         style="@style/TextStyle.Heading"
         android:layout_marginTop="8dp"
-        android:text="@string/event_item_date_example"
         app:layout_constraintStart_toStartOf="@+id/tv_event_time"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,7 +24,6 @@
         android:id="@+id/tv_event_time"
         style="@style/TextStyle.Heading"
         android:layout_marginTop="8dp"
-        android:text="@string/event_item_hour_example"
         app:layout_constraintStart_toStartOf="@+id/include"
         app:layout_constraintTop_toBottomOf="@+id/tv_event_date" />
 
