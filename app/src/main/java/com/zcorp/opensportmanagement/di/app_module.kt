@@ -28,8 +28,8 @@ import com.zcorp.opensportmanagement.repository.TeamRepository
 import com.zcorp.opensportmanagement.repository.TeamRepositoryImpl
 import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
-import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.conversations.ConversationViewModel
+import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.team_details.TeamDetailsViewModel
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.log.Logger
@@ -38,45 +38,45 @@ import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import okhttp3.CookieJar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.architecture.ext.viewModel
 import org.koin.android.ext.koin.androidApplication
-import org.koin.dsl.module.applicationContext
+import org.koin.android.viewmodel.ext.koin.viewModel
+import org.koin.dsl.module.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
-val appModule = applicationContext {
+val appModule = module {
 
-    bean { UserRepositoryImpl(get(), get()) as UserRepository }
+    single { UserRepositoryImpl(get(), get()) as UserRepository }
     viewModel { MainViewModel(get(), get(), get(), get(), get()) }
     viewModel { ConversationViewModel(get(), get()) }
     viewModel { TeamDetailsViewModel(get(), get(), get()) }
 
     // Network executor
-    bean { Executors.newFixedThreadPool(5) as Executor }
+    single { Executors.newFixedThreadPool(5) as Executor }
 
-    bean { EventRepositoryImpl(get(), get(), get()) as EventRepository }
-    bean { MessageRepositoryImpl(get()) as MessageRepository }
-    bean { TeamRepositoryImpl(get(), get(), get()) as TeamRepository }
+    single { EventRepositoryImpl(get(), get(), get()) as EventRepository }
+    single { MessageRepositoryImpl(get()) as MessageRepository }
+    single { TeamRepositoryImpl(get(), get(), get()) as TeamRepository }
 
-    bean { Logger() as ILogger }
-    bean { PreferencesHelperImpl(androidApplication(), "preferences") as PreferencesHelper }
-    bean { AppSchedulerProvider() as SchedulerProvider }
+    single { Logger() as ILogger }
+    single { PreferencesHelperImpl(androidApplication(), "preferences") as PreferencesHelper }
+    single { AppSchedulerProvider() as SchedulerProvider }
 
     // Room Database
-    bean {
+    single {
         Room.databaseBuilder(androidApplication(), OpenDatabase::class.java, "open.db")
                 .build()
     }
 
     // Expose DAO directly
-    bean { get<OpenDatabase>().eventDao() }
-    bean { get<OpenDatabase>().teamDao() }
+    single { get<OpenDatabase>().eventDao() }
+    single { get<OpenDatabase>().teamDao() }
 
     // Connectivity listener
-    bean { ConnectivityRepositoryImpl() as ConnectivityRepository } bind ConnectivityListener::class
+    single { ConnectivityRepositoryImpl() } bind ConnectivityRepository::class bind ConnectivityListener::class
 
     // User api
     val SCHEME = "https"
@@ -84,9 +84,9 @@ val appModule = applicationContext {
     val PORT = 8090
     val HOST = "ns3268474.ip-5-39-81.eu"
 
-    bean { PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(androidApplication())) as CookieJar } bind PersistentCookieJar::class
+    single { PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(androidApplication())) } bind CookieJar::class bind PersistentCookieJar::class
 
-    bean {
+    single {
         OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     this.level = HttpLoggingInterceptor.Level.BODY
@@ -95,9 +95,9 @@ val appModule = applicationContext {
                 .build() as OkHttpClient
     }
 
-    bean { jacksonObjectMapper().findAndRegisterModules() as ObjectMapper }
+    single { jacksonObjectMapper().findAndRegisterModules() as ObjectMapper }
 
-    bean {
+    single {
         Retrofit.Builder()
                 .addConverterFactory(JacksonConverterFactory.create(get()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -106,17 +106,17 @@ val appModule = applicationContext {
                 .build() as Retrofit
     }
 
-    bean { UserApiImpl(get()) as UserApi }
+    single { UserApiImpl(get()) as UserApi }
 }
 
-val offlineModule = applicationContext {
+val offlineModule = module {
     //    bean { FakeDataManager(get()) as EventApi } bind TeamApi::class bind IDataManager::class bind MessagesApi::class
 }
 
-val onlineModule = applicationContext {
-    bean { TeamApiImpl(get()) as TeamApi }
-    bean { EventApiImpl(get()) as EventApi }
-    bean { MessagesApiImpl(get()) as MessagesApi }
+val onlineModule = module {
+    single { TeamApiImpl(get()) as TeamApi }
+    single { EventApiImpl(get()) as EventApi }
+    single { MessagesApiImpl(get()) as MessagesApi }
 }
 
 val app = listOf(appModule, onlineModule)

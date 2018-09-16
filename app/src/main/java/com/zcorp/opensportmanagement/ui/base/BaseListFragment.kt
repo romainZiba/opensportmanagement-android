@@ -1,4 +1,4 @@
-package com.imminov.equisure.view.base
+package com.zcorp.opensportmanagement.ui.base
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.zcorp.opensportmanagement.R
-import com.zcorp.opensportmanagement.ui.base.BaseFragment
 
 abstract class BaseListFragment<T> : BaseFragment(), RecyclerViewClickListener {
 

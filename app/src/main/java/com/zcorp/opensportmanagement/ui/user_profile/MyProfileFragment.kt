@@ -30,8 +30,8 @@ import kotlinx.android.synthetic.main.my_profile_content.et_profile_licence_numb
 import kotlinx.android.synthetic.main.my_profile_content.et_profile_name
 import kotlinx.android.synthetic.main.my_profile_content.et_profile_phone_number
 import kotlinx.android.synthetic.main.my_profile_content.pb_update_profile
-import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class MyProfileFragment : BaseFragment() {
 

@@ -26,8 +26,8 @@ import kotlinx.android.synthetic.main.fragment_event_list.event_swipeRefreshLayo
 import kotlinx.android.synthetic.main.fragment_event_list.events_toolbar
 import kotlinx.android.synthetic.main.fragment_event_list.rv_events_list
 import kotlinx.android.synthetic.main.fragment_event_list.view.event_swipeRefreshLayout
-import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 /**
  * A fragment showing a list of Events.

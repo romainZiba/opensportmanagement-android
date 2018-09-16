@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.imminov.equisure.view.base.BaseRecyclerViewAdapter
-import com.imminov.equisure.view.base.RecyclerViewClickListener
+import com.zcorp.opensportmanagement.ui.base.BaseRecyclerViewAdapter
+import com.zcorp.opensportmanagement.ui.base.RecyclerViewClickListener
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.TeamMember
 import kotlinx.android.synthetic.main.rv_item_team_member.view.tv_team_member_name

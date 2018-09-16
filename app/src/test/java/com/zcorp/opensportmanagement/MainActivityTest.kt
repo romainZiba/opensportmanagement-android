@@ -2,12 +2,14 @@ package com.zcorp.opensportmanagement
 
 import android.view.View
 import com.zcorp.opensportmanagement.ui.main.MainActivity
+import org.junit.After
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.standalone.StandAloneContext
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -26,6 +28,11 @@ class MainActivityTest {
     fun setup() {
         activity = Robolectric.setupActivity(MainActivity::class.java)
         myProfile = activity.findViewById(R.id.navigation_account_details)
+    }
+
+    @After
+    fun tearDown() {
+        StandAloneContext.closeKoin()
     }
 
     @Test

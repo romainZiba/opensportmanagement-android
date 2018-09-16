@@ -9,12 +9,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.imminov.equisure.view.base.BaseListFragment
+import com.zcorp.opensportmanagement.ui.base.BaseListFragment
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.model.TeamMember
 import com.zcorp.opensportmanagement.repository.State
 import kotlinx.android.synthetic.main.fragment_team_details.rv_team_members
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class TeamDetailsFragment : BaseListFragment<TeamMember>() {
 

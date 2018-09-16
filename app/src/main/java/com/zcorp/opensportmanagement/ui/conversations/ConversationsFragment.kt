@@ -19,15 +19,8 @@ import com.zcorp.opensportmanagement.ui.messages.MessagesActivity
 import kotlinx.android.synthetic.main.fragment_conversation_list.conversations_swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_conversation_list.view.conversations_swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_conversation_list.view.rv_conversations_list
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
-/**
- * A fragment representing a list of Items.
- *
- *
- * Activities containing this fragment MUST implement the [OnListFragmentInteractionListener]
- * interface.
- */
 /**
  * Mandatory empty constructor for the fragment manager to instantiate the
  * fragment (e.g. upon screen orientation changes).
@@ -43,7 +36,7 @@ class ConversationsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
 
     fun showNetworkError() {
         Snackbar.make(view!!, R.string.error_retrieve_conversations, Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(R.string.retry), { viewModel.getConversations() })
+                .setAction(getString(R.string.retry)) { viewModel.getConversations() }
                 .show()
     }
 

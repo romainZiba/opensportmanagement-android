@@ -14,7 +14,7 @@ open class MyApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        startKoin(app)
+        startKoin(this, app)
         systemLanguage = Locale.getDefault()
         AndroidThreeTen.init(this)
     }

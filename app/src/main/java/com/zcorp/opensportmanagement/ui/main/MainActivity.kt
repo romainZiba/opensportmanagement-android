@@ -29,7 +29,7 @@ import com.zcorp.opensportmanagement.ui.user_profile.MyProfileFragment
 import kotlinx.android.synthetic.main.activity_main.cl_main
 import kotlinx.android.synthetic.main.activity_main.main_fab
 import kotlinx.android.synthetic.main.activity_main.main_navigation
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
@@ -180,7 +180,7 @@ class MainActivity : BaseActivity() {
         }
         visibleFragment = tag
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment, "")
+        transaction.replace(R.id.fragment_container, fragment, tag)
         transaction.commit()
     }
 

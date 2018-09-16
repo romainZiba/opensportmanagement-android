@@ -9,6 +9,5 @@ class TestApplication : MyApplication() {
         } catch (ignored: RuntimeException) {
             // Multidex support doesn't play well with Robolectric yet
         }
-
     }
 }
