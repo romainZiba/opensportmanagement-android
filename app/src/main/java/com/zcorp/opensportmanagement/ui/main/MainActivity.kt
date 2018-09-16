@@ -28,6 +28,7 @@ import com.zcorp.opensportmanagement.ui.team_details.TeamDetailsFragment
 import com.zcorp.opensportmanagement.ui.user_profile.MyProfileFragment
 import kotlinx.android.synthetic.main.activity_main.cl_main
 import kotlinx.android.synthetic.main.activity_main.main_fab
+import kotlinx.android.synthetic.main.activity_main.main_fragment_pager
 import kotlinx.android.synthetic.main.activity_main.main_navigation
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.android.ext.android.inject
@@ -36,22 +37,22 @@ class MainActivity : BaseActivity() {
 
     companion object {
         const val TAG = "MainActivity"
-        const val EVENTS_TAG = "events"
-        const val TEAM_TAG = "team"
-        const val MESSAGES_TAG = "messages"
-        const val PROFILE_TAG = "profile"
+        const val EVENTS_TAG = 0
+        const val TEAM_TAG = 1
+        const val MESSAGES_TAG = 2
+        const val PROFILE_TAG = 3
         const val VISIBLE_FRAGMENT_KEY = "fragment"
     }
 
-    private val eventsFragment = EventsFragment()
-    private val conversationsFragment = ConversationsFragment()
-    private val teamDetailsFragment = TeamDetailsFragment()
-    private val myProfileFragment = MyProfileFragment()
+    val eventsFragment = EventsFragment()
+    val conversationsFragment = ConversationsFragment()
+    val teamDetailsFragment = TeamDetailsFragment()
+    val myProfileFragment = MyProfileFragment()
     private val viewModel: MainViewModel by viewModel()
     private var availableTeams: List<TeamEntity> = listOf()
     private val mPreferencesHelper: PreferencesHelper by inject()
     private val networkChangesListener = NetworkChangesListener()
-    private var visibleFragment: String = EVENTS_TAG
+    private var visibleFragment: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,10 +99,18 @@ class MainActivity : BaseActivity() {
                 }
             }
         })
+
+        val pagerAdapter = MainFragmentAdapter(supportFragmentManager)
+        pagerAdapter.addFragment(EVENTS_TAG, eventsFragment)
+        pagerAdapter.addFragment(TEAM_TAG, teamDetailsFragment)
+        pagerAdapter.addFragment(MESSAGES_TAG, conversationsFragment)
+        pagerAdapter.addFragment(PROFILE_TAG, myProfileFragment)
+        main_fragment_pager.adapter = pagerAdapter
+
         if (savedInstanceState == null) {
-            displayFragment(EVENTS_TAG)
+            main_fragment_pager.currentItem = EVENTS_TAG
         } else {
-            displayFragment(savedInstanceState.getString(VISIBLE_FRAGMENT_KEY, EVENTS_TAG))
+            main_fragment_pager.currentItem = savedInstanceState.getInt(VISIBLE_FRAGMENT_KEY, EVENTS_TAG)
         }
     }
 
@@ -118,7 +127,7 @@ class MainActivity : BaseActivity() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        outState?.putString(VISIBLE_FRAGMENT_KEY, visibleFragment)
+        outState?.putInt(VISIBLE_FRAGMENT_KEY, visibleFragment)
     }
 
     private fun handleTeams(teams: List<TeamEntity>) {
@@ -149,39 +158,28 @@ class MainActivity : BaseActivity() {
         when (item.itemId) {
             R.id.navigation_events -> {
                 main_fab.show()
-                displayFragment(EVENTS_TAG)
+                visibleFragment = EVENTS_TAG
+                main_fragment_pager.currentItem = visibleFragment
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_notifications -> {
+            R.id.navigation_messages -> {
                 main_fab.show()
-                displayFragment(MESSAGES_TAG)
+                visibleFragment = MESSAGES_TAG
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_team -> {
                 main_fab.show()
-                displayFragment(TEAM_TAG)
+                visibleFragment = TEAM_TAG
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_account_details -> {
                 main_fab.hide()
-                displayFragment(PROFILE_TAG)
+                visibleFragment = PROFILE_TAG
                 return@OnNavigationItemSelectedListener true
             }
         }
+        main_fragment_pager.currentItem = visibleFragment
         false
-    }
-
-    private fun displayFragment(tag: String) {
-        val fragment = when (tag) {
-            MESSAGES_TAG -> conversationsFragment
-            TEAM_TAG -> teamDetailsFragment
-            PROFILE_TAG -> myProfileFragment
-            else -> eventsFragment
-        }
-        visibleFragment = tag
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment, tag)
-        transaction.commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

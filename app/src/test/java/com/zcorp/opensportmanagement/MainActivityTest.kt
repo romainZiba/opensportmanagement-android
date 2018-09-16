@@ -4,7 +4,6 @@ import android.view.View
 import com.zcorp.opensportmanagement.ui.main.MainActivity
 import org.junit.After
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -16,6 +15,7 @@ import org.robolectric.annotation.Config
 
 /**
  * Created by romainz on 07/02/18.
+ * REFER to https://github.com/robolectric/robolectric/issues/3698
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestApplication::class)
@@ -32,28 +32,28 @@ class MainActivityTest {
 
     @After
     fun tearDown() {
-        StandAloneContext.closeKoin()
+        StandAloneContext.stopKoin()
     }
 
     @Test
     fun activityShouldContainEventFragment() {
         assertNotNull(activity)
-        val eventFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.EVENTS_TAG)
-        val otherFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.PROFILE_TAG)
+        val eventFragment = activity.eventsFragment
+        val otherFragment = activity.myProfileFragment
         assertNotNull(eventFragment)
-        assertTrue(eventFragment!!.isAdded)
-        assertNull(otherFragment)
+        assertNotNull(otherFragment)
+        assertTrue(eventFragment.isAdded)
+        assertTrue(eventFragment.isVisible)
+        assertTrue(otherFragment.isVisible.not())
     }
 
     @Test
     fun activityShouldChangeTheFragment() {
-        myProfile.performClick()
         assertNotNull(activity)
-        val eventFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.EVENTS_TAG)
-        val otherFragment = activity.supportFragmentManager.findFragmentByTag(MainActivity.PROFILE_TAG)
-        assertNotNull(eventFragment)
-        assertTrue(eventFragment!!.isVisible.not())
-        assertNotNull(otherFragment)
-        assertTrue(otherFragment!!.isVisible)
+        myProfile.performClick()
+        assertNotNull(activity.eventsFragment)
+        assertTrue(activity.eventsFragment.isVisible.not())
+        assertNotNull(activity.myProfileFragment)
+        assertTrue(activity.myProfileFragment.isVisible)
     }
 }

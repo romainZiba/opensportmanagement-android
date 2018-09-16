@@ -12,7 +12,7 @@
         android:title="@string/title_team" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_messages"
         android:icon="@drawable/ic_message_text_outline"
         android:title="@string/title_messages" />
     <item

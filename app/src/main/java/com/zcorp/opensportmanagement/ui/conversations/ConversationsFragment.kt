@@ -90,7 +90,7 @@ class ConversationsFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListen
     }
 
     override fun onConversationSelected(conversation: Conversation) {
-        val intent = Intent(mActivity, MessagesActivity::class.java)
+        val intent = Intent(context, MessagesActivity::class.java)
         intent.putExtra(CONVERSATION_ID_KEY, conversation.conversationId)
         startActivity(intent)
     }
