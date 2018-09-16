@@ -39,14 +39,14 @@
 
     <android.support.design.button.MaterialButton
         android:id="@+id/btn_dialog_login_cancel"
-        style="@style/MaterialButton"
+        style="@style/MaterialButton.Dialog.Cancel"
         android:text="@string/cancel"
         app:layout_constraintEnd_toStartOf="@+id/btn_dialog_login_login"
         app:layout_constraintTop_toBottomOf="@+id/til_password"/>
 
     <android.support.design.button.MaterialButton
         android:id="@+id/btn_dialog_login_login"
-        style="@style/MaterialButton"
+        style="@style/MaterialButton.Dialog.Confirm"
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_password" />
