@@ -38,6 +38,7 @@ class EventsFragment : BaseFragment(),
 
     companion object {
         private const val TAG = "EventsFragment"
+        private const val FIRST_VISIBLE_ITEM_KEY = "visibleItem"
     }
 
     private lateinit var mEventsAdapter: EventsAdapter
@@ -72,6 +73,10 @@ class EventsFragment : BaseFragment(),
 
         viewModel.eventsLiveData.observe(this, Observer<PagedList<EventDto>> {
             mEventsAdapter.submitList(it)
+            if (savedInstanceState != null) {
+                val visibleItem = savedInstanceState.getInt(FIRST_VISIBLE_ITEM_KEY)
+                mLayoutManager.scrollToPosition(visibleItem)
+            }
         })
         viewModel.refreshState.observe(this, Observer { networkState: NetworkState? ->
             event_swipeRefreshLayout.isRefreshing = networkState == NetworkState.LOADING
@@ -81,14 +86,16 @@ class EventsFragment : BaseFragment(),
         })
         viewModel.loggedState.observe(this, Observer { state ->
             when (state) {
-                is State.Success -> if (this.currentTeamId != -1) viewModel.getEvents(currentTeamId)
+                is State.Success -> if (this.currentTeamId != -1 && savedInstanceState == null) viewModel.getEvents(currentTeamId)
                 else -> {
                 }
             }
         })
         viewModel.selectedTeamId.observe(this, Observer { teamId ->
             teamId?.let {
-                viewModel.getEvents(it)
+                if (savedInstanceState == null) {
+                    viewModel.getEvents(it)
+                }
                 currentTeamId = it
             }
         })
@@ -118,5 +125,10 @@ class EventsFragment : BaseFragment(),
         } else {
             Toast.makeText(context, getString(R.string.error_not_logged), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(FIRST_VISIBLE_ITEM_KEY, mLayoutManager.findFirstCompletelyVisibleItemPosition())
     }
 }

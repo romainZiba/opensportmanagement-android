@@ -5,10 +5,10 @@ import android.support.v4.app.FragmentManager
 import com.zcorp.opensportmanagement.ui.utils.SmartFragmentStatePagerAdapter
 
 class MainFragmentAdapter(fragmentManager: FragmentManager) : SmartFragmentStatePagerAdapter(fragmentManager) {
-    private val fragments = mutableMapOf<Int, Fragment>()
+    private val fragments = mutableListOf<Fragment>()
 
-    fun addFragment(tag: Int, fragment: Fragment) {
-        fragments[tag] = fragment
+    fun addFragment(fragment: Fragment) {
+        fragments.add(fragment)
     }
 
     override fun getItem(position: Int): Fragment? {

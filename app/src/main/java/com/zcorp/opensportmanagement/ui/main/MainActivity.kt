@@ -101,10 +101,10 @@ class MainActivity : BaseActivity() {
         })
 
         val pagerAdapter = MainFragmentAdapter(supportFragmentManager)
-        pagerAdapter.addFragment(EVENTS_TAG, eventsFragment)
-        pagerAdapter.addFragment(TEAM_TAG, teamDetailsFragment)
-        pagerAdapter.addFragment(MESSAGES_TAG, conversationsFragment)
-        pagerAdapter.addFragment(PROFILE_TAG, myProfileFragment)
+        pagerAdapter.addFragment(eventsFragment)
+        pagerAdapter.addFragment(teamDetailsFragment)
+        pagerAdapter.addFragment(conversationsFragment)
+        pagerAdapter.addFragment(myProfileFragment)
         main_fragment_pager.adapter = pagerAdapter
 
         if (savedInstanceState == null) {
@@ -165,20 +165,22 @@ class MainActivity : BaseActivity() {
             R.id.navigation_messages -> {
                 main_fab.show()
                 visibleFragment = MESSAGES_TAG
+                main_fragment_pager.currentItem = visibleFragment
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_team -> {
                 main_fab.show()
                 visibleFragment = TEAM_TAG
+                main_fragment_pager.currentItem = visibleFragment
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_account_details -> {
                 main_fab.hide()
                 visibleFragment = PROFILE_TAG
+                main_fragment_pager.currentItem = visibleFragment
                 return@OnNavigationItemSelectedListener true
             }
         }
-        main_fragment_pager.currentItem = visibleFragment
         false
     }
 
