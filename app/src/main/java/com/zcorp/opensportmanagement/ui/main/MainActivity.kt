@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.AppCompatButton
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -19,6 +20,7 @@ import com.zcorp.opensportmanagement.NetworkChangesListener
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
 import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
+import com.zcorp.opensportmanagement.model.Team
 import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.base.BaseActivity
 import com.zcorp.opensportmanagement.ui.conversations.ConversationsFragment
@@ -34,6 +36,7 @@ import org.koin.android.ext.android.inject
 class MainActivity : BaseActivity() {
 
     companion object {
+        const val TAG = "MainActivity"
         const val EVENTS_TAG = "events"
         const val TEAM_TAG = "team"
         const val MESSAGES_TAG = "messages"
@@ -60,37 +63,42 @@ class MainActivity : BaseActivity() {
         viewModel.connectivityStates.observe(this, Observer { state ->
             when (state) {
                 ConnectivityState.CONNECTED -> {
+                    Log.d(TAG, "User has data access.")
                     Snackbar.make(cl_main, getString(R.string.connection_retrieved), Snackbar.LENGTH_SHORT).show()
                     viewModel.getUserInformation()
                 }
-                else -> Snackbar.make(cl_main, getString(R.string.no_connection), Snackbar.LENGTH_LONG).show()
+                else -> {
+                    Log.d(TAG, "User does not have data access.")
+                    Snackbar.make(cl_main, getString(R.string.no_connection), Snackbar.LENGTH_LONG).show()
+                }
             }
         })
 
         viewModel.loggedState.observe(this, Observer { state ->
             when (state) {
                 is State.Failure -> {
+                    Log.d(TAG, "User is not logged. Trying to get teams data from db")
+                    viewModel.getTeams(false)
                     Snackbar.make(cl_main, getString(R.string.not_logged), Snackbar.LENGTH_INDEFINITE)
                             .setAction(getString(R.string.login)) { showLoginDialog() }
                             .show()
                 }
                 else -> {
+                    Log.d(TAG, "User is logged. Trying to get fresh teams data")
+                    viewModel.getTeams(true)
                 }
             }
-            viewModel.getTeams()
         })
 
         viewModel.teams.observe(this, Observer { state ->
             when (state) {
-                is State.SuccessFromDb -> handleTeams(state.data)
+                is State.SuccessFromDb -> availableTeams = state.data
                 is State.Success -> handleTeams(state.data)
                 is State.Failure -> {
                     Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_LONG).show()
                 }
             }
         })
-        viewModel.getConnectivityStates()
-        this.registerReceiver(networkChangesListener, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         if (savedInstanceState == null) {
             displayFragment(EVENTS_TAG)
         } else {
@@ -98,23 +106,30 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        this.registerReceiver(networkChangesListener, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        viewModel.getConnectivityStates()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        this.unregisterReceiver(networkChangesListener)
+    }
+
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putString(VISIBLE_FRAGMENT_KEY, visibleFragment)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        this.unregisterReceiver(networkChangesListener)
-    }
-
     private fun handleTeams(teams: List<TeamEntity>) {
         availableTeams = teams
         if (availableTeams.isNotEmpty()) {
-            if (mPreferencesHelper.getCurrentTeamId() == -1) {
+            val currentTeamId = mPreferencesHelper.getCurrentTeamId()
+            if (currentTeamId == -1) {
                 showTeamPickerDialog(availableTeams)
             } else {
-                onTeamSelected()
+                viewModel.selectTeam(currentTeamId)
             }
         }
     }
@@ -129,12 +144,6 @@ class MainActivity : BaseActivity() {
             }
         }
         return false
-    }
-
-    private fun onTeamSelected() {
-        if (eventsFragment.isAdded) {
-            eventsFragment.onTeamSelected()
-        }
     }
 
     private val mBottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -187,8 +196,9 @@ class MainActivity : BaseActivity() {
                 .positiveButton(R.string.select)
                 .listItemsSingleChoice(items = teams.map { team -> team.name }) { dialog, index, _ ->
                     val selected = teams[index]
-                    mPreferencesHelper.setCurrentTeamId(selected._id)
-                    onTeamSelected()
+                    val selectedTeamId = selected._id
+                    mPreferencesHelper.setCurrentTeamId(selectedTeamId)
+                    viewModel.selectTeam(selectedTeamId)
                     dialog.dismiss()
                 }
                 .show()

@@ -17,7 +17,7 @@ abstract class TeamDao {
     abstract fun saveTeam(entity: TeamEntity)
 
     @Query("SELECT * FROM team")
-    abstract fun loadTeams(): Single<List<TeamEntity>>
+    abstract fun loadTeams(): Flowable<List<TeamEntity>>
 
     @Query("SELECT * FROM members m WHERE m.team_id = :teamId")
     abstract fun loadTeamMembers(teamId: Int): Flowable<List<TeamMemberEntity>>

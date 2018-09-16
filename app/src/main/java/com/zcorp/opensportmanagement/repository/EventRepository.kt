@@ -17,15 +17,13 @@ import java.util.concurrent.Executor
  * know where the data come from
  */
 interface EventRepository {
-    fun loadEvents(): Listing<EventDto>
+    fun loadEvents(teamId: Int): Listing<EventDto>
 }
 
 class EventRepositoryImpl(
     private val mEventApi: EventApi,
     private val mSchedulerProvider: SchedulerProvider,
-    private val mEventDao: EventDao,
-    private val executor: Executor,
-    private val mPreferencesHelper: PreferencesHelper
+    private val executor: Executor
 ) : EventRepository {
 
     val config = PagedList.Config.Builder()
@@ -34,8 +32,8 @@ class EventRepositoryImpl(
             .setPrefetchDistance(10)
             .build()
 
-    override fun loadEvents(): Listing<EventDto> {
-        val sourceFactory = EventsDataSourceFactory(mEventApi, executor, mPreferencesHelper)
+    override fun loadEvents(teamId: Int): Listing<EventDto> {
+        val sourceFactory = EventsDataSourceFactory(mEventApi, executor, teamId)
         val flowablePagedList = RxPagedListBuilder(sourceFactory, config)
                 .setFetchScheduler(mSchedulerProvider.io())
                 .setNotifyScheduler(mSchedulerProvider.ui())

@@ -16,37 +16,37 @@ import io.reactivex.Single
 import io.reactivex.functions.Function
 
 interface TeamRepository {
-    fun getTeams(forceRefresh: Boolean): Single<Resource<List<TeamEntity>>>
+    fun loadTeams(forceRefresh: Boolean): Flowable<Resource<List<TeamEntity>>>
     fun getTeamMembers(teamId: Int, forceRefresh: Boolean): Flowable<Resource<List<TeamMemberEntity>>>
     fun getTeamMemberInfo(memberId: Int, teamId: Int): Flowable<Resource<List<TeamMemberEntity>>>
     fun updateTeamMemberProfile(teamId: Int, dto: TeamMemberUpdateDto): Completable
 }
 
 class TeamRepositoryImpl(
-    private val mTeamApi: TeamApi,
-    private val mTeamDao: TeamDao,
-    private val mPreferences: PreferencesHelper
+        private val mTeamApi: TeamApi,
+        private val mTeamDao: TeamDao,
+        private val mPreferences: PreferencesHelper
 ) : TeamRepository {
 
     override fun updateTeamMemberProfile(teamId: Int, dto: TeamMemberUpdateDto): Completable {
         return mTeamApi.updateTeamMember(teamId, dto)
-                .doOnSuccess {
-                    remoteDto -> mTeamDao.updateTeamMember(TeamMemberEntity.from(remoteDto))
+                .doOnSuccess { remoteDto ->
+                    mTeamDao.updateTeamMember(TeamMemberEntity.from(remoteDto))
                 }
                 .ignoreElement()
     }
 
     @WorkerThread
-    override fun getTeams(forceRefresh: Boolean): Single<Resource<List<TeamEntity>>> {
-        return Single.create { subscriber ->
-            object : NetworkSingleBoundSource<List<TeamEntity>, List<TeamDto>>(subscriber) {
+    override fun loadTeams(forceRefresh: Boolean): Flowable<Resource<List<TeamEntity>>> {
+        return Flowable.create({ subscriber ->
+            object : NetworkBoundSource<List<TeamEntity>, List<TeamDto>>(subscriber) {
                 override fun shouldFetch(data: List<TeamEntity>?): Boolean {
-                    return data == null || data.isEmpty() || forceRefresh
+                    return mPreferences.isLogged() && (data == null || data.isEmpty() || forceRefresh)
                 }
 
                 override val remote: Single<List<TeamDto>>
                     get() = mTeamApi.getTeams()
-                override val local: Single<List<TeamEntity>>
+                override val local: Flowable<List<TeamEntity>>
                     get() = mTeamDao.loadTeams()
 
                 override fun saveCallResult(data: List<TeamEntity>) {
@@ -58,7 +58,7 @@ class TeamRepositoryImpl(
                     return Function { list: List<TeamDto> -> list.map { TeamEntity.from(it) } }
                 }
             }
-        }
+        }, BackpressureStrategy.BUFFER)
     }
 
     @WorkerThread
@@ -66,7 +66,7 @@ class TeamRepositoryImpl(
         return Flowable.create({ emitter ->
             object : NetworkBoundSource<List<TeamMemberEntity>, List<TeamMemberDto>>(emitter) {
                 override fun shouldFetch(data: List<TeamMemberEntity>?): Boolean {
-                    return data == null || data.isEmpty() || forceRefresh
+                    return mPreferences.isLogged() && (data == null || data.isEmpty() || forceRefresh)
                 }
 
                 override val remote: Single<List<TeamMemberDto>>
@@ -96,7 +96,7 @@ class TeamRepositoryImpl(
                     get() = mTeamDao.getDistincMemberById(memberId)
 
                 override fun shouldFetch(data: List<TeamMemberEntity>?): Boolean {
-                    return true
+                    return mPreferences.isLogged()
                 }
 
                 override fun saveCallResult(data: List<TeamMemberEntity>) {

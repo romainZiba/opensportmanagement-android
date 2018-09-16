@@ -19,6 +19,8 @@ interface PreferencesHelper {
     fun setCurrentTeamMemberId(memberId: Int)
     fun setAvailableTeamIds(availableTeams: List<Int>)
     fun getAvailableTeamIds(): List<Int>
+    fun isLogged(): Boolean
+    fun setLogged(logged: Boolean)
     fun clear()
 }
 
@@ -77,6 +79,14 @@ class PreferencesHelperImpl(
         mPrefs.edit().putInt(PREF_KEY_CURRENT_MEMBER_ID, memberId).apply()
     }
 
+    override fun isLogged(): Boolean {
+        return mPrefs.getBoolean(PREF_KEY_USER_LOGGED, false)
+    }
+
+    override fun setLogged(logged: Boolean) {
+        mPrefs.edit().putBoolean(PREF_KEY_USER_LOGGED, logged).apply()
+    }
+
     override fun clear() {
         with(mPrefs.edit()) {
             clear()
@@ -85,11 +95,10 @@ class PreferencesHelperImpl(
     }
 
     companion object {
-        private const val PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE"
+        private const val PREF_KEY_USER_LOGGED = "PREF_KEY_USER_LOGGED"
         private const val PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME"
         private const val PREF_KEY_CURRENT_USER_EMAIL = "PREF_KEY_CURRENT_USER_EMAIL"
         private const val PREF_KEY_CURRENT_USER_PROFILE_PIC_URL = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL"
-        private const val PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN"
         private const val PREF_KEY_CURRENT_TEAM = "PREF_KEY_CURRENT_TEAM"
         private const val PREF_KEY_AVAILABLE_TEAMS = "PREF_KEY_AVAILABLE_TEAMS"
         private const val PREF_KEY_CURRENT_MEMBER_ID = "PREF_KEY_CURRENT_MEMBER"

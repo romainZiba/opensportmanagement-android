@@ -16,14 +16,18 @@ import android.widget.Toast
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.datasource.local.EventEntity
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
+import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.repository.NetworkState
+import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
 import com.zcorp.opensportmanagement.ui.events.adapter.EventsAdapter
+import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.fragment_event_list.event_swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_event_list.events_toolbar
 import kotlinx.android.synthetic.main.fragment_event_list.rv_events_list
 import kotlinx.android.synthetic.main.fragment_event_list.view.event_swipeRefreshLayout
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.architecture.ext.sharedViewModel
+import org.koin.android.ext.android.inject
 
 /**
  * A fragment showing a list of Events.
@@ -32,9 +36,15 @@ class EventsFragment : BaseFragment(),
         SwipeRefreshLayout.OnRefreshListener,
         EventsAdapter.OnEventClickListener {
 
+    companion object {
+        private const val TAG = "EventsFragment"
+    }
+
     private lateinit var mEventsAdapter: EventsAdapter
     private lateinit var mLayoutManager: LinearLayoutManager
-    private val viewModel: EventsViewModel by viewModel()
+    private val viewModel: MainViewModel by sharedViewModel()
+    private val mPreferencesHelper: PreferencesHelper by inject()
+    private var currentTeamId = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_event_list, container, false)
@@ -69,8 +79,19 @@ class EventsFragment : BaseFragment(),
         viewModel.networkState.observe(this, Observer { networkState ->
             mEventsAdapter.setNetworkState(networkState)
         })
-
-        viewModel.getEvents()
+        viewModel.loggedState.observe(this, Observer { state ->
+            when (state) {
+                is State.Success -> if (this.currentTeamId != -1) viewModel.getEvents(currentTeamId)
+                else -> {
+                }
+            }
+        })
+        viewModel.newTeamId.observe(this, Observer { teamId ->
+            teamId?.let {
+                viewModel.getEvents(it)
+                currentTeamId = it
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -83,10 +104,6 @@ class EventsFragment : BaseFragment(),
         }
     }
 
-    fun onTeamSelected() {
-        forceRefreshData()
-    }
-
     override fun onRefresh() {
         forceRefreshData()
     }
@@ -96,6 +113,10 @@ class EventsFragment : BaseFragment(),
     }
 
     private fun forceRefreshData() {
-        viewModel.refresh()
+        if (mPreferencesHelper.isLogged()) {
+            viewModel.refreshEvents()
+        } else {
+            Toast.makeText(context, getString(R.string.not_logged), Toast.LENGTH_SHORT).show()
+        }
     }
 }

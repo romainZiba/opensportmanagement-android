@@ -91,11 +91,11 @@ class EventsDataSource(
 class EventsDataSourceFactory(
     private val eventsApi: EventApi,
     private val executor: Executor,
-    private val mPreferencesHelper: PreferencesHelper
+    private val teamId: Int
 ) : DataSource.Factory<Int, EventDto>(), KoinComponent {
     val sourceSubject = BehaviorSubject.create<EventsDataSource>()
     override fun create(): DataSource<Int, EventDto> {
-        val source = EventsDataSource(eventsApi, mPreferencesHelper.getCurrentTeamId(), executor)
+        val source = EventsDataSource(eventsApi, teamId, executor)
         sourceSubject.onNext(source)
         return source
     }

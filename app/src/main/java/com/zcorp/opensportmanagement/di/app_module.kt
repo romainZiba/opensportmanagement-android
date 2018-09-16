@@ -30,7 +30,6 @@ import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
 import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.conversations.ConversationViewModel
-import com.zcorp.opensportmanagement.ui.events.EventsViewModel
 import com.zcorp.opensportmanagement.ui.team_details.TeamDetailsViewModel
 import com.zcorp.opensportmanagement.ui.user_profile.MyProfileViewModel
 import com.zcorp.opensportmanagement.utils.log.ILogger
@@ -52,16 +51,15 @@ import java.util.concurrent.Executors
 val appModule = applicationContext {
 
     bean { UserRepositoryImpl(get(), get()) as UserRepository }
-    viewModel { MainViewModel(get(), get(), get(), get()) }
+    viewModel { MainViewModel(get(), get(), get(), get(), get()) }
     viewModel { ConversationViewModel(get(), get()) }
     viewModel { TeamDetailsViewModel(get(), get(), get()) }
-    viewModel { EventsViewModel(get(), get()) }
     viewModel { MyProfileViewModel(get(), get(), get()) }
 
     // Network executor
     bean { Executors.newFixedThreadPool(5) as Executor }
 
-    bean { EventRepositoryImpl(get(), get(), get(), get(), get()) as EventRepository }
+    bean { EventRepositoryImpl(get(), get(), get()) as EventRepository }
     bean { MessageRepositoryImpl(get()) as MessageRepository }
     bean { TeamRepositoryImpl(get(), get(), get()) as TeamRepository }
 

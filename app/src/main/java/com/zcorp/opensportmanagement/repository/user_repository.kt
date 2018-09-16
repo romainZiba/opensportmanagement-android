@@ -26,12 +26,14 @@ class UserRepositoryImpl(
                 .toSingleDefault(true)
                 .flatMap { mUserApi.whoAmI() }
                 .doOnSuccess { account: AccountDto ->
+                    mPreferences.setLogged(true)
                     saveUserDetails(account)
                 }
     }
 
     override fun getUserInformation(): Single<AccountDto> {
         return mUserApi.whoAmI()
+                .doOnSuccess { mPreferences.setLogged(true) }
     }
 
     @WorkerThread
