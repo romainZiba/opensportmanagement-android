@@ -18,7 +18,7 @@ import io.reactivex.functions.Function
 interface TeamRepository {
     fun loadTeams(forceRefresh: Boolean): Flowable<Resource<List<TeamEntity>>>
     fun getTeamMembers(teamId: Int, forceRefresh: Boolean): Flowable<Resource<List<TeamMemberEntity>>>
-    fun getTeamMemberInfo(memberId: Int, teamId: Int): Flowable<Resource<List<TeamMemberEntity>>>
+    fun getTeamMemberInfo(teamId: Int, memberId: Int): Flowable<Resource<List<TeamMemberEntity>>>
     fun updateTeamMemberProfile(teamId: Int, dto: TeamMemberUpdateDto): Completable
 }
 
@@ -86,14 +86,15 @@ class TeamRepositoryImpl(
     }
 
     @WorkerThread
-    override fun getTeamMemberInfo(memberId: Int, teamId: Int): Flowable<Resource<List<TeamMemberEntity>>> {
+    override fun getTeamMemberInfo(teamId: Int, memberId: Int): Flowable<Resource<List<TeamMemberEntity>>> {
+        var teamMemberId = memberId
         return Flowable.create({ emitter ->
             object : NetworkBoundSource<List<TeamMemberEntity>, TeamMemberDto>(emitter) {
 
                 override val remote: Single<TeamMemberDto>
                     get() = mTeamApi.whoAmI(teamId)
                 override val local: Flowable<List<TeamMemberEntity>>
-                    get() = mTeamDao.getDistincMemberById(memberId)
+                    get() = mTeamDao.getDistincMemberById(teamMemberId)
 
                 override fun shouldFetch(data: List<TeamMemberEntity>?): Boolean {
                     return mPreferences.isLogged()
@@ -102,9 +103,10 @@ class TeamRepositoryImpl(
                 override fun saveCallResult(data: List<TeamMemberEntity>) {
                     val member = data.firstOrNull()
                     if (member != null) {
-                        mPreferences.setCurrentTeamMemberId(member._id)
+                        teamMemberId = member._id
+                        mPreferences.setCurrentTeamMemberId(teamMemberId)
+                        mTeamDao.saveTeamMember(member)
                     }
-                    mTeamDao.saveTeamMembers(data)
                 }
 
                 override fun mapper(): Function<TeamMemberDto, List<TeamMemberEntity>> {

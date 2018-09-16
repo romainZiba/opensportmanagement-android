@@ -13,10 +13,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.zcorp.opensportmanagement.R
 import com.zcorp.opensportmanagement.data.datasource.local.TeamMemberEntity
+import com.zcorp.opensportmanagement.data.pref.PreferencesHelper
 import com.zcorp.opensportmanagement.repository.Status
 import com.zcorp.opensportmanagement.ui.FailedEvent
 import com.zcorp.opensportmanagement.ui.LoadingEvent
 import com.zcorp.opensportmanagement.ui.base.BaseFragment
+import com.zcorp.opensportmanagement.ui.main.MainViewModel
 import com.zcorp.opensportmanagement.ui.utils.DatePickerFragment
 import com.zcorp.opensportmanagement.utils.datetime.dateFormatter
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
@@ -28,7 +30,7 @@ import kotlinx.android.synthetic.main.my_profile_content.et_profile_licence_numb
 import kotlinx.android.synthetic.main.my_profile_content.et_profile_name
 import kotlinx.android.synthetic.main.my_profile_content.et_profile_phone_number
 import kotlinx.android.synthetic.main.my_profile_content.pb_update_profile
-import org.koin.android.architecture.ext.viewModel
+import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.ext.android.inject
 
 class MyProfileFragment : BaseFragment() {
@@ -39,8 +41,9 @@ class MyProfileFragment : BaseFragment() {
 
     private val datePicker = DatePickerFragment.newInstance()
     private val mSchedulerProvider: SchedulerProvider by inject()
-    private val viewModel: MyProfileViewModel by viewModel()
+    private val viewModel: MainViewModel by sharedViewModel()
     private var teamMember: TeamMemberEntity? = null
+    private val mPreferencesHelper: PreferencesHelper by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -58,7 +61,7 @@ class MyProfileFragment : BaseFragment() {
                 Status.ERROR -> Toast.makeText(context, getString(R.string.error_get_profile), Toast.LENGTH_SHORT).show()
             }
         })
-        viewModel.updateEvents.observe(this, Observer { event ->
+        viewModel.updateProfileEvents.observe(this, Observer { event ->
             when (event) {
                 is LoadingEvent -> pb_update_profile.visibility = View.VISIBLE
                 is FailedEvent -> {
@@ -71,7 +74,11 @@ class MyProfileFragment : BaseFragment() {
                 }
             }
         })
-        viewModel.getTeamMemberInfo()
+        viewModel.selectedTeamId.observe(this, Observer { teamId ->
+            teamId?.let {
+                viewModel.getTeamMemberInfo(teamId = it, memberId = mPreferencesHelper.getCurrentTeamMemberId())
+            }
+        })
 
         datePicker.observable.subscribeOn(mSchedulerProvider.io())
                 .observeOn(mSchedulerProvider.ui())
@@ -106,6 +113,7 @@ class MyProfileFragment : BaseFragment() {
         return when (item?.itemId) {
             R.id.update_profile -> {
                 viewModel.updateTeamMember(
+                        mPreferencesHelper.getCurrentTeamId(),
                         firstName = et_profile_first_name.text.toString(),
                         lastName = et_profile_name.text.toString(),
                         email = et_profile_email.text.toString(),

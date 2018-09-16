@@ -86,7 +86,7 @@ class EventsFragment : BaseFragment(),
                 }
             }
         })
-        viewModel.newTeamId.observe(this, Observer { teamId ->
+        viewModel.selectedTeamId.observe(this, Observer { teamId ->
             teamId?.let {
                 viewModel.getEvents(it)
                 currentTeamId = it

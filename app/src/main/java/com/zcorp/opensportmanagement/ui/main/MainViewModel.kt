@@ -6,8 +6,11 @@ import android.arch.paging.PagedList
 import com.zcorp.opensportmanagement.ConnectivityRepository
 import com.zcorp.opensportmanagement.ConnectivityState
 import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
+import com.zcorp.opensportmanagement.data.datasource.local.TeamMemberEntity
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
+import com.zcorp.opensportmanagement.data.datasource.remote.dto.TeamMemberUpdateDto
 import com.zcorp.opensportmanagement.mvvm.RxViewModel
+import com.zcorp.opensportmanagement.mvvm.SingleLiveEvent
 import com.zcorp.opensportmanagement.repository.EventRepository
 import com.zcorp.opensportmanagement.repository.Listing
 import com.zcorp.opensportmanagement.repository.NetworkState
@@ -16,6 +19,10 @@ import com.zcorp.opensportmanagement.repository.State
 import com.zcorp.opensportmanagement.repository.Status
 import com.zcorp.opensportmanagement.repository.TeamRepository
 import com.zcorp.opensportmanagement.repository.UserRepository
+import com.zcorp.opensportmanagement.ui.FailedEvent
+import com.zcorp.opensportmanagement.ui.LoadingEvent
+import com.zcorp.opensportmanagement.ui.SuccessEvent
+import com.zcorp.opensportmanagement.ui.ViewModelEvent
 import com.zcorp.opensportmanagement.utils.rx.SchedulerProvider
 import com.zcorp.opensportmanagement.utils.rx.with
 import io.reactivex.disposables.Disposable
@@ -29,7 +36,7 @@ class MainViewModel(
 ) : RxViewModel() {
 
     private val mSelectedTeamId = MutableLiveData<Int>()
-    val newTeamId: LiveData<Int>
+    val selectedTeamId: LiveData<Int>
         get() = mSelectedTeamId
 
     private val mTeamStates = MutableLiveData<State<List<TeamEntity>>>()
@@ -57,6 +64,14 @@ class MainViewModel(
     private val mRefreshState = MutableLiveData<NetworkState>()
     val refreshState: LiveData<NetworkState>
         get() = mRefreshState
+
+    private val mProfileLiveData = MutableLiveData<Resource<List<TeamMemberEntity>>>()
+    val profileLiveData: LiveData<Resource<List<TeamMemberEntity>>>
+        get() = mProfileLiveData
+
+    private val mUpdateProfileEvents = SingleLiveEvent<ViewModelEvent>()
+    val updateProfileEvents: LiveData<ViewModelEvent>
+        get() = mUpdateProfileEvents
 
     fun login(username: String, password: String) {
         launch {
@@ -146,5 +161,39 @@ class MainViewModel(
 
     fun refreshEvents() {
         mEventsResults.refresh.invoke()
+    }
+
+    fun getTeamMemberInfo(teamId: Int, memberId: Int) {
+        launch {
+            mTeamRepository.getTeamMemberInfo(teamId = teamId, memberId = memberId)
+                    .with(mSchedulerProvider)
+                    .subscribe { resource ->
+                        mProfileLiveData.value = resource
+                    }
+        }
+    }
+
+    fun updateTeamMember(
+            teamId: Int,
+            firstName: String,
+            lastName: String,
+            email: String,
+            phoneNumber: String,
+            licenceNumber: String
+    ) {
+        mUpdateProfileEvents.value = LoadingEvent
+        val updateDto = TeamMemberUpdateDto(
+                firstName = firstName,
+                lastName = lastName,
+                email = email,
+                phoneNumber = phoneNumber,
+                licenceNumber = licenceNumber
+        )
+        launch {
+            mTeamRepository.updateTeamMemberProfile(teamId, updateDto)
+                    .with(mSchedulerProvider)
+                    .subscribe({ mUpdateProfileEvents.value = SuccessEvent },
+                            { error -> mUpdateProfileEvents.value = FailedEvent(error) })
+        }
     }
 }
