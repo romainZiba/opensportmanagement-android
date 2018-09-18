@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.anthonymandra:ToggleButtons:2.0.0'
     implementation 'com.afollestad.material-dialogs:core:2.0.0-alpha05'
     implementation 'com.afollestad.material-dialogs:input:2.0.0-alpha05'
+    implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0'
 
     // Koin
     implementation "org.koin:koin-android:$koin_version"

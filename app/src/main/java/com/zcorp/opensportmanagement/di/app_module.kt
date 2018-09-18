@@ -30,7 +30,6 @@ import com.zcorp.opensportmanagement.repository.UserRepository
 import com.zcorp.opensportmanagement.repository.UserRepositoryImpl
 import com.zcorp.opensportmanagement.ui.conversations.ConversationViewModel
 import com.zcorp.opensportmanagement.ui.main.MainViewModel
-import com.zcorp.opensportmanagement.ui.team_details.TeamDetailsViewModel
 import com.zcorp.opensportmanagement.utils.log.ILogger
 import com.zcorp.opensportmanagement.utils.log.Logger
 import com.zcorp.opensportmanagement.utils.rx.AppSchedulerProvider
@@ -52,7 +51,6 @@ val appModule = module {
     single { UserRepositoryImpl(get(), get()) as UserRepository }
     viewModel { MainViewModel(get(), get(), get(), get(), get()) }
     viewModel { ConversationViewModel(get(), get()) }
-    viewModel { TeamDetailsViewModel(get(), get(), get()) }
 
     // Network executor
     single { Executors.newFixedThreadPool(5) as Executor }

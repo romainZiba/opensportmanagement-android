@@ -68,8 +68,9 @@ class MainActivity : BaseActivity() {
                     viewModel.getUserInformation()
                 }
                 else -> {
-                    Log.d(TAG, "User does not have data access.")
+                    Log.d(TAG, "User does not have data access.Trying to get teams data from db")
                     Snackbar.make(cl_main, getString(R.string.error_no_connection), Snackbar.LENGTH_LONG).show()
+                    viewModel.getTeams(false)
                 }
             }
         })
@@ -77,8 +78,6 @@ class MainActivity : BaseActivity() {
         viewModel.loggedState.observe(this, Observer { state ->
             when (state) {
                 is State.Failure -> {
-                    Log.d(TAG, "User is not logged. Trying to get teams data from db")
-                    viewModel.getTeams(false)
                     Snackbar.make(cl_main, getString(R.string.error_not_logged), Snackbar.LENGTH_INDEFINITE)
                             .setAction(getString(R.string.login)) { showLoginDialog() }
                             .show()
@@ -91,9 +90,13 @@ class MainActivity : BaseActivity() {
         })
 
         viewModel.teams.observe(this, Observer { state ->
+            val currentTeamId = mPreferencesHelper.getCurrentTeamId()
             when (state) {
-                is State.SuccessFromDb -> availableTeams = state.data
-                is State.Success -> handleTeams(state.data)
+                is State.SuccessFromDb -> {
+                    availableTeams = state.data
+                    if (currentTeamId != -1) viewModel.selectTeam(currentTeamId)
+                }
+                is State.Success -> handleTeams(state.data, currentTeamId)
                 is State.Failure -> {
                     Toast.makeText(this, getString(R.string.error_retrieve_teams), Toast.LENGTH_LONG).show()
                 }
@@ -130,10 +133,9 @@ class MainActivity : BaseActivity() {
         outState?.putInt(VISIBLE_FRAGMENT_KEY, visibleFragment)
     }
 
-    private fun handleTeams(teams: List<TeamEntity>) {
+    private fun handleTeams(teams: List<TeamEntity>, currentTeamId: Int) {
         availableTeams = teams
         if (availableTeams.isNotEmpty()) {
-            val currentTeamId = mPreferencesHelper.getCurrentTeamId()
             if (currentTeamId == -1) {
                 showTeamPickerDialog(availableTeams)
             } else {

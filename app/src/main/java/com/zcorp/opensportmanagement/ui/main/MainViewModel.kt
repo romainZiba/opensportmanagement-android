@@ -9,6 +9,7 @@ import com.zcorp.opensportmanagement.data.datasource.local.TeamEntity
 import com.zcorp.opensportmanagement.data.datasource.local.TeamMemberEntity
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.EventDto
 import com.zcorp.opensportmanagement.data.datasource.remote.dto.TeamMemberUpdateDto
+import com.zcorp.opensportmanagement.model.TeamMember
 import com.zcorp.opensportmanagement.mvvm.RxViewModel
 import com.zcorp.opensportmanagement.mvvm.SingleLiveEvent
 import com.zcorp.opensportmanagement.repository.EventRepository
@@ -194,6 +195,27 @@ class MainViewModel(
                     .with(mSchedulerProvider)
                     .subscribe({ mUpdateProfileEvents.value = SuccessEvent },
                             { error -> mUpdateProfileEvents.value = FailedEvent(error) })
+        }
+    }
+
+    private val mMemberStates = MutableLiveData<State<List<TeamMember>>>()
+    val memberStates: LiveData<State<List<TeamMember>>>
+        get() = mMemberStates
+
+    fun getTeamMembers(teamId: Int, forceRefresh: Boolean) {
+        mMemberStates.value = State.loading(true)
+        launch {
+            mTeamRepository.getTeamMembers(teamId, forceRefresh)
+                    .with(mSchedulerProvider)
+                    .subscribe { resource: Resource<List<TeamMemberEntity>> ->
+                        when (resource.status) {
+                            Status.ERROR -> mMemberStates.value = State.failure(resource.message)
+                            else -> {
+                                mMemberStates.value = State.success(resource.data?.map { TeamMember.fromEntity(it) }
+                                        ?: emptyList())
+                            }
+                        }
+                    }
         }
     }
 }
